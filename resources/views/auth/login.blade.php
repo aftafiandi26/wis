@@ -110,6 +110,26 @@
         font-weight: 500;
         text-shadow: -2px 0px white;
     }
+
+    .card {
+
+        border: 1px solid #eee;
+        box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px;
+        transition: all .3s ease-in-out;
+    }
+
+    .card:hover {
+        box-shadow: rgba(0, 0, 0, 0.32) 0px 19px 37px;
+        transform: translate3d(0px, -1px, 0px);
+    }
+
+    button:hover {
+        box-shadow: rgba(0, 0, 0, 0.32) 0px 6px 14px;
+    }
+
+    input:hover {
+        box-shadow: rgba(0, 0, 0, 0.32) 0px 6px 14px;
+    }
 </style>
 @endpush
 

@@ -1,13 +1,28 @@
-@extends('layouts.app')
+@extends('auth.layouts.template')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+        <div class="col-md-4 mb-2 text-center">
+            <img src="{{ asset('img/logo/infinite_Studios_kinema.png') }}" alt="logo" srcset="" width="100%" class="imig img-fluid">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-4 mb-2 text-center">
+            <img src="{{ asset('img/logo/wis-depan.png') }}" alt="logo" srcset="" width="100px" class="imig img-fluid">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-4 mb-2 text-center">
+            <p class="fs-3 p3 font-effect-shadow-multiple">Wide Information Systems</p>
+        </div>
+    </div>
+    <div class="row justify-content-center mb-3">
+        <div class="col-md-4">
+            <div class="card cards bg-white">
+                <div class="card-header text-center border-danger formed text-white text-lg mb-3 fs-5"><b>Form - Login</b></div>
 
-                <div class="card-body">
+                <div class="card-body ">
                     <form method="POST" action="{{ route('password.update') }}">
                         @csrf
 
@@ -61,5 +76,59 @@
             </div>
         </div>
     </div>
+    <div class="row justify-content-center">
+        <div class="col-md-4 mb-2 text-center">
+            <img src="{{ asset('img/logo/infinite_Studios_Logo-03.png') }}" alt="logo" srcset="" width="100%" class="imig img-fluid">
+        </div>
+    </div>
 </div>
 @endsection
+
+@push('style')
+<link rel="stylesheet" href="{{ asset('assets/fontawesome/css/all.css') }}">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap" rel="stylesheet">
+
+<script src="{{ asset('assets/fontawesome/js/all.js') }}"></script>
+
+<style>
+    .formed {
+        background: linear-gradient(to top left, #0072b5 0%, #00b3b3 80%);
+    }
+
+    div {
+        font-family: 'Trebuchet MS', sans-serif;
+    }
+
+    .p3 {
+        font-family: 'Berkshire Swash', cursive;
+        color: black;
+        font-weight: 500;
+        text-shadow: -2px 0px white;
+    }
+
+    .card {
+
+        border: 1px solid #eee;
+        box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px;
+        transition: all .3s ease-in-out;
+    }
+
+    .card:hover {
+        box-shadow: rgba(0, 0, 0, 0.32) 0px 19px 37px;
+        transform: translate3d(0px, -1px, 0px);
+    }
+
+    button:hover {
+        box-shadow: rgba(0, 0, 0, 0.32) 0px 6px 14px;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script>
+
+</script>
+@endpush
