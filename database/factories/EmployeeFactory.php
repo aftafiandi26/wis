@@ -17,7 +17,16 @@ class EmployeeFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'first_name' => fake()->firstName(),
+            'last_name'  => fake()->lastName(),
+            'nik'        => fake()->unique()->numberBetween(),
+            'email'      => fake()->unique()->email,
+            'position'   => fake()->jobTitle(),
+            'emp_status' => fake()->randomElement(['permanent', 'contract']),
+            'bod'       => fake()->dateTime(),
+            'gender'    => fake()->randomElement(['Male', 'Female']),
+            'department_id' => fake()->randomDigit(),
+            'join_of_contract'       => fake()->dateTime(),
         ];
     }
 }
