@@ -18,3 +18,7 @@
  <link rel="stylesheet" href="{{ asset('assets/thema/plugins/daterangepicker/daterangepicker.css') }}">
  <!-- summernote -->
  <link rel="stylesheet" href="{{ asset('assets/thema/plugins/summernote/summernote-bs4.min.css')  }}">
+
+ <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/all.min.css') }}">
+
+ <script src="{{ asset('assets/fontawesome/js/all.min.js') }}"></script>

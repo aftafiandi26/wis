@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class LoginController extends Controller
 {
@@ -36,5 +39,24 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function username()
+    {
+        return 'username';
+    }
+
+    public function incrementLoginAttempts(Request $request)
+    {
+        $findUser = User::where('username', $request['username'])->first();
+
+        if ($findUser) {
+            $findUser->update([
+                'session' => ++$findUser->session
+            ]);
+            Alert::error('Oopss.. Sorry!', 'Password is wrong :(');
+        } else {
+            Alert::error('Oopss.. Sorry!', 'Please check your account');
+        }
     }
 }

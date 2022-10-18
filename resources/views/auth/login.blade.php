@@ -27,10 +27,10 @@
                         @csrf
                         <div class="row mb-3">
                             <div class="input-group flex-nowrap">
-                                <label for="email" class="input-group-text" title="username"><i class="fa-solid fa-user"></i></label>
+                                <label for="username" class="input-group-text" title="username"><i class="fa-solid fa-user"></i></label>
 
                                 <div class="col">
-                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="username">
+                                    <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="username">
                                 </div>
 
                                 @error('email')

@@ -14,11 +14,12 @@
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
+        @include('sweetalert::alert')
 
         <!-- Preloader -->
-        <div class="preloader flex-column justify-content-center align-items-center">
+        <!-- <div class="preloader flex-column justify-content-center align-items-center">
             <img class="animation__shake" src="{{ asset('img/logo/Infinite_Studios_kinema.png') }}" alt="Loading" width="90%">
-        </div>
+        </div> -->
 
         <!-- Navbar -->
         @include('layouts.partials.navbarHeader')
@@ -95,9 +96,7 @@
         @include('layouts.partials.footer')
 
         <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
+        @include('layouts.partials.navbarRight')
         <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->

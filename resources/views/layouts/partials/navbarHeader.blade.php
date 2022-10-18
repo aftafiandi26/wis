@@ -122,7 +122,7 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
-                <i class="fas fa-th-large"></i>
+                <i class="fa-solid fa-gear" title="setting account"></i>
             </a>
         </li>
     </ul>

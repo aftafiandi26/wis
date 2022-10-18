@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
-class UserFactory extends Factory
+class UserNewFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -28,14 +28,10 @@ class UserFactory extends Factory
             'is_user'       => true,
             'is_active'     => true,
             'remember_token' => Str::random(10),
+
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     *
-     * @return static
-     */
     public function unverified()
     {
         return $this->state(fn (array $attributes) => [
