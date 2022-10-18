@@ -1,14 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Dashboard</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="shortcut icon" href="{{ asset('img/logo/iconWIS.png') }}" type="image/x-icon">
+
+    <title>{{ $title ?? "dashboard" }}</title>
 
     @include('layouts.partials.links')
 
+    <style>
+        .fontSmallSize {
+            font-size: 12px;
+        }
+
+        .fontSmallSize2 {
+            font-size: 14px;
+        }
+
+        .blink_me {
+            animation: blinker 5s linear infinite;
+        }
+
+        @keyframes blinker {
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        div {
+            font-family: 'Trebuchet MS', sans-serif;
+        }
+    </style>
+
     @stack('style')
+
 
 </head>
 
@@ -29,8 +57,8 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="{{ route('home') }}" class="brand-link">
-                <img src="{{ asset('img/logo/iconWIS.png') }}" alt="logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">Wide Information< Systems</span>
+                <img src="{{ asset('img/logo/iconWIS.png') }}" alt="logo" class="brand-image elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light fontSmallSize text-uppercase blink_me">Wide Information Systems</span>
             </a>
 
             <!-- Sidebar -->
@@ -41,7 +69,7 @@
                         <img src="{{ asset('img/logo/iconWIS.png') }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+                        <a href="#" class="d-block">{{ Auth::user()->username }}</a>
                     </div>
                 </div>
 
@@ -73,7 +101,7 @@
                         <div class="col-sm-6">
                             <h1 class="m-0">Dashboard</h1>
                         </div><!-- /.col -->
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 fontSmallSize2">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                                 <li class="breadcrumb-item active">Dashboard v1</li>
