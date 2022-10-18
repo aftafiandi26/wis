@@ -23,6 +23,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('layouts.thema');
+        $title = str()->slug('home dashboard');
+
+        return view('dashboard.home', compact(['title']));
     }
 }

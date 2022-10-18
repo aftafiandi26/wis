@@ -95,28 +95,25 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0">Dashboard</h1>
-                        </div><!-- /.col -->
-                        <div class="col-sm-6 fontSmallSize2">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Dashboard v1</li>
-                            </ol>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
-            </div>
+            @stack('content-header')
             <!-- /.content-header -->
 
             <!-- Main content -->
             <section class="content">
-                <div class="container-fluid">
+                <div class="content-wrapper iframe-mode" data-widget="iframe" data-loading-screen="750" style="height: 540px;">
+                    <div class="tab-content">
+                        <div class="tab-empty" style="height: 498.6px; display: none;">
+                            <h2 class="display-4">No page selected!</h2>
+                        </div>
+                        <div class="tab-loading" style="height: 498.6px; display: none;">
+                            <div>
+                                <h2 class="display-4">Page is loading <i class="fa fa-sync fa-spin"></i></h2>
+                            </div>
+                        </div>
 
+                    </div>
                 </div>
+                @yield('content')
             </section>
             <!-- /.content -->
         </div>
