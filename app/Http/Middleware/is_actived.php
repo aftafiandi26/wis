@@ -18,13 +18,12 @@ class is_actived
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->is_active === 1) {
-            Alert::success('Welcome', 'Hey nice to meet you :)');
-            return $next($request);
+        if (Auth::user()->is_active === false) {
+            auth()->logout();
+            Alert::error('Sorry', 'Your account not active. Please contact administrator. thank you !!');
+            return to_route('login');
         }
 
-        auth()->logout();
-        Alert::error('Sorry', 'Your account not active. Please contact administrator. thank you !!');
-        return to_route('login');
+        return $next($request);
     }
 }

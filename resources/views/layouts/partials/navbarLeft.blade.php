@@ -1,31 +1,90 @@
 <nav class="mt-2">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
-        <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+        <li class="nav-header">Management (HR)</li>
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="fa-solid fa-users"></i>
                 <p>
-                    Dashboard
-                    <i class="right fas fa-angle-left"></i>
+                    Employes
+                    <i class="fas fa-angle-left right"></i>
                 </p>
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="{{ route('superadmin.employes.index') }}" class="nav-link">
+                    <a href="{{ route('superadmin.employes.data') }}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Dashboard v1</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('superadmin.employes.index') }}" class="nav-link active">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Dashboard v2</p>
+                        <p>Create Form</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('superadmin.employes.index') }}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Dashboard v3</p>
+                        <p>Data</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/tables/jsgrid.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Non-Active</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-tree"></i>
+                <p>
+                    UI Elements
+                    <i class="fas fa-angle-left right"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="pages/UI/general.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>General</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/UI/icons.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Icons</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/UI/buttons.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Buttons</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/UI/sliders.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Sliders</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/UI/modals.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Modals & Alerts</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/UI/navbar.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Navbar & Tabs</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/UI/timeline.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Timeline</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="pages/UI/ribbons.html" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Ribbons</p>
                     </a>
                 </li>
             </ul>

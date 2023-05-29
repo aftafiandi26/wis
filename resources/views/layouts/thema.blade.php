@@ -36,6 +36,7 @@
     </style>
 
     @stack('style')
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
 
 </head>
@@ -94,27 +95,13 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
+
             <!-- Content Header (Page header) -->
             @stack('content-header')
             <!-- /.content-header -->
-
+            @yield('content')
             <!-- Main content -->
-            <section class="content">
-                <div class="content-wrapper iframe-mode" data-widget="iframe" data-loading-screen="750" style="height: 540px;">
-                    <div class="tab-content">
-                        <div class="tab-empty" style="height: 498.6px; display: none;">
-                            <h2 class="display-4">No page selected!</h2>
-                        </div>
-                        <div class="tab-loading" style="height: 498.6px; display: none;">
-                            <div>
-                                <h2 class="display-4">Page is loading <i class="fa fa-sync fa-spin"></i></h2>
-                            </div>
-                        </div>
 
-                    </div>
-                </div>
-                @yield('content')
-            </section>
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
@@ -128,6 +115,7 @@
     @include('layouts.partials.scripts')
 
     @stack('scripts')
+
 </body>
 
 </html>

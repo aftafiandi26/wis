@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->dateTime('join_of_contract');
-            $table->dateTime('end_of_contract')->nullable();
+            $table->date('join_of_contract');
+            $table->date('end_of_contract')->nullable();
             $table->string('nationality')->nullable();
             $table->string('province')->nullable();
             $table->string('city')->nullable();

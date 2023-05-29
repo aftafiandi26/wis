@@ -25,7 +25,7 @@ class EmployeeFactory extends Factory
             'emp_status' => fake()->randomElement(['permanent', 'contract']),
             'bod'       => fake()->dateTime(),
             'gender'    => fake()->randomElement(['Male', 'Female']),
-            'department_id' => fake()->randomDigit(),
+            'department_id' => rand(1, 5),
             'join_of_contract'       => fake()->dateTime(),
         ];
     }

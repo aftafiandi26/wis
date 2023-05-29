@@ -1,0 +1,1 @@
+<a class="btn btn-sm btn-outline-info" title="show detail {{ $fullname }}" data-bs-toggle="modal" data-bs-target="#showViewDetail" id="buttonShow" data-role="{{ route('superadmin.employes.show', $id) }}" data-bs-backdrop="static"><i class="fa-solid fa-eye"></i></a>

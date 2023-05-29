@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('position');
             $table->string('emp_status');
-            $table->dateTime('bod');
+            $table->date('bod');
             $table->string('gender');
             $table->timestamps();
         });

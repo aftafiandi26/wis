@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Superadmin\HRD;
 
 use App\Http\Controllers\Controller;
+use App\Models\employee;
 use Illuminate\Http\Request;
 
 class EmployesController extends Controller
@@ -12,6 +13,11 @@ class EmployesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware(['auth', 'session_counter', 'is_actived']);
+    }
+
     public function index()
     {
         $title = str()->slug('Employes - Dashboard');
@@ -47,7 +53,9 @@ class EmployesController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = employee::findorFail($id);
+
+        return view('superadmin.hrd.employes.modal', compact(['data']));
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Superadmin\HRD\DatatablesController;
 use App\Http\Controllers\Superadmin\HRD\EmployesController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -25,6 +27,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::prefix('superadmin')->group(function () {
     Route::prefix('hrd')->group(function () {
+        Route::get('employes/data', [DatatablesController::class, 'superadminEmployes'])->name('superadmin.employes.data');
         Route::resource('employes', EmployesController::class)->names([
             'index' => 'superadmin.employes.index',
             'create' => 'superadmin.employes.create',
