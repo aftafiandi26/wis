@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Superadmin\HRD\DatatablesController;
-use App\Http\Controllers\Superadmin\HRD\EmployesController;
+use App\Http\Controllers\Superadmin\HRD\Employee\DatatablesController;
+use App\Http\Controllers\Superadmin\HRD\Employee\EmployesController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 

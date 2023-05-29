@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Superadmin\HRD;
+namespace App\Http\Controllers\Superadmin\HRD\Employee;
 
 use App\Http\Controllers\Controller;
 use App\Models\employee;
