@@ -26,7 +26,9 @@ Auth::routes(['register' => false]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::prefix('superadmin')->group(function () {
+    // HUMAN RESOURCES DEPARTMENT
     Route::prefix('hrd')->group(function () {
+        // Employes
         Route::get('employes/data', [DatatablesController::class, 'superadminEmployes'])->name('superadmin.employes.data');
         Route::resource('employes', EmployesController::class)->names([
             'index' => 'superadmin.employes.index',

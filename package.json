@@ -15,6 +15,9 @@
         "vite": "^3.0.0"
     },
     "dependencies": {
+        "datatables.net-bs5": "^1.13.4",
+        "datatables.net-buttons-bs5": "^2.3.6",
+        "jszip": "^3.10.1",
         "laravel-datatables-vite": "^0.2.0"
     }
 }

@@ -21,7 +21,7 @@ class DatatablesController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('actions', 'superadmin.hrd.employes.actions')
-            ->rawColumns(['actions'])
+            ->rawColumns(['actions'])            
             ->make(true);
     }
 }
