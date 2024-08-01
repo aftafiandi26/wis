@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HRD\EmpoyesController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,4 +18,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::prefix('hrd')->group(function() {
+    Route::resource('employes', EmpoyesController::class);
+});
+
 require __DIR__.'/auth.php';
+
+

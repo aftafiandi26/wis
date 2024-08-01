@@ -7,7 +7,7 @@
     <div class="collapse" id="sidebar_employes">
       <ul class="nav nav-collapse">
         <li>
-          <a href="#">
+          <a href="{{ route('employes.index') }}">
             <span class="sub-item">Dashboard</span>
           </a>
         </li>
@@ -28,6 +28,6 @@
   <li class="nav-item">
     <a href="#" >
       <i class="fas fa-home"></i>
-      <p>Attendance</p>            
-    </a>            
+      <p>Attendance</p>
+    </a>
   </li>
