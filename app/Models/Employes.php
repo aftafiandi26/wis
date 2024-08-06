@@ -12,4 +12,9 @@ class Employes extends Model
     protected $table = "employes";
 
     protected $guarded = [];
+
+    public function fullname()
+    {
+        return $this->first_name. ' ' . $this->last_name;
+    }
 }

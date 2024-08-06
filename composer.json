@@ -9,7 +9,8 @@
         "diglactic/laravel-breadcrumbs": "^9.0",
         "fakerphp/faker": "^1.23",
         "laravel/framework": "^11.9",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "yajra/laravel-datatables-oracle": "^11.0"
     },
     "require-dev": {
         "laravel/breeze": "^2.1",

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HRD\Datatables\EmployesDatatables;
 use App\Http\Controllers\HRD\EmpoyesController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('hrd')->group(function() {
+    Route::get('employes/data', [EmployesDatatables::class, 'data'])->name('employes.data');
     Route::resource('employes', EmpoyesController::class);
 });
 
