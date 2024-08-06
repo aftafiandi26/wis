@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\HRD;
 
 use App\Http\Controllers\Controller;
+use App\Models\Employes;
 use Illuminate\Http\Request;
 
 class EmpoyesController extends Controller
@@ -12,7 +13,9 @@ class EmpoyesController extends Controller
      */
     public function index()
     {
-        return view('template_admin.hrd.employes.dashboard');
+        $employes = Employes::where('active', true)->get();
+
+        return view('template_admin.hrd.employes.dashboard', compact(['employes']));
     }
 
     /**
