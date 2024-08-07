@@ -14,6 +14,12 @@
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('build/assets/apexchart/dist/apexcharts.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/assets/datatables/datatables.css') }}">
+    <style>
+        .dataTables_wrapper {
+            font-size: 10px;
+        }
+    </style>
 @endpush
 
 @section('body')
@@ -107,18 +113,22 @@
         <div class="col-sm-6 col-md-6">
             <div class="card card-stats card-round">
                 <div class="card-body">
-                    <table class="display table table-hover table-condensed table-striped" id="tables" width=100%>
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>NIK</th>
-                                <th>Employes</th>
-                                <th>Position</th>
-                                <th>Department</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="display table table-hover table-condensed table-borderless table-striped"
+                            id="tables">
+                            <thead>
+                                <tr>
+                                    <th>NIK</th>
+                                    <th>Employes</th>
+                                    <th>Position</th>
+                                    <th>Department</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -127,7 +137,8 @@
 
 @push('script')
     <script src="{{ asset('build/assets/apexchart/dist/apexcharts.js') }}"></script>
-    <script src="{{ asset('template/administrator/assets/js/plugin/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('build/assets/datatables/datatables.js') }}"></script>
+
     <script>
         var options = {
             series: [{
@@ -229,16 +240,54 @@
 
         $('table#tables').DataTable({
             "procesisng": true,
-            "responsive": true,
-            "ajax": "{{ route('employes.data') }}",
-            "columns": [
-                {"data": "DT_RowIndex", searchable: false},
-                {"data": "nik"},
-                {"data": "fullname"},
-                {"data": "position"},
-                {"data": "department_id"},
-                {"data": "department_id"},
-            ]
-        })
+            "responsive": false,
+            "ajax": {
+                "url": "{{ route('employes.data') }}",
+                "contentType": 'application/json',
+                "type": 'GET',
+                "data": function(d) {
+                    return JSON.stringify(d);
+                }
+            },
+            "columns": [{
+                    "data": "nik"
+                },
+                {
+                    "data": "fullname"
+                },
+                {
+                    "data": "position"
+                },
+                {
+                    "data": "department_id"
+                },
+                {
+                    "data": "join_contract"
+                },
+                {
+                    "data": "end_contract"
+                },
+                {
+                    "data": "department_id"
+                },
+            ],
+            "pageLength": 5,
+            "language": {
+                "entries": {
+                    _: 'people',
+                    1: 'person'
+                }
+            },
+            "layout": {
+                "topStart": {
+                    "pageLength": {
+                        "menu": [5, 10, 25, 50]
+                    },
+                    "buttons": [
+                        'print', 'excel', 'pdf'
+                    ]
+                }
+            },
+        });
     </script>
 @endpush
