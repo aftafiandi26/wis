@@ -11,13 +11,18 @@ class EmployesDatatables extends Controller
 {
     public function data()
     {
-        $query = Employes::where('active', true)->get();
+        $query = Employes::where('active', true)->limit(5)->get();
 
         return DataTables::of($query)
             ->addIndexColumn()
             ->addColumn('fullname', function(Employes $emp){
                 return $emp->fullname();
             })
+            ->addColumn('depart_name', function(Employes $emp) {
+                return $emp->department();
+            })
+            ->addColumn('actions', 'template_admin.hrd.employes.actions')
+            ->rawColumns(['actions'])
             ->toJson();
     }
 }

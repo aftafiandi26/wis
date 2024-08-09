@@ -11,6 +11,7 @@ class EmpoyesController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
         $employes = Employes::where('active', true)->get();

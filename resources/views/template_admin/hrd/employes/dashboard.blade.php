@@ -118,17 +118,38 @@
                             id="tables">
                             <thead>
                                 <tr>
+                                    <th>Action</th>
                                     <th>NIK</th>
                                     <th>Employes</th>
                                     <th>Position</th>
                                     <th>Department</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                         </table>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">...</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
@@ -250,6 +271,11 @@
                 }
             },
             "columns": [{
+                    "data": "actions",
+                    "orderable": false,
+                    "searchable": false
+                },
+                {
                     "data": "nik"
                 },
                 {
@@ -259,17 +285,14 @@
                     "data": "position"
                 },
                 {
-                    "data": "department_id"
+                    "data": "depart_name"
                 },
                 {
                     "data": "join_contract"
                 },
                 {
                     "data": "end_contract"
-                },
-                {
-                    "data": "department_id"
-                },
+                }
             ],
             "pageLength": 5,
             "language": {
@@ -288,6 +311,9 @@
                     ]
                 }
             },
+            "order": [
+                [2, 'asc'],
+            ]
         });
     </script>
 @endpush
