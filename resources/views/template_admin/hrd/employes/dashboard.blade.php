@@ -24,31 +24,26 @@
         .card-header span {
             font-weight: bold;
         }
+
         ul#manageDropdownList a {
             font-weight: bold;
         }
     </style>
 @endpush
 
+@push('manageBtn')
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" id="manageDropdownList">
+        <a class="dropdown-item" href="{{ route('employes.create') }}">Add Employee</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Active</a>
+        <a class="dropdown-item" href="#">Deactive</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Chart</a>
+    </ul>
+@endpush
+
+
 @section('body')
-    <div class="row">
-        <div class="col col-sm-12 col-md-12 mb-3">
-            <div class="btn-group dropstart float-end">
-                <button type="button" class="btn btn-outline-primary btn-round dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Manage
-                </button>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" id="manageDropdownList">
-                    <a class="dropdown-item" href="{{ route('employes.create') }}">Add Employee</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Active</a>
-                    <a class="dropdown-item" href="#">Deactive</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Chart</a>
-                </ul>
-            </div>
-        </div>
-    </div>
-    {{--  --}}
     <div class="row">
         <div class="col-sm-6 col-md-3">
             <div class="card card-stats card-round">
