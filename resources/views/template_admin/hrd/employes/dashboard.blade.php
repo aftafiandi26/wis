@@ -14,7 +14,7 @@
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('build/assets/apexchart/dist/apexcharts.css') }}">
-    <link rel="stylesheet" href="{{ asset('build/assets/datatables/datatables.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/assets/datatables/datatables.min.css') }}">
     <style>
         .dataTables_wrapper {
             font-size: 10px;
@@ -119,6 +119,7 @@
             </div>
         </div>
 
+<<<<<<< Updated upstream
         <div class="row">
             <div class="col-sm-6 col-md-6">
                 <div class="card card-stats card-round">
@@ -150,6 +151,11 @@
                 </div>
             </div>
         </div>
+=======
+@push('script')
+    <script src="{{ asset('build/assets/apexchart/dist/apexcharts.js') }}"></script>
+    <script src="{{ asset('build/assets/datatables/datatables.min.js') }}"></script>
+>>>>>>> Stashed changes
 
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
