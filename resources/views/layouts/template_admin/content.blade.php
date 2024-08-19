@@ -7,5 +7,7 @@
       </div>
     </div>
     @yield('body')
+    <div class="wrapper">
+    </div>
   </div>
 </div>
