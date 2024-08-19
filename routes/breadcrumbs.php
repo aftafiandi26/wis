@@ -10,7 +10,12 @@ use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
 // HRD - Employes
 Breadcrumbs::for('hrd.employes', function (BreadcrumbTrail $trail) {
-    $trail->push('Dashboard', route('employes.index'));
+    $trail->push('Employes', route('employes.index'));
+});
+
+Breadcrumbs::for('hrd.employes.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('hrd.employes');
+    $trail->push('Create', route('employes.create'));
 });
 
 

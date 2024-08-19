@@ -24,7 +24,7 @@ class EmpoyesController extends Controller
      */
     public function create()
     {
-        //
+        return view('template_admin.hrd.employes.create');
     }
 
     /**
