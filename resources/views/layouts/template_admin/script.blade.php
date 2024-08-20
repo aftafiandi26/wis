@@ -30,8 +30,5 @@
 
 <!-- Kaiadmin JS -->
 <script src="{{ asset('template/administrator/assets/js/kaiadmin.min.js') }}"></script>
-{{-- <script src="{{ asset('build/assets/bootstrap/js/bootstrap.js') }}"></script> --}}
-{{-- <script src="{{ asset('template/administrator/assets/js/kaiadmin.js') }}"></script> --}}
-{{-- @vite('resources/js/app.js') --}}
 
 @stack('script')

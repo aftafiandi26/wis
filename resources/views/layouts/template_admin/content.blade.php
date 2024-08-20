@@ -7,7 +7,7 @@
             </div>
             <div class="col col-sm-6 col-md-6">
                 <div class="btn-group dropstart float-end">
-                    <button type="button" class="btn btn-outline-primary btn-round dropdown-toggle"
+                    <button type="button" class="btn btn-sm btn-outline-primary btn-round dropdown-toggle"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Manage
                     </button>

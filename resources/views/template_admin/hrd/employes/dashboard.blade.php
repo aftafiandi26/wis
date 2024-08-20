@@ -185,22 +185,29 @@
 
 @push('script')
     <script src="{{ asset('build/assets/apexchart/dist/apexcharts.js') }}" defer></script>
-
     <script src="{{ asset('build/assets/datatables/datatables.min.js') }}" defer></script>
-    {{-- <script src="{{ asset('template/administrator/assets/js/plugin/datatables/datatables.min.js') }}" defer></script> --}}
+    <script src="{{ asset('template/administrator/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}" defer>
+    </script>
+    @if (session('success'))
+        <script>
+            $(document).ready(function() {
+                $.notify({
+                    message: '{{ session('success') }}'
+                }, {
+                    type: 'success',
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                });
+            });
+        </script>
+    @endif
 
     <script>
         $(document).ready(function() {
-            var e = $(".sidebar .scrollbar");
 
-            if (e.length > 0) {
-                console.log(typeof e.overlayScrollbars);
-                if (typeof e.overlayScrollbars === 'function') {
-                    e.overlayScrollbars({});
-                } else {
-                    console.log("Scrollbar plugin not loaded or not found");
-                }
-            }
+            var e = $(".sidebar .scrollbar");
 
             var options = {
                 series: [{
