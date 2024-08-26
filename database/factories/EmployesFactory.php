@@ -41,14 +41,14 @@ class EmployesFactory extends Factory
             'area'              => fake()->streetName(),
             'city'              => fake()->city(),
             'education'         => "Strata 1",
-            'insitution'        => fake()->company(),
+            'institution'       => fake()->company(),
             'marital_status'    => "Single",
             'npwp'              => fake()->numerify('#######'),
             'kk'                => fake()->numerify('##########'),
             'religion'          => "Islam",
             'bpjs_ketenagakerjaan'   => fake()->numerify('#################'),
             'bpjs_kesehatan'   => fake()->numerify('#################'),
-            'active'            => true,
+            'active'            => false,
         ];
     }
 }

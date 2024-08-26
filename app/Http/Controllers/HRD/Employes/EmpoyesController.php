@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\HRD;
+namespace App\Http\Controllers\HRD\Employes;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HRD\Employes\StoreRequest;
@@ -46,7 +46,7 @@ class EmpoyesController extends Controller
     {
         $employes = Employes::where('active', true)->get();
 
-        return view('template_admin.hrd.employes.dashboard', compact(['employes']));
+        return view('template_admin.hrd.employes.dashboard.dashboard', compact(['employes']));
     }
 
     /**
@@ -60,7 +60,7 @@ class EmpoyesController extends Controller
 
         $noImg = asset(Storage::url("no-image.jpeg"));
 
-        return view('template_admin.hrd.employes.create', compact(['departments', 'projects', 'noImg']));
+        return view('template_admin.hrd.employes.dashboard.create', compact(['departments', 'projects', 'noImg']));
     }
 
     /**
@@ -89,7 +89,7 @@ class EmpoyesController extends Controller
         $data = [
             'nik'               => $request->nik,
             'first_name'        => Str::title($request->firstName),
-            'last_name'         => Str::title($request->lasName),
+            'last_name'         => Str::title($request->lastName),
             'gender'            => $request->gender,
             'department_id'     => $request->department,
             'position'          => $request->position,

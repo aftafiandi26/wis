@@ -11,7 +11,7 @@ class EmployesDatatables extends Controller
 {
     public function data()
     {
-        $query = Employes::where('active', true)->limit(5)->get();
+        $query = Employes::where('active', true)->get();
 
         return DataTables::of($query)
             ->addIndexColumn()
@@ -21,7 +21,7 @@ class EmployesDatatables extends Controller
             ->addColumn('depart_name', function(Employes $emp) {
                 return $emp->department();
             })
-            ->addColumn('actions', 'template_admin.hrd.employes.actions')
+            ->addColumn('actions', 'template_admin.hrd.employes.dashboard.actions')
             ->rawColumns(['actions'])
             ->toJson();
     }

@@ -27,17 +27,17 @@
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
       <div class="sidebar-content">
         <ul class="nav nav-secondary">
-          @include('layouts.template_admin.sidebar.component')          
-          
+          {{-- @include('layouts.template_admin.sidebar.component')           --}}
+
           <li class="nav-section">
             <span class="sidebar-mini-icon">
               <i class="fa fa-ellipsis-h"></i>
             </span>
             <h4 class="text-section">Menu - Dashboard</h4>
           </li>
-          
+
           @include('layouts.template_admin.sidebar.menu')
-          
+
           <li class="nav-section">
             <span class="sidebar-mini-icon">
               <i class="fa fa-ellipsis-h"></i>

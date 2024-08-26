@@ -12,7 +12,7 @@ class EmployesSeeder extends Seeder
 {
     public function run(): void
     {
-        Employes::factory()->count(350)->create();
+        Employes::factory()->count(300)->create();
 
     }
 }
