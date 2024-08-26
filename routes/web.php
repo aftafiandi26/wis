@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('hrd')->group(function() {
     Route::get('employes/data', [EmployesDatatables::class, 'data'])->name('employes.data')->middleware(['auth']);
-    Route::resource('employes', EmpoyesController::class)->middleware('auth');
+    Route::resource('employes', EmpoyesController::class);
 });
 
 require __DIR__.'/auth.php';

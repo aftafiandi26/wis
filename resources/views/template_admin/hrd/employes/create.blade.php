@@ -26,6 +26,15 @@
             font-weight: bold;
             /* Warna latar belakang seluruh div */
         }
+
+        img {
+            width: 250px;
+            height: 200px;
+        }
+
+        input#imageInput {
+            max-width: 100%;
+        }
     </style>
 @endpush
 
@@ -53,7 +62,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('employes.store') }}" method="post" id="formCreate" class="needs-validation">
+                    <form action="{{ route('employes.store') }}" method="post" id="formCreate" class="needs-validation" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-sm-4 col-md-4">
@@ -444,21 +453,25 @@
                             <div class="col-sm-6 col-md-6">
                                 <div class="mb-3">
                                     <input type="file" class="form-file @error('file') is-invalid @enderror"
-                                        placeholder="file" value="{{ old('file') }}" name="file">
+                                        placeholder="file" value="" name="file" id="imageInput">
                                     <label for="file">file</label>
+                                    <br>
+                                    <small>max: 5MB | Format:PNG, JPEG, JPG</small>
                                     @error('file')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
                                     @enderror
                                     <br>
-                                    <div id="fileouput">s</div>
+                                    <img src="{{ $noImg }}" alt="previewImage" id="previewImage"
+                                        class="img img-circle img-thumbnail">
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-6">
                                 <div class="mb-3">
                                     <label for="project">Choose Project</label>
-                                    <select class="form-select @error('project') is-invalid @enderror" name="project[]" multiple id="project" data-width="100%" >
+                                    <select class="form-select @error('project') is-invalid @enderror" name="project[]"
+                                        multiple id="project" data-width="100%">
                                         <option></option>
                                         @foreach ($projects as $project)
                                             <option value="{{ $project->id }}">{{ $project->name }}</option>
@@ -482,7 +495,9 @@
 @endsection
 
 @push('script')
-<script src="{{ asset('template/administrator/assets/js/plugin/select2/select2.full.min.js') }}"></script>
+    <script src="{{ asset('template/administrator/assets/js/plugin/select2/select2.full.min.js') }}" defer></script>
+    <script src="{{ asset('template/administrator/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}" defer>
+    </script>
     <script>
         $(document).ready(function() {
             $('#formSubmit').on('click', function() {
@@ -491,7 +506,42 @@
 
             $("#project").select2({
                 placeholder: 'Open projects',
-                allowClear: true
+                allowClear: true,
+                width: '100%'
+            });
+
+            document.getElementById('imageInput').addEventListener('change', function(event) {
+                // Mendapatkan file yang dipilih oleh pengguna
+                let file = event.target.files[0];
+
+                // Pastikan file adalah gambar
+                if (file && file.type.startsWith('image/')) {
+                    // Membuat FileReader untuk membaca file
+                    let reader = new FileReader();
+
+
+                    // Event listener untuk ketika FileReader selesai membaca file
+                    reader.onload = function(e) {
+                        // Mengatur sumber (src) elemen gambar dengan data yang dibaca oleh FileReader
+                        let img = document.getElementById('previewImage');
+                        img.src = e.target.result;
+                        img.style.display = 'block'; // Tampilkan gambar
+                    };
+                    // Membaca file sebagai Data URL (base64)
+                    reader.readAsDataURL(file);
+                } else {
+
+                    $.notify({
+                        // options
+                        message: 'Please select a valid image file.',
+                        title: 'Image Error',
+                        icon: 'icon-bell'
+                    }, {
+                        // settings
+                        type: 'danger',
+                        allow_dismiss: false,
+                    });
+                }
             });
         });
     </script>
