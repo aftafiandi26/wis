@@ -139,7 +139,13 @@ class EmpoyesController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $departments = Department::all();
+
+        $projects = Project::orderBy('name', 'asc')->get();
+
+        $noImg = asset(Storage::url("no-image.jpeg"));
+
+        return view('template_admin.hrd.employes.dashboard.show', compact(['departments', 'projects', 'noImg']));
     }
 
     /**
@@ -147,7 +153,13 @@ class EmpoyesController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $departments = Department::all();
+
+        $projects = Project::orderBy('name', 'asc')->get();
+
+        $noImg = asset(Storage::url("no-image.jpeg"));
+
+        return view('template_admin.hrd.employes.dashboard.edit', compact(['departments', 'projects', 'noImg']));
     }
 
     /**
