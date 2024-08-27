@@ -48,7 +48,7 @@ class EmployesFactory extends Factory
             'religion'          => "Islam",
             'bpjs_ketenagakerjaan'   => fake()->numerify('#################'),
             'bpjs_kesehatan'   => fake()->numerify('#################'),
-            'active'            => false,
+            'active'            => rand(1, 0),
         ];
     }
 }

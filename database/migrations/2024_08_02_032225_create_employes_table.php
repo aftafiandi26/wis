@@ -34,7 +34,7 @@ return new class extends Migration
             $table->string('area')->nullable();
             $table->string('city')->nullable();
             $table->string('education')->nullable();
-            $table->string('insitution')->nullable();
+            $table->string('institution')->nullable();
             $table->string('marital_status')->nullable();
             $table->string('npwp')->nullable();
             $table->string('kk')->nullable();

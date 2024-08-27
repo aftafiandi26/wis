@@ -24,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('employes', function (Blueprint $table) {
-            $table->tinyInteger('name', 50)->change();
+           // $table->tinyInteger('name', 50)->change();
         });
     }
 };
