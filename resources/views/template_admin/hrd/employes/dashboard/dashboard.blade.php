@@ -13,7 +13,7 @@
 @endpush
 
 @push('style')
-    <link rel="stylesheet" href="{{ asset('build/assets/apexchart/dist/apexcharts.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/assets/apexcharts/dist/apexcharts.css') }}">
     <link rel="stylesheet" href="{{ asset('build/assets/datatables/datatables.min.css') }}">
     <style>
         .card:hover {
@@ -172,8 +172,8 @@
 @endsection
 
 @push('script')
-    <script src="{{ asset('build/assets/apexchart/dist/apexcharts.js') }}" defer></script>
-    <script src="{{ asset('build/assets/datatables/datatables.min.js') }}" defer></script>
+    <script src="{{ asset('build/assets/apexcharts/dist/apexcharts.js') }}" defer></script>
+    <script src="{{ asset('build/assets/datatables/datatables.js') }}" defer></script>
     <script src="{{ asset('template/administrator/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}" defer>
     </script>
     @if (session('success'))

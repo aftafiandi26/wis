@@ -81,7 +81,7 @@ class EmpoyesController extends Controller
             $fileName = $request->nik . '.' . $file->getClientOriginalExtension();
 
             // Menyimpan file di direktori avatars dengan nama yang sudah ditentukan
-            // $file->storeAs('avatars', $fileName, 'public');
+            $file->storeAs('avatars', $fileName, 'public');
         }
 
         $jsonProject = json_encode($request->project);
