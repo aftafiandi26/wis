@@ -163,7 +163,7 @@
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <div class="modal-content">
 
             </div>
@@ -358,6 +358,7 @@
 
                 $.ajax({
                     url: url,
+                    data: $(this).serialize(),
                     success: function(e) {
                         $('.modal-content').html(e);
                     }

@@ -2,6 +2,8 @@
 
 // Note: Laravel will automatically resolve `Breadcrumbs::` without
 // this import. This is nice for IDE syntax and refactoring.
+
+use Illuminate\Support\Str;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 
 // This import is also not required, and you could replace `BreadcrumbTrail $trail`
@@ -18,6 +20,10 @@ Breadcrumbs::for('hrd.employes.create', function (BreadcrumbTrail $trail) {
     $trail->push('Create', route('employes.create'));
 });
 
+Breadcrumbs::for('hrd.employes.edit', function (BreadcrumbTrail $trail, $employee) {
+    $trail->parent('hrd.employes');
+    $trail->push(Str::slug($employee->fullname()), route('employes.edit', $employee->id));
+});
 
 // // Home > Blog
 // Breadcrumbs::for('blog', function (BreadcrumbTrail $trail) {

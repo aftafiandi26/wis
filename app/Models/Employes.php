@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use \Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Employes extends Model
 {
@@ -14,6 +15,13 @@ class Employes extends Model
     protected $table = "employes";
 
     protected $guarded = [];
+
+    protected $primaryKey = 'id';
+
+    public function getRouteKeyName()
+    {
+        return 'id';
+    }
 
     public function fullname()
     {
@@ -30,5 +38,11 @@ class Employes extends Model
         $query = Department::find($this->department_id);
 
         return $query->name;
+    }
+    
+   
+    public function role_annual(): HasOne
+    {
+        return $this->hasOne(Annualeave::class, 'employes_id', 'id');
     }
 }

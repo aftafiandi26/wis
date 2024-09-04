@@ -12,8 +12,7 @@
     {{ Breadcrumbs::render('hrd.employes.create') }}
 @endpush
 
-@push('style')
-    {{-- <link rel="stylesheet" href="{{ asset('build/assets/select2/select2-bootstrap-5-theme.min.css') }}"> --}}
+@push('style') 
 
     <style>
         .card:hover {
@@ -26,8 +25,7 @@
             font-weight: bold;
             /* Warna latar belakang seluruh div */
         }
-
-        img {
+        #previewImage {
             width: 250px;
             height: 200px;
         }

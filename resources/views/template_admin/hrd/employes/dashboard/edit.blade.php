@@ -9,7 +9,7 @@
 @endpush
 
 @push('subheadling')
-    {{ Breadcrumbs::render('hrd.employes.create') }}
+    {{ Breadcrumbs::render('hrd.employes.edit', $employee) }}
 @endpush
 
 @push('style')
@@ -27,8 +27,8 @@
             /* Warna latar belakang seluruh div */
         }
 
-        img {
-            width: 250px;
+        img#previewImage {
+            width: 300px;
             height: 200px;
         }
 
@@ -68,7 +68,7 @@
                             <div class="col-sm-4 col-md-4">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('nik') is-invalid @enderror"
-                                        placeholder="nik" value="{{ old('nik') }}" name="nik">
+                                        placeholder="nik" value="{{ $employee->nik }}" name="nik">
                                     <label for="nik">NIK</label>
                                     @error('nik')
                                         <div class="invalid-feedback">
@@ -80,7 +80,7 @@
                             <div class="col-sm-4 col-md-4">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('firstName') is-invalid @enderror"
-                                        placeholder="first name" value="{{ old('firstName') }}" name="firstName">
+                                        placeholder="first name" value="{{ $employee->first_name}}" name="firstName">
                                     <label for="firstName">First Name</label>
                                     @error('firstName')
                                         <div class="invalid-feedback">
@@ -92,7 +92,7 @@
                             <div class="col-sm-4 col-md-4">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('lastName') is-invalid @enderror"
-                                        placeholder="last name" value="{{ old('lastName') }}" name="lastName">
+                                        placeholder="last name" value="{{ $employee->last_name }}" name="lastName">
                                     <label for="lastName">Last Name</label>
                                     @error('lastName')
                                         <div class="invalid-feedback">
@@ -107,9 +107,11 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <select class="form-select @error('department') is-invalid @enderror" name="department">
-                                        <option selected value="">Choose Department</option>
+                                        <option disabled>Open this choose departmet</option>
                                         @foreach ($departments as $dept)
-                                            <option value="{{ $dept->id }}">{{ $dept->name }}</option>
+                                            <option value="{{ $dept->id }}" @if ($employee->department_id === $dept->id)
+                                                selected
+                                            @endif>{{ $dept->name }}</option>
                                         @endforeach
                                     </select>
                                     <label for="select">choose departmet</label>
@@ -123,7 +125,7 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('position') is-invalid @enderror"
-                                        placeholder="Position" value="{{ old('position') }}" name="position">
+                                        placeholder="Position" value="{{ $employee->position }}" name="position">
                                     <label for="position">Position</label>
                                     @error('position')
                                         <div class="invalid-feedback">
@@ -135,10 +137,16 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <select class="form-select @error('empStat') is-invalid @enderror" name="empStat">
-                                        <option value="" selected>Open this status</option>
-                                        <option value="Contract">Contract</option>
-                                        <option value="Permanent">Permanent</option>
-                                        <option value="Intern">Intern</option>
+                                        <option value="" disabled>Open this status</option>
+                                        <option value="Contract" @if ($employee->emp_status == "Contract")
+                                            selected
+                                        @endif>Contract</option>
+                                        <option value="Permanent" @if ($employee->emp_status == "Permanent")
+                                            selected
+                                        @endif>Permanent</option>
+                                        <option value="Intern" @if ($employee->emp_status == "Intern")
+                                            selected
+                                        @endif>>Intern</option>
                                     </select>
                                     <label for="select">Choose Emp Stat</label>
                                     @error('empStat')
@@ -151,7 +159,7 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="date" class="form-control @error('joinDate') is-invalid @enderror"
-                                        placeholder="joinDate" value="{{ old('joinDate') }}" name="joinDate">
+                                        placeholder="joinDate" value="{{ $employee->join_contract  }}" name="joinDate">
                                     <label for="joinDate">Joined</label>
                                     @error('joinDate')
                                         <div class="invalid-feedback">
@@ -166,7 +174,7 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('pob') is-invalid @enderror"
-                                        placeholder="pob" value="{{ old('pob') }}" name="pob">
+                                        placeholder="pob" value="{{ $employee->pob }}" name="pob">
                                     <label for="pob">Place of Birth</label>
                                     @error('pob')
                                         <div class="invalid-feedback">
@@ -178,7 +186,7 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="date" class="form-control @error('bod') is-invalid @enderror"
-                                        placeholder="bod" value="{{ old('bod') }}" name="bod">
+                                        placeholder="bod" value="{{ $employee->bod }}" name="bod">
                                     <label for="bod">Date of Birth</label>
                                     @error('bod')
                                         <div class="invalid-feedback">
@@ -190,9 +198,13 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <select class="form-select @error('gender') is-invalid @enderror" name="gender">
-                                        <option value="" selected>Open this gender</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
+                                        <option value="" disable>Open this gender</option>
+                                        <option value="Male" @if ($employee->gender === "Male")
+                                            selected
+                                        @endif>Male</option>
+                                        <option value="Female" @if ($employee->gender === "Female")
+                                            selected
+                                        @endif>Female</option>
                                     </select>
                                     <label for="select">Choose Emp Stat</label>
                                     @error('gender')
@@ -205,7 +217,7 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="date" class="form-control @error('endDate') is-invalid @enderror"
-                                        placeholder="endDate" value="{{ old('endDate') }}" name="endDate">
+                                        placeholder="endDate" value="{{ $employee->end_contract }}" name="endDate">
                                     <label for="endDate">Ended</label>
                                     @error('endDate')
                                         <div class="invalid-feedback">
@@ -220,7 +232,7 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('province') is-invalid @enderror"
-                                        placeholder="province" value="{{ old('province') }}" name="province">
+                                        placeholder="province" value="{{ $employee->province }}" name="province">
                                     <label for="province">Province</label>
                                     @error('province')
                                         <div class="invalid-feedback">
@@ -232,7 +244,7 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('maiden') is-invalid @enderror"
-                                        placeholder="maiden" value="{{ old('maiden') }}" name="maiden">
+                                        placeholder="maiden" value="{{ $employee->maiden }}" name="maiden">
                                     <label for="maiden">Maiden Name</label>
                                     @error('maiden')
                                         <div class="invalid-feedback">
@@ -245,13 +257,25 @@
                                 <div class="form-floating mb-3">
                                     <select class="form-select @error('education') is-invalid @enderror"
                                         name="education">
-                                        <option value="" selected>Open this Education</option>
-                                        <option value="Elementary School">Elementary School</option>
-                                        <option value="Junior High School">Junior High School</option>
-                                        <option value="Senior High School">Senior High School</option>
-                                        <option value="Bachelor">Bachelor's Degree</option>
-                                        <option value="Master">Master's Degree</option>
-                                        <option value="Doctor">Doctoral Degree</option>
+                                        <option value="" disable>Open this Education</option>
+                                        <option value="Elementary School" @if ($employee->education == "Elementary School")
+                                            selected
+                                        @endif>Elementary School</option>
+                                        <option value="Junior High School" @if ($employee->education == "Junior High School")
+                                            selected
+                                        @endif>Junior High School</option>
+                                        <option value="Senior High School" @if ($employee->education == "Senior High School")
+                                            selected
+                                        @endif>Senior High School</option>
+                                        <option value="Bachelor" @if ($employee->education == "Bachelor")
+                                            selected
+                                        @endif>Bachelor's Degree</option>
+                                        <option value="Master" @if ($employee->education == "Master")
+                                            selected
+                                        @endif>Master's Degree</option>
+                                        <option value="Doctor" @if ($employee->education == "Doctor")
+                                            selected
+                                        @endif>Doctoral Degree</option>
                                     </select>
                                     <label for="select">Choose Emp Stat</label>
                                     @error('education')
@@ -264,7 +288,7 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('institution') is-invalid @enderror"
-                                        placeholder="institution" value="{{ old('institution') }}" name="institution">
+                                        placeholder="institution" value="{{ $employee->institution }}" name="institution">
                                     <label for="institution">Institution</label>
                                     @error('institution')
                                         <div class="invalid-feedback">
@@ -279,7 +303,7 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('ktp') is-invalid @enderror"
-                                        placeholder="ktp" value="{{ old('ktp') }}" name="ktp">
+                                        placeholder="ktp" value="{{ $employee->id_card }}" name="ktp">
                                     <label for="ktp">ID Card</label>
                                     @error('ktp')
                                         <div class="invalid-feedback">
@@ -291,11 +315,19 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <select class="form-select @error('marital') is-invalid @enderror" name="marital">
-                                        <option value="" selected>Open this status</option>
-                                        <option value="single">Single</option>
-                                        <option value="married">Married</option>
-                                        <option value="widowed">Widowed / Widower</option>
-                                        <option value="divorced">Divorced / Divorcee</option>
+                                        <option value="" disabled>Open this status</option>
+                                        <option value="single" @if ($employee->marital_status== "single")
+                                            selected
+                                        @endif>Single</option>
+                                        <option value="married" @if ($employee->marital_status == "married")
+                                            selected
+                                        @endif>Married</option>
+                                        <option value="widowed" @if ($employee->marital_status == "widowed")
+                                            selected
+                                        @endif>Widowed / Widower</option>
+                                        <option value="divorced" @if ($employee->marital_status == "divorced")
+                                            selected
+                                        @endif>Divorced / Divorcee</option>
                                     </select>
                                     <label for="select">Choose Marital Status</label>
                                     @error('marital')
@@ -308,7 +340,7 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('kk') is-invalid @enderror"
-                                        placeholder="kk" value="{{ old('kk') }}" name="kk">
+                                        placeholder="kk" value="{{ $employee->kk }}" name="kk">
                                     <label for="kk">KK</label>
                                     @error('kk')
                                         <div class="invalid-feedback">
@@ -321,12 +353,24 @@
                                 <div class="form-floating mb-3">
                                     <select class="form-select @error('religion') is-invalid @enderror" name="religion">
                                         <option value="" selected>Open this status</option>
-                                        <option value="islam">Islam</option>
-                                        <option value="protestan">Protestan</option>
-                                        <option value="khatolik">Khatolik</option>
-                                        <option value="hindu">Hindu</option>
-                                        <option value="buddha">Buddha</option>
-                                        <option value="konghucu">Konghucu</option>
+                                        <option value="islam" @if ($employee->religion == "islam")
+                                            selected
+                                        @endif>Islam</option>
+                                        <option value="protestan" @if ($employee->religion == "protestan")
+                                            selected
+                                        @endif>Protestan</option>
+                                        <option value="khatolik" @if ($employee->religion == "khatolik")
+                                            selected
+                                        @endif>Khatolik</option>
+                                        <option value="hindu" @if ($employee->religion == "hindu")
+                                            selected
+                                        @endif>Hindu</option>
+                                        <option value="buddha" @if ($employee->religion == "buddha")
+                                            selected
+                                        @endif>Buddha</option>
+                                        <option value="konghucu" @if ($employee->religion == "konghucu")
+                                            selected
+                                        @endif>Konghucu</option>
                                     </select>
                                     <label for="select">Choose religion</label>
                                     @error('religion')
@@ -342,7 +386,7 @@
                             <div class="col-sm-4 col-md-4">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('address') is-invalid @enderror"
-                                        placeholder="address" value="{{ old('address') }}" name="address">
+                                        placeholder="address" value="{{ $employee->address }}" name="address">
                                     <label for="address">Address</label>
                                     @error('address')
                                         <div class="invalid-feedback">
@@ -354,7 +398,7 @@
                             <div class="col-sm-4 col-md-4">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('city') is-invalid @enderror"
-                                        placeholder="city" value="{{ old('city') }}" name="city">
+                                        placeholder="city" value="{{ $employee->city }}" name="city">
                                     <label for="city">City</label>
                                     @error('city')
                                         <div class="invalid-feedback">
@@ -366,7 +410,7 @@
                             <div class="col-sm-4 col-md-4">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('area') is-invalid @enderror"
-                                        placeholder="area" value="{{ old('area') }}" name="area">
+                                        placeholder="area" value="{{ $employee->area }}" name="area">
                                     <label for="area">Area</label>
                                     @error('area')
                                         <div class="invalid-feedback">
@@ -381,7 +425,7 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('npwp') is-invalid @enderror"
-                                        placeholder="npwp" value="{{ old('npwp') }}" name="npwp">
+                                        placeholder="npwp" value="{{ $employee->npwp }}" name="npwp">
                                     <label for="npwp">NPWP</label>
                                     @error('npwp')
                                         <div class="invalid-feedback">
@@ -394,7 +438,7 @@
                                 <div class="form-floating mb-3">
                                     <input type="text"
                                         class="form-control @error('ketenagakerjaan') is-invalid @enderror"
-                                        placeholder="ketenagakerjaan" value="{{ old('ketenagakerjaan') }}"
+                                        placeholder="ketenagakerjaan" value="{{ $employee->bpjs_ketenagakerjaan }}"
                                         name="ketenagakerjaan">
                                     <label for="ketenagakerjaan">BPJS ketenagakerjaan</label>
                                     @error('ketenagakerjaan')
@@ -407,7 +451,7 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('kesehatan') is-invalid @enderror"
-                                        placeholder="kesehatan" value="{{ old('kesehatan') }}" name="kesehatan">
+                                        placeholder="kesehatan" value="{{ $employee->bpjs_kesehatan  }}" name="kesehatan">
                                     <label for="kesehatan">BPJS Kesehatan</label>
                                     @error('kesehatan')
                                         <div class="invalid-feedback">
@@ -419,7 +463,7 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <select class="form-select @error('workStat') is-invalid @enderror" name="workStat">
-                                        <option value="" selected>Open this status</option>
+                                        <option value="" disable>Open this status</option>
                                         <option value="WFH">Work From Hometown</option>
                                         <option value="WFS">Work from Studio</option>
                                         <option value="WFHB">Work From Hometown (Batam)</option>
@@ -464,7 +508,7 @@
                                     @enderror
                                     <br>
                                     <img src="{{ $noImg }}" alt="previewImage" id="previewImage"
-                                        class="img img-circle img-thumbnail">
+                                        class="img img-circle img-thumbnail" srcset="{{ $avat }} 1200w">
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-6">

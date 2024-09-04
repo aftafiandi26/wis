@@ -145,7 +145,9 @@ class EmpoyesController extends Controller
 
         $noImg = asset(Storage::url("no-image.jpeg"));
 
-        return view('template_admin.hrd.employes.dashboard.show', compact(['departments', 'projects', 'noImg']));
+        $employee = Employes::with(['role_annual'])->find($id);
+
+        return view('template_admin.hrd.employes.dashboard.show', compact(['departments', 'projects', 'noImg', 'employee']));
     }
 
     /**
@@ -159,7 +161,15 @@ class EmpoyesController extends Controller
 
         $noImg = asset(Storage::url("no-image.jpeg"));
 
-        return view('template_admin.hrd.employes.dashboard.edit', compact(['departments', 'projects', 'noImg']));
+        $avat = asset(Storage::url("no-image.jpeg"));
+
+        $employee = Employes::find($id);
+
+        if ($employee->profile_pic) {
+            $noImg = asset(Storage::url("avatar/$employee->profile_pic"));
+        }
+
+        return view('template_admin.hrd.employes.dashboard.edit', compact(['departments', 'projects', 'noImg', 'employee', 'avat']));
     }
 
     /**
