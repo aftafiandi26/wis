@@ -13,7 +13,7 @@
 @endpush
 
 @push('style')
-    <link rel="stylesheet" href="{{ asset('build/assets/datatables/datatables.min.css') }}">
+    <link href="{{ asset('build/assets/datatables/partials/bs.datatables.min.css') }}" rel="stylesheet">
 @endpush
 @section('body')
     <div class="row">
@@ -23,8 +23,8 @@
                     <span>List Employes Active</span>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="display table table-sm table-hover table-condensed table-borderless table-striped"
+                    <div class="">
+                        <table class="display table table-sm table-hover table-condensed table-borderless table-striped" width="100%"
                             id="tables">
                             <thead>
                                 <tr>
@@ -35,6 +35,8 @@
                                     <th>Department</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
+                                    <th>Annual</th>
+                                    <th>Exdo</th>
                                 </tr>
                             </thead>
                         </table>
@@ -46,7 +48,12 @@
 @endsection
 
 @push('script')
-    <script src="{{ asset('build/assets/datatables/datatables.js') }}" defer></script>
+    {{-- <script src="{{ asset('build/assets/datatables/datatables.js') }}" defer></script> --}}
+
+    <script src="{{ asset('build/assets/datatables/partials/bs.datatables.min.js') }}" defer></script>
+    <script src="{{ asset('build/assets/datatables/partials/pdfmake.min.js') }}" defer></script>
+    <script src="{{ asset('build/assets/datatables/partials/vfs_fonts.js') }}" defer></script>
+
     <script>
         $(document).ready(function() {
             $('table#tables').DataTable({
@@ -82,6 +89,12 @@
                     },
                     {
                         "data": "end_contract"
+                    },
+                    {
+                        "data": "end_contract"
+                    },
+                    {
+                        "data": "end_contract"
                     }
                 ],
                 "pageLength": 5,
@@ -96,8 +109,27 @@
                         "pageLength": {
                             "menu": [5, 10, 25, 50]
                         },
-                        "buttons": [
-                            'print', 'excel', 'pdf'
+                        "buttons": [{
+                                extend: 'print', // seharusnya 'print', bukan 'printHtml5'
+                                text: 'Print', // perbaikan dari 'textL'
+                                exportOptions: {
+                                    columns: ':not(:first-child)' // Mengecualikan kolom pertama
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                text: 'Excel', // perbaikan dari 'textL'
+                                exportOptions: {
+                                    columns: ':not(:first-child)' // Mengecualikan kolom pertama
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                text: 'PDF',
+                                exportOptions: {
+                                    columns: ':not(:first-child)' // Mengecualikan kolom pertama
+                                }
+                            }
                         ]
                     }
                 },

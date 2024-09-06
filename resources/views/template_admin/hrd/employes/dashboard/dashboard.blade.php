@@ -14,7 +14,7 @@
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('build/assets/apexcharts/dist/apexcharts.css') }}">
-    <link rel="stylesheet" href="{{ asset('build/assets/datatables/datatables.min.css') }}">
+    <link href="{{ asset('build/assets/datatables/partials/bs.datatables.min.css') }}" rel="stylesheet">
     <style>
         .card:hover {
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -201,7 +201,9 @@
 
 @push('script')
     <script src="{{ asset('build/assets/apexcharts/dist/apexcharts.js') }}" defer></script>
-    <script src="{{ asset('build/assets/datatables/datatables.js') }}" defer></script>
+    <script src="{{ asset('build/assets/datatables/partials/bs.datatables.min.js') }}" defer></script>
+    <script src="{{ asset('build/assets/datatables/partials/pdfmake.min.js') }}" defer></script>
+    <script src="{{ asset('build/assets/datatables/partials/vfs_fonts.js') }}" defer></script>
     <script src="{{ asset('template/administrator/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}" defer>
     </script>
 
@@ -386,8 +388,27 @@
                         "pageLength": {
                             "menu": [5, 10, 25, 50]
                         },
-                        "buttons": [
-                            'print', 'excel', 'pdf'
+                        "buttons": [{
+                                extend: 'print', // seharusnya 'print', bukan 'printHtml5'
+                                text: 'Print', // perbaikan dari 'textL'
+                                exportOptions: {
+                                    columns: ':not(:first-child)' // Mengecualikan kolom pertama
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                text: 'Excel', // perbaikan dari 'textL'
+                                exportOptions: {
+                                    columns: ':not(:first-child)' // Mengecualikan kolom pertama
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                text: 'PDF',
+                                exportOptions: {
+                                    columns: ':not(:first-child)' // Mengecualikan kolom pertama
+                                }
+                            }
                         ]
                     }
                 },
@@ -479,7 +500,7 @@
             });
 
             $('div#cardEmployes').on('click', function(e) {
-                window.location.href = $(this).attr('data-bs-role'); 
+                window.location.href = $(this).attr('data-bs-role');
             });
         });
     </script>
