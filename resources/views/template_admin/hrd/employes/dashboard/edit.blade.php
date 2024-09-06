@@ -13,8 +13,6 @@
 @endpush
 
 @push('style')
-    {{-- <link rel="stylesheet" href="{{ asset('build/assets/select2/select2-bootstrap-5-theme.min.css') }}"> --}}
-
     <style>
         .card:hover {
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -62,8 +60,10 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('employes.store') }}" method="post" id="formCreate" class="needs-validation" enctype="multipart/form-data">
+                    <form action="{{ route('employes.update', $employee->id) }}" method="post" id="formCreate" class="needs-validation"
+                        enctype="multipart/form-data">
                         @csrf
+                        @method('PUT')
                         <div class="row">
                             <div class="col-sm-4 col-md-4">
                                 <div class="form-floating mb-3">
@@ -80,7 +80,7 @@
                             <div class="col-sm-4 col-md-4">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('firstName') is-invalid @enderror"
-                                        placeholder="first name" value="{{ $employee->first_name}}" name="firstName">
+                                        placeholder="first name" value="{{ $employee->first_name }}" name="firstName">
                                     <label for="firstName">First Name</label>
                                     @error('firstName')
                                         <div class="invalid-feedback">
@@ -109,9 +109,9 @@
                                     <select class="form-select @error('department') is-invalid @enderror" name="department">
                                         <option disabled>Open this choose departmet</option>
                                         @foreach ($departments as $dept)
-                                            <option value="{{ $dept->id }}" @if ($employee->department_id === $dept->id)
-                                                selected
-                                            @endif>{{ $dept->name }}</option>
+                                            <option value="{{ $dept->id }}"
+                                                @if ($employee->department_id === $dept->id) selected @endif>{{ $dept->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                     <label for="select">choose departmet</label>
@@ -138,15 +138,12 @@
                                 <div class="form-floating mb-3">
                                     <select class="form-select @error('empStat') is-invalid @enderror" name="empStat">
                                         <option value="" disabled>Open this status</option>
-                                        <option value="Contract" @if ($employee->emp_status == "Contract")
-                                            selected
-                                        @endif>Contract</option>
-                                        <option value="Permanent" @if ($employee->emp_status == "Permanent")
-                                            selected
-                                        @endif>Permanent</option>
-                                        <option value="Intern" @if ($employee->emp_status == "Intern")
-                                            selected
-                                        @endif>>Intern</option>
+                                        <option value="Contract" @if ($employee->emp_status == 'Contract') selected @endif>Contract
+                                        </option>
+                                        <option value="Permanent" @if ($employee->emp_status == 'Permanent') selected @endif>
+                                            Permanent</option>
+                                        <option value="Intern" @if ($employee->emp_status == 'Intern') selected @endif>>Intern
+                                        </option>
                                     </select>
                                     <label for="select">Choose Emp Stat</label>
                                     @error('empStat')
@@ -159,7 +156,7 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="date" class="form-control @error('joinDate') is-invalid @enderror"
-                                        placeholder="joinDate" value="{{ $employee->join_contract  }}" name="joinDate">
+                                        placeholder="joinDate" value="{{ $employee->join_contract }}" name="joinDate">
                                     <label for="joinDate">Joined</label>
                                     @error('joinDate')
                                         <div class="invalid-feedback">
@@ -199,12 +196,10 @@
                                 <div class="form-floating mb-3">
                                     <select class="form-select @error('gender') is-invalid @enderror" name="gender">
                                         <option value="" disable>Open this gender</option>
-                                        <option value="Male" @if ($employee->gender === "Male")
-                                            selected
-                                        @endif>Male</option>
-                                        <option value="Female" @if ($employee->gender === "Female")
-                                            selected
-                                        @endif>Female</option>
+                                        <option value="Male" @if ($employee->gender === 'Male') selected @endif>Male
+                                        </option>
+                                        <option value="Female" @if ($employee->gender === 'Female') selected @endif>Female
+                                        </option>
                                     </select>
                                     <label for="select">Choose Emp Stat</label>
                                     @error('gender')
@@ -258,24 +253,18 @@
                                     <select class="form-select @error('education') is-invalid @enderror"
                                         name="education">
                                         <option value="" disable>Open this Education</option>
-                                        <option value="Elementary School" @if ($employee->education == "Elementary School")
-                                            selected
-                                        @endif>Elementary School</option>
-                                        <option value="Junior High School" @if ($employee->education == "Junior High School")
-                                            selected
-                                        @endif>Junior High School</option>
-                                        <option value="Senior High School" @if ($employee->education == "Senior High School")
-                                            selected
-                                        @endif>Senior High School</option>
-                                        <option value="Bachelor" @if ($employee->education == "Bachelor")
-                                            selected
-                                        @endif>Bachelor's Degree</option>
-                                        <option value="Master" @if ($employee->education == "Master")
-                                            selected
-                                        @endif>Master's Degree</option>
-                                        <option value="Doctor" @if ($employee->education == "Doctor")
-                                            selected
-                                        @endif>Doctoral Degree</option>
+                                        <option value="Elementary School"
+                                            @if ($employee->education == 'Elementary School') selected @endif>Elementary School</option>
+                                        <option value="Junior High School"
+                                            @if ($employee->education == 'Junior High School') selected @endif>Junior High School</option>
+                                        <option value="Senior High School"
+                                            @if ($employee->education == 'Senior High School') selected @endif>Senior High School</option>
+                                        <option value="Bachelor" @if ($employee->education == 'Bachelor') selected @endif>
+                                            Bachelor's Degree</option>
+                                        <option value="Master" @if ($employee->education == 'Master') selected @endif>Master's
+                                            Degree</option>
+                                        <option value="Doctor" @if ($employee->education == 'Doctor') selected @endif>Doctoral
+                                            Degree</option>
                                     </select>
                                     <label for="select">Choose Emp Stat</label>
                                     @error('education')
@@ -288,7 +277,8 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('institution') is-invalid @enderror"
-                                        placeholder="institution" value="{{ $employee->institution }}" name="institution">
+                                        placeholder="institution" value="{{ $employee->institution }}"
+                                        name="institution">
                                     <label for="institution">Institution</label>
                                     @error('institution')
                                         <div class="invalid-feedback">
@@ -316,18 +306,14 @@
                                 <div class="form-floating mb-3">
                                     <select class="form-select @error('marital') is-invalid @enderror" name="marital">
                                         <option value="" disabled>Open this status</option>
-                                        <option value="single" @if ($employee->marital_status== "single")
-                                            selected
-                                        @endif>Single</option>
-                                        <option value="married" @if ($employee->marital_status == "married")
-                                            selected
-                                        @endif>Married</option>
-                                        <option value="widowed" @if ($employee->marital_status == "widowed")
-                                            selected
-                                        @endif>Widowed / Widower</option>
-                                        <option value="divorced" @if ($employee->marital_status == "divorced")
-                                            selected
-                                        @endif>Divorced / Divorcee</option>
+                                        <option value="single" @if ($employee->marital_status == 'single') selected @endif>Single
+                                        </option>
+                                        <option value="married" @if ($employee->marital_status == 'married') selected @endif>Married
+                                        </option>
+                                        <option value="widowed" @if ($employee->marital_status == 'widowed') selected @endif>Widowed
+                                            / Widower</option>
+                                        <option value="divorced" @if ($employee->marital_status == 'divorced') selected @endif>
+                                            Divorced / Divorcee</option>
                                     </select>
                                     <label for="select">Choose Marital Status</label>
                                     @error('marital')
@@ -353,24 +339,18 @@
                                 <div class="form-floating mb-3">
                                     <select class="form-select @error('religion') is-invalid @enderror" name="religion">
                                         <option value="" selected>Open this status</option>
-                                        <option value="islam" @if ($employee->religion == "islam")
-                                            selected
-                                        @endif>Islam</option>
-                                        <option value="protestan" @if ($employee->religion == "protestan")
-                                            selected
-                                        @endif>Protestan</option>
-                                        <option value="khatolik" @if ($employee->religion == "khatolik")
-                                            selected
-                                        @endif>Khatolik</option>
-                                        <option value="hindu" @if ($employee->religion == "hindu")
-                                            selected
-                                        @endif>Hindu</option>
-                                        <option value="buddha" @if ($employee->religion == "buddha")
-                                            selected
-                                        @endif>Buddha</option>
-                                        <option value="konghucu" @if ($employee->religion == "konghucu")
-                                            selected
-                                        @endif>Konghucu</option>
+                                        <option value="islam" @if ($employee->religion == 'islam') selected @endif>Islam
+                                        </option>
+                                        <option value="protestan" @if ($employee->religion == 'protestan') selected @endif>
+                                            Protestan</option>
+                                        <option value="khatolik" @if ($employee->religion == 'khatolik') selected @endif>
+                                            Khatolik</option>
+                                        <option value="hindu" @if ($employee->religion == 'hindu') selected @endif>Hindu
+                                        </option>
+                                        <option value="buddha" @if ($employee->religion == 'buddha') selected @endif>Buddha
+                                        </option>
+                                        <option value="konghucu" @if ($employee->religion == 'konghucu') selected @endif>
+                                            Konghucu</option>
                                     </select>
                                     <label for="select">Choose religion</label>
                                     @error('religion')
@@ -383,7 +363,19 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-sm-4 col-md-4">
+                            <div class="col-sm-3 col-md-3">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control @error('nationally') is-invalid @enderror"
+                                        placeholder="nationally" value="{{ $employee->nationally }}" name="nationally">
+                                    <label for="nationally">Nationally</label>
+                                    @error('nationally')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('address') is-invalid @enderror"
                                         placeholder="address" value="{{ $employee->address }}" name="address">
@@ -395,7 +387,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-sm-4 col-md-4">
+                            <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('city') is-invalid @enderror"
                                         placeholder="city" value="{{ $employee->city }}" name="city">
@@ -407,7 +399,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-sm-4 col-md-4">
+                            <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('area') is-invalid @enderror"
                                         placeholder="area" value="{{ $employee->area }}" name="area">
@@ -451,7 +443,8 @@
                             <div class="col-sm-3 col-md-3">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('kesehatan') is-invalid @enderror"
-                                        placeholder="kesehatan" value="{{ $employee->bpjs_kesehatan  }}" name="kesehatan">
+                                        placeholder="kesehatan" value="{{ $employee->bpjs_kesehatan }}"
+                                        name="kesehatan">
                                     <label for="kesehatan">BPJS Kesehatan</label>
                                     @error('kesehatan')
                                         <div class="invalid-feedback">
@@ -479,21 +472,6 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-sm-3 col-md-3">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control @error('nationally') is-invalid @enderror"
-                                        placeholder="nationally" value="{{ old('nationally') }}" name="nationally">
-                                    <label for="nationally">Nationally</label>
-                                    @error('nationally')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
                             <div class="col-sm-6 col-md-6">
                                 <div class="mb-3">
                                     <input type="file" class="form-file @error('file') is-invalid @enderror"
@@ -507,18 +485,16 @@
                                         </div>
                                     @enderror
                                     <br>
-                                    <img src="{{ $noImg }}" alt="previewImage" id="previewImage"
-                                        class="img img-circle img-thumbnail" srcset="{{ $avat }} 1200w">
+                                    <img src="{{ $noImg }}" alt="not-available" id="previewImage"
+                                        class="img img-circle img-thumbnail">
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-6">
                                 <div class="mb-3">
-                                    <label for="project">Choose Project</label>
-                                    <select class="form-select @error('project') is-invalid @enderror" name="project[]"
-                                        multiple id="project" data-width="100%">
-                                        <option></option>
-                                        @foreach ($projects as $project)
-                                            <option value="{{ $project->id }}">{{ $project->name }}</option>
+                                    <label for="project">Choose Project</label>                                    
+                                    <select class="form-select @error('project') is-invalid @enderror" name="project[]" multiple id="project" data-width="100%">                                     
+                                        @foreach ($projects as $key => $project)
+                                            <option value="{{ $project->id }}" @selected(in_array($project->id, $projectID ?? []))>{{ $project->name }}</option>
                                         @endforeach
                                     </select>
 

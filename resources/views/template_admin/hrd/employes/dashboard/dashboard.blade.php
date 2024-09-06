@@ -46,7 +46,7 @@
 @section('body')
     <div class="row">
         <div class="col-sm-6 col-md-3">
-            <div class="card card-stats card-round">
+            <div class="card card-stats card-round" id="cardEmployes" data-bs-role="{{ route('employes.actived') }}">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-icon">
@@ -161,6 +161,34 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <div class="card card-stats card-round">
+                <div class="card-header">
+                    <span>List Employes Deactive</span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="display table table-hover table-condensed table-borderless table-striped"
+                            id="tablesDeactive">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>NIK</th>
+                                    <th>Employes</th>
+                                    <th>Position</th>
+                                    <th>Department</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
@@ -176,21 +204,37 @@
     <script src="{{ asset('build/assets/datatables/datatables.js') }}" defer></script>
     <script src="{{ asset('template/administrator/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}" defer>
     </script>
-    @if (session('success'))
-        <script>
-            $(document).ready(function() {
+
+    <script>
+        $(document).ready(function() {
+            function showNotification(type, message, from, align, icon) {
                 $.notify({
-                    message: '{{ session('success') }}'
+                    title: 'Employee Status',
+                    message: message,
+                    icon: icon,
                 }, {
-                    type: 'success',
+                    type: type,
                     placement: {
-                        from: "top",
-                        align: "right"
+                        from: from,
+                        align: align
                     },
+                    timer: 1000,
                 });
-            });
-        </script>
-    @endif
+            }
+
+            // Cek apakah ada session success
+            @if (session('danger'))
+                showNotification('danger', '{{ session('danger') }}', 'top', 'right', 'fas fa-user-alt-slash');
+            @endif
+
+            // Cek apakah ada session danger
+            @if (session('success'))
+                showNotification('success', '{{ session('success') }}', 'top', 'right', 'fas fa-user');
+            @endif
+
+        });
+    </script>
+
 
     <script>
         $(document).ready(function() {
@@ -352,8 +396,65 @@
                 ]
             });
 
+            $('table#tablesDeactive').DataTable({
+                "procesisng": true,
+                "responsive": false,
+                "ajax": {
+                    "url": "{{ route('employes.deactiveData') }}",
+                    "contentType": 'application/json',
+                    "type": 'GET',
+                    "data": function(d) {
+                        return JSON.stringify(d);
+                    }
+                },
+                "columns": [{
+                        "data": "actions",
+                        "orderable": false,
+                        "searchable": false
+                    },
+                    {
+                        "data": "nik"
+                    },
+                    {
+                        "data": "fullname"
+                    },
+                    {
+                        "data": "position"
+                    },
+                    {
+                        "data": "depart_name"
+                    },
+                    {
+                        "data": "join_contract"
+                    },
+                    {
+                        "data": "end_contract"
+                    }
+                ],
+                "pageLength": 5,
+                "language": {
+                    "entries": {
+                        _: 'peoples',
+                        1: 'person'
+                    }
+                },
+                "layout": {
+                    "topStart": {
+                        "pageLength": {
+                            "menu": [5, 10, 25, 50]
+                        },
+                        "buttons": [
+                            'print', 'excel', 'pdf'
+                        ]
+                    }
+                },
+                "order": [
+                    [2, 'asc'],
+                ]
+            });
 
-            $(document).on('click', 'table#tables tr td a.editDatatables', function (e) {
+
+            $(document).on('click', 'table#tables tr td a.editDatatables', function(e) {
                 let url = $(this).attr('data-bs-role');
 
                 $.ajax({
@@ -363,6 +464,22 @@
                         $('.modal-content').html(e);
                     }
                 });
+            });
+
+            $(document).on('click', 'table#tablesDeactive tr td a.editDatatables', function(e) {
+                let url = $(this).attr('data-bs-role');
+
+                $.ajax({
+                    url: url,
+                    data: $(this).serialize(),
+                    success: function(e) {
+                        $('.modal-content').html(e);
+                    }
+                });
+            });
+
+            $('div#cardEmployes').on('click', function(e) {
+                window.location.href = $(this).attr('data-bs-role'); 
             });
         });
     </script>

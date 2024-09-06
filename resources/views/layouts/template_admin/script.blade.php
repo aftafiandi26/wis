@@ -31,7 +31,6 @@
 <!-- Kaiadmin JS -->
 <script src="{{ asset('template/administrator/assets/js/kaiadmin.min.js') }}"></script>
 
-@stack('script')
 <script>
     $(document).ready(function () {
         document.getElementById('logout').addEventListener('click', function (event) {
@@ -40,3 +39,5 @@
         });
     });
 </script>
+
+@stack('script')

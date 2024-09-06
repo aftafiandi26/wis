@@ -25,6 +25,11 @@ Breadcrumbs::for('hrd.employes.edit', function (BreadcrumbTrail $trail, $employe
     $trail->push(Str::slug($employee->fullname()), route('employes.edit', $employee->id));
 });
 
+Breadcrumbs::for('hrd.employes.actived', function (BreadcrumbTrail $trail) {
+    $trail->parent('hrd.employes');
+    $trail->push('Actived', route('employes.actived'));
+});
+
 // // Home > Blog
 // Breadcrumbs::for('blog', function (BreadcrumbTrail $trail) {
 //     $trail->parent('home');

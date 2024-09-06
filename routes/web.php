@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HRD\Datatables\EmployesDatatables;
+use App\Http\Controllers\HRD\Employes\CustomEmployesController;
 use App\Http\Controllers\HRD\Employes\EmpoyesController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,8 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('hrd')->group(function() {
     Route::get('employes/data', [EmployesDatatables::class, 'data'])->name('employes.data')->middleware(['auth']);
+    Route::get('employes/deactiveData', [EmployesDatatables::class, 'deactiveData'])->name('employes.deactiveData')->middleware(['auth']);
+    Route::get('employes/actived', [CustomEmployesController::class, 'activeEmployes'])->name('employes.actived')->middleware(['auth']);
     Route::resource('employes', EmpoyesController::class)->middleware(['auth']);
 });
 

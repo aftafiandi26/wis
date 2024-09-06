@@ -4,12 +4,14 @@ namespace App\Http\Controllers\HRD\Employes;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HRD\Employes\StoreRequest;
+use App\Http\Requests\HRD\Employes\UpdateRequest;
 use App\Models\Annualeave;
 use App\Models\Department;
 use App\Models\Employes;
 use App\Models\Project;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -56,7 +58,7 @@ class EmpoyesController extends Controller
     {
         $departments = Department::all();
 
-        $projects = Project::orderBy('name', 'asc')->get();
+        $projects = Project::where('active', true)->orderBy('name', 'asc')->get();
 
         $noImg = asset(Storage::url("no-image.jpeg"));
 
@@ -115,6 +117,8 @@ class EmpoyesController extends Controller
             'project_id'            => $jsonProject,
             'active'                => true,
             'profile_pic'           => $fileName,
+            'nationally'            => $request->nationally,
+            'wfh'                   => $request->workStat
         ];
 
         // dd($data);
@@ -131,7 +135,7 @@ class EmpoyesController extends Controller
 
         Annualeave::create($dataAnnual);
 
-        return redirect()->route('employes.index')->with('success', 'Data berhasil disimpan!');
+        return redirect()->route('employes.index')->with('success', 'Data successfully saved!!!');
     }
 
     /**
@@ -141,13 +145,29 @@ class EmpoyesController extends Controller
     {
         $departments = Department::all();
 
-        $projects = Project::orderBy('name', 'asc')->get();
+        $projects = Project::where('active', true)->orderBy('name', 'asc')->get();
 
         $noImg = asset(Storage::url("no-image.jpeg"));
 
         $employee = Employes::with(['role_annual'])->find($id);
 
-        return view('template_admin.hrd.employes.dashboard.show', compact(['departments', 'projects', 'noImg', 'employee']));
+        $active = $employee->active;
+
+        if ($employee->profile_pic) {
+            $noImg = asset(Storage::url("public/avatars/$employee->profile_pic"));
+        }
+
+        if ($active == true) {
+            $st = "Deactived";
+            $class = "fas fa-user-alt-slash";
+            $btn = "btn-danger";
+        } else {
+            $class = "fas fa-user";
+            $btn = "btn-success";
+            $st = "Actived";
+        }
+
+        return view('template_admin.hrd.employes.dashboard.show', compact(['departments', 'projects', 'noImg', 'employee', 'st', 'class', 'btn']));
     }
 
     /**
@@ -157,27 +177,123 @@ class EmpoyesController extends Controller
     {
         $departments = Department::all();
 
-        $projects = Project::orderBy('name', 'asc')->get();
+        $projects = Project::where('active', true)->orderBy('name', 'asc')->get();
 
         $noImg = asset(Storage::url("no-image.jpeg"));
 
-        $avat = asset(Storage::url("no-image.jpeg"));
-
         $employee = Employes::find($id);
+
+        $projectID = json_decode($employee->project_id, true);
 
         if ($employee->profile_pic) {
             $noImg = asset(Storage::url("avatar/$employee->profile_pic"));
         }
 
-        return view('template_admin.hrd.employes.dashboard.edit', compact(['departments', 'projects', 'noImg', 'employee', 'avat']));
+        return view('template_admin.hrd.employes.dashboard.edit', compact(['departments', 'projects', 'noImg', 'employee', 'projectID']));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRequest $request, string $id)
     {
-        //
+        $validated = $request->validated();
+
+        $months = $this->month($request->joinDate, $request->endDate);
+
+        $fileName = null;
+
+        $jsonProject = json_encode($request->project);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file;
+
+            // Menentukan nama file dengan ekstensi yang sesuai
+            $fileName = $request->nik . '.' . $file->getClientOriginalExtension();
+
+            // Menyimpan file di direktori avatars dengan nama yang sudah ditentukan
+            $file->storeAs('avatars', $fileName, 'public');
+
+            $data = [
+                'nik'               => $request->nik,
+                'first_name'        => Str::title($request->firstName),
+                'last_name'         => Str::title($request->lastName),
+                'gender'            => $request->gender,
+                'department_id'     => $request->department,
+                'position'          => $request->position,
+                'emp_status'        => $request->empStat,
+                'join_contract'     => $request->joinDate,
+                'end_contract'      => $request->endDate,
+                'bod'               => $request->bod,
+                'pob'               => Str::title($request->pob),
+                'province'          => Str::title($request->province),
+                'maiden'            => Str::title($request->maiden),
+                'id_card'           => $request->ktp,
+                'address'           => $request->address,
+                'area'              => $request->area,
+                'city'              => $request->city,
+                'education'         => $request->education,
+                'institution'       => $request->institution,
+                'marital_status'    => $request->marital,
+                'npwp'              => $request->npwp,
+                'kk'                => $request->kk,
+                'religion'          => $request->religion,
+                'bpjs_ketenagakerjaan'  => $request->ketenagakerjaan,
+                'bpjs_kesehatan'        => $request->kesehatan,
+                'project_id'            => $jsonProject,
+                'active'                => true,
+                'profile_pic'           => $fileName,
+                'nationally'            => $request->nationally,
+                'wfh'                   => $request->workStat
+            ];
+        } else {
+            $data = [
+                'nik'               => $request->nik,
+                'first_name'        => Str::title($request->firstName),
+                'last_name'         => Str::title($request->lastName),
+                'gender'            => $request->gender,
+                'department_id'     => $request->department,
+                'position'          => $request->position,
+                'emp_status'        => $request->empStat,
+                'join_contract'     => $request->joinDate,
+                'end_contract'      => $request->endDate,
+                'bod'               => $request->bod,
+                'pob'               => Str::title($request->pob),
+                'province'          => Str::title($request->province),
+                'maiden'            => Str::title($request->maiden),
+                'id_card'           => $request->ktp,
+                'address'           => $request->address,
+                'area'              => $request->area,
+                'city'              => $request->city,
+                'education'         => $request->education,
+                'institution'       => $request->institution,
+                'marital_status'    => $request->marital,
+                'npwp'              => $request->npwp,
+                'kk'                => $request->kk,
+                'religion'          => $request->religion,
+                'bpjs_ketenagakerjaan'  => $request->ketenagakerjaan,
+                'bpjs_kesehatan'        => $request->kesehatan,
+                'project_id'            => $jsonProject,
+                'active'                => true,
+                'nationally'            => $request->nationally,
+                'wfh'                   => $request->workStat
+            ];
+        }
+
+        Employes::where('id', $id)->update($data);
+
+        $annualID = Annualeave::where('employes_id', $id)->first();
+
+        if ($annualID) {
+            $dataAnnual = [
+                'totalAnnual'   => $months,
+                'nik'           => $request->nik
+            ];
+
+            $annualID->update($dataAnnual);
+        }
+
+        return redirect()->route('employes.index')->with('success', 'Data successfully updated!!');
     }
 
     /**
@@ -185,6 +301,16 @@ class EmpoyesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $employee = Employes::find($id);
+
+        if ($employee->active == true) {
+            $employee->update(['active' => false]);
+            Session::flash('danger', $employee->fullname() . ' deactived');
+            return redirect()->route('employes.index');
+        } else {
+            $employee->update(['active' => true]);
+            Session::flash('success', $employee->fullname() . ' actived');
+            return redirect()->route('employes.index');
+        }
     }
 }

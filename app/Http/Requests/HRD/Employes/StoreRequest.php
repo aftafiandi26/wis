@@ -51,7 +51,7 @@ class StoreRequest extends FormRequest
             'religion'          => ["required"],
             'ketenagakerjaan'   => ["numeric", "min:6"],
             'kesehatan'         => ["numeric", "min:6"],
-            'file'              => ["required", "mimes:png,jpg,jpeg"],
+            'file'              => ["required", "mimes:png,jpg,jpeg", "max:5120"],
             'project'           => ["required", "array", "min:1"],
             'project.*'         => ["required", "integer", "exists:projects,id"]
         ];

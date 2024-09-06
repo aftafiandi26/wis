@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h5 class="modal-title fw-bold" id="exampleModalLabel">Data EMployee</h5>
+    <h5 class="modal-title fw-bold" id="exampleModalLabel">Data Employee</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -97,6 +97,11 @@
     </div>
 </div>
 <div class="modal-footer">
+    <form action="{{ route('employes.destroy', $employee->id) }}" method="post">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-sm {{ $btn }} btn-rounded" id="modalDelete"><i class="{{ $class }}"></i> {{ $st }}</button>
+    </form>
     <button type="button" class="btn btn-sm btn-rounded btn-warning" id="modalEdit"
         data-bs-role="{{ route('employes.edit', $employee->id) }}"><i class="fas fa-edit"></i> Edit</button>
     <button type="button" class="btn btn-sm btn-rounded btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -112,5 +117,6 @@
                 html: $(this).html() // Menggunakan teks atau HTML di dalam button
             });
         });
+        
     })
 </script>

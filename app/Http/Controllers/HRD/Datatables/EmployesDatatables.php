@@ -25,4 +25,21 @@ class EmployesDatatables extends Controller
             ->rawColumns(['actions'])
             ->toJson();
     }
+
+    public function deactiveData()
+    {
+        $query = Employes::where('active', false)->get();
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('fullname', function(Employes $emp){
+                return $emp->fullname();
+            })
+            ->addColumn('depart_name', function(Employes $emp) {
+                return $emp->department();
+            })
+            ->addColumn('actions', 'template_admin.hrd.employes.dashboard.actions')
+            ->rawColumns(['actions'])
+            ->toJson();
+    }
 }
