@@ -23,9 +23,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'nik'           => ["required", "min:5", 'numeric'],
-            'department'    => ["required"],
-            'joinDate'      => ["required"],
-            'endDate'       => ["required"],
+            'department'    => ["required"],            
             'firstName'         => ["required", 'min:3', "string"],
             'lasName'           => ["string"],
             'gender'            => ["required"],
@@ -33,7 +31,7 @@ class UpdateRequest extends FormRequest
             'position'          => ["required"],
             'empStat'           => ["required"],
             'joinDate'          => ["required", "date"],
-            'endDate'           => ["required", "date"],
+            // 'endDate'           => ["date"],
             'bod'               => ["required", "date"],
             'pob'               => ["required", "min:5", "string"],
             'province'          => ["required", "min:3", "string"],
@@ -47,7 +45,7 @@ class UpdateRequest extends FormRequest
             'marital'           => ["required"],
             'npwp'              => ["required"],
             'kk'                => ["required", "numeric", 'min:10'],
-            'nationally'        => ["required", "min:5", "string"],
+            'nationally'        => ["required", "min:3", "string"],
             'religion'          => ["required"],
             'ketenagakerjaan'   => ["numeric", "min:6"],
             'kesehatan'         => ["numeric", "min:6"],

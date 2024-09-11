@@ -72,7 +72,12 @@ class EmpoyesController extends Controller
     {
         $validated = $request->validated();
 
-        $months = $this->month($request->joinDate, $request->endDate);
+        $controllerMonth = new CustomEmployesController();
+
+        if ($request->empStat !== "Permanent") {
+            $months = $controllerMonth->month($request->joinDate, $request->endDate);
+        }
+
 
         $fileName = null;
 
@@ -125,15 +130,18 @@ class EmpoyesController extends Controller
 
         Employes::create($data);
 
-        $getEmp = Employes::where('nik', $request->nik)->where('active', true)->latest()->first();
+        if ($request->empStat !== "Permanent") {
 
-        $dataAnnual = [
-            'totalAnnual'   => $months,
-            'employes_id'   => $getEmp->id,
-            'nik'           => $request->nik
-        ];
+            $getEmp = Employes::where('nik', $request->nik)->where('active', true)->latest()->first();
 
-        Annualeave::create($dataAnnual);
+            $dataAnnual = [
+                'totalAnnual'   => $months,
+                'employes_id'   => $getEmp->id,
+                'nik'           => $request->nik
+            ];
+
+            Annualeave::create($dataAnnual);
+        }
 
         return redirect()->route('employes.index')->with('success', 'Data successfully saved!!!');
     }
@@ -153,6 +161,19 @@ class EmpoyesController extends Controller
 
         $active = $employee->active;
 
+        $controller = new CustomEmployesController();
+
+        $monthComming = $controller->monthComming($employee->join_contract);
+
+        $result = 0;
+        $supClass = "supClass1";
+
+        if ($employee->role_annual) {
+            $result = $employee->role_annual->totalAnnual - $employee->role_annual->takenAnnual - $monthComming;
+            $result = "+$result";
+            $supClass = "supClass2";
+        }
+
         if ($employee->profile_pic) {
             $noImg = asset(Storage::url("public/avatars/$employee->profile_pic"));
         }
@@ -167,7 +188,7 @@ class EmpoyesController extends Controller
             $st = "Actived";
         }
 
-        return view('template_admin.hrd.employes.dashboard.show', compact(['departments', 'projects', 'noImg', 'employee', 'st', 'class', 'btn']));
+        return view('template_admin.hrd.employes.dashboard.show', compact(['departments', 'projects', 'noImg', 'employee', 'st', 'class', 'btn', 'result', 'supClass', 'monthComming']));
     }
 
     /**
@@ -198,8 +219,12 @@ class EmpoyesController extends Controller
     public function update(UpdateRequest $request, string $id)
     {
         $validated = $request->validated();
+        
+        $controllerMonth = new CustomEmployesController();
 
-        $months = $this->month($request->joinDate, $request->endDate);
+        if ($request->empStat == "Contract") {
+            $months = $controllerMonth->month($request->joinDate, $request->endDate);
+        }
 
         $fileName = null;
 
@@ -282,15 +307,22 @@ class EmpoyesController extends Controller
 
         Employes::where('id', $id)->update($data);
 
-        $annualID = Annualeave::where('employes_id', $id)->first();
+        if ($request->empStat == "Contract") {
 
-        if ($annualID) {
-            $dataAnnual = [
-                'totalAnnual'   => $months,
-                'nik'           => $request->nik
-            ];
+            $annualID = Annualeave::where('employes_id', $id)->first();
 
-            $annualID->update($dataAnnual);
+            if ($annualID) {
+                $dataAnnual = [
+                    'totalAnnual'   => $months,
+                    'nik'           => $request->nik
+                ];
+
+                $annualID->update($dataAnnual);
+            }
+        }
+
+        if ($request->empStat == "Permanent") {
+            return redirect()->route('employes.index')->with('danger', 'Please insert the amount of annual leave for this employee !!');
         }
 
         return redirect()->route('employes.index')->with('success', 'Data successfully updated!!');

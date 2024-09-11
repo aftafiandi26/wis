@@ -38,7 +38,9 @@
 
 @push('manageBtn')
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" id="manageDropdownList">
-        <a class="dropdown-item" href="#">Active</a>
+        <a class="dropdown-item" href="{{ route('employes.index') }}">Dashboard</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{{ route('employes.actived') }}">Active</a>
         <a class="dropdown-item" href="#">Deactive</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="#">Chart</a>

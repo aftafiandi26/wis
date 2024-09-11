@@ -23,9 +23,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'nik'           => ["required", "min:5", 'unique:employes,nik', 'numeric'],
-            'department'    => ["required"],
-            'joinDate'      => ["required"],
-            'endDate'       => ["required"],
+            'department'    => ["required"],           
             'firstName'         => ["required", 'min:3', "string"],
             'lasName'           => ["string"],
             'gender'            => ["required"],
@@ -33,7 +31,7 @@ class StoreRequest extends FormRequest
             'position'          => ["required"],
             'empStat'           => ["required"],
             'joinDate'          => ["required", "date"],
-            'endDate'           => ["required", "date"],
+            // 'endDate'           => ["required", "date"],
             'bod'               => ["required", "date"],
             'pob'               => ["required", "min:5", "string"],
             'province'          => ["required", "min:3", "string"],

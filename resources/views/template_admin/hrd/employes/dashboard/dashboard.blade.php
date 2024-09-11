@@ -24,10 +24,6 @@
         .card-header span {
             font-weight: bold;
         }
-
-        ul#manageDropdownList a {
-            font-weight: bold;
-        }
     </style>
 @endpush
 
@@ -35,7 +31,7 @@
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" id="manageDropdownList">
         <a class="dropdown-item" href="{{ route('employes.create') }}">Add Employee</a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">Active</a>
+        <a class="dropdown-item" href="{{ route('employes.actived') }}">Active</a>
         <a class="dropdown-item" href="#">Deactive</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="#">Chart</a>

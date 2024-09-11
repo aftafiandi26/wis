@@ -29,6 +29,7 @@ Route::prefix('hrd')->group(function() {
     Route::get('employes/data', [EmployesDatatables::class, 'data'])->name('employes.data')->middleware(['auth']);
     Route::get('employes/deactiveData', [EmployesDatatables::class, 'deactiveData'])->name('employes.deactiveData')->middleware(['auth']);
     Route::get('employes/actived', [CustomEmployesController::class, 'activeEmployes'])->name('employes.actived')->middleware(['auth']);
+    Route::get('employes/annual/{id}', [CustomEmployesController::class, 'annualInput'])->name('employes.annual')->middleware(['auth']);
     Route::resource('employes', EmpoyesController::class)->middleware(['auth']);
 });
 

@@ -83,7 +83,7 @@
                             <tfoot>
                                 <tr>
                                     <td>Annual</td>
-                                    <th>: {{ $employee->role_annual->totalAnnual - $employee->role_annual->annual }}
+                                    <th>: {{ $monthComming }} <sup class="{{ $supClass }}"> ({{ $result }})</sup>
                                     </th>
                                     <td>Exdo</td>
                                     <th>: {{ $employee->role_annual->totalExdo - $employee->role_annual->exdo }}</th>
@@ -97,6 +97,7 @@
     </div>
 </div>
 <div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-secondary btn-rounded" data-bs-role="{{ route('employes.annual', $employee->nik) }}" id="modalAnnual"><i class="fas fa-calendar-alt"></i> Annual</button>
     <form action="{{ route('employes.destroy', $employee->id) }}" method="post">
         @csrf
         @method('DELETE')
@@ -117,6 +118,15 @@
                 html: $(this).html() // Menggunakan teks atau HTML di dalam button
             });
         });
+        $('button#modalAnnual').replaceWith(function() {
+            return $('<a>', {
+                href: $(this).attr('data-bs-role'), // Sesuaikan href sesuai kebutuhan
+                id: this.id,
+                class: this.className,
+                html: $(this).html() // Menggunakan teks atau HTML di dalam button
+            });
+        });
+        
         
     })
 </script>

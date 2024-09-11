@@ -142,7 +142,7 @@
                                         </option>
                                         <option value="Permanent" @if ($employee->emp_status == 'Permanent') selected @endif>
                                             Permanent</option>
-                                        <option value="Intern" @if ($employee->emp_status == 'Intern') selected @endif>>Intern
+                                        <option value="Intern" @if ($employee->emp_status == 'Intern') selected @endif>Intern
                                         </option>
                                     </select>
                                     <label for="select">Choose Emp Stat</label>
