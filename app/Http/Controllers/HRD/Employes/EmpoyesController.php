@@ -219,7 +219,7 @@ class EmpoyesController extends Controller
     public function update(UpdateRequest $request, string $id)
     {
         $validated = $request->validated();
-        
+
         $controllerMonth = new CustomEmployesController();
 
         if ($request->empStat == "Contract") {
