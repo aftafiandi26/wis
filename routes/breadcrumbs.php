@@ -33,7 +33,12 @@ Breadcrumbs::for('hrd.employes.actived', function (BreadcrumbTrail $trail) {
 ///
 
 Breadcrumbs::for('hrd.employes.annualeave', function (BreadcrumbTrail $trail) {
-    $trail->push('Annual of Leave Employes', route('annualeave.index'));
+    $trail->push('Employes Leave', route('annualeave.index'));
+});
+
+Breadcrumbs::for('hrd.employes.annualeave.edit', function (BreadcrumbTrail $trail, $employee) {
+    $trail->parent('hrd.employes.annualeave');
+    $trail->push('Edit', route('annualeave.edit', $employee));
 });
 
 // // Home > Blog

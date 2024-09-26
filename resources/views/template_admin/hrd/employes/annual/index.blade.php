@@ -52,11 +52,51 @@
                                 <th>Department</th>
                                 <th>Annual</th>
                                 <th>Exdo</th>
+                                <th>Status</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <div class="card card-stats card-round">
+                <div class="card-header">
+                    <span>Progress Form Employee Leave</span>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover table-borderless table-condensed" width="100%" id="tables1">
+                        <thead>
+                            <tr>
+                                <th>NIK</th>
+                                <th>Employee</th>
+                                <th>Position</th>
+                                <th>Department</th>
+                                <th>Annual</th>
+                                <th>Exdo</th>
+                                <th>Status</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+
             </div>
         </div>
     </div>
@@ -132,7 +172,18 @@
                         "data": "exdo"
                     },
                     {
-                        "data": "depart_name"
+                        "data": "emp_status"
+                    },
+                    {
+                        "data": "join_contract"
+                    },
+                    {
+                        "data": "end_contract"
+                    },
+                    {
+                        "data": "actions",
+                        "searchable": false,
+                        "orderable": false
                     }
                 ],
                 "pageLength": 5,
@@ -177,17 +228,17 @@
             });
 
 
-            // $(document).on('click', 'table#tables tr td a.editDatatables', function(e) {
-            //     let url = $(this).attr('data-bs-role');
+            $(document).on('click', 'table#tables tr td a.editDatatables', function(e) {
+                let url = $(this).attr('data-bs-role');
 
-            //     $.ajax({
-            //         url: url,
-            //         data: $(this).serialize(),
-            //         success: function(e) {
-            //             $('.modal-content').html(e);
-            //         }
-            //     });
-            // });
+                $.ajax({
+                    url: url,
+                    data: $(this).serialize(),
+                    success: function(e) {
+                        $('.modal-content').html(e);
+                    }
+                });
+            });
 
 
         });

@@ -50,7 +50,12 @@
         </li>
         <li>
           <a href="#">
-            <span class="sub-item">Etc</span>
+            <span class="sub-item">Form Progressing</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="sub-item">Transactions</span>
           </a>
         </li>
       </ul>

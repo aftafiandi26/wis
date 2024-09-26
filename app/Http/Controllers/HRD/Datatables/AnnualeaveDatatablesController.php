@@ -13,7 +13,7 @@ class AnnualeaveDatatablesController extends Controller
 {
     public function dataAnnualofEmployes()
     {
-        $query = Employes::where('active', true)->where('id', 301)->get();
+        $query = Employes::where('active', true)->get();
 
         return DataTables::of($query)
             ->addColumn('fullname', function (Employes $employee) {
@@ -48,7 +48,8 @@ class AnnualeaveDatatablesController extends Controller
 
                 return $result;
             })
-            ->rawColumns(['annual'])
+            ->addColumn('actions', 'template_admin.hrd.employes.annual.actions')
+            ->rawColumns(['annual', 'actions'])
             ->toJson();
     }
 }

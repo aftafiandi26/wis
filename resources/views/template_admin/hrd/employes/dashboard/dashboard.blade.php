@@ -133,12 +133,12 @@
         <div class="col-sm-12 col-md-12">
             <div class="card card-stats card-round">
                 <div class="card-header">
-                    <span>List Employes Active</span>
+                    <span>List End of Contract</span>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="display table table-hover table-condensed table-borderless table-striped"
-                            id="tables">
+                            id="tablesContract">
                             <thead>
                                 <tr>
                                     <th>Action</th>
@@ -161,12 +161,12 @@
         <div class="col-sm-12 col-md-12">
             <div class="card card-stats card-round">
                 <div class="card-header">
-                    <span>List Employes Deactive</span>
+                    <span>List Employes Active</span>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="display table table-hover table-condensed table-borderless table-striped"
-                            id="tablesDeactive">
+                            id="tables">
                             <thead>
                                 <tr>
                                     <th>Action</th>
@@ -220,9 +220,26 @@
                 });
             }
 
+            function showNotificationUrl(type, message, from, align, icon, url) {
+                $.notify({
+                    title: 'Employee Status',
+                    message: message,
+                    icon: icon,
+                    url: url,
+                }, {
+                    type: type,
+                    placement: {
+                        from: from,
+                        align: align
+                    },
+                    timer: 1000,
+                });
+            }
+
             // Cek apakah ada session success
             @if (session('danger'))
-                showNotification('danger', '{{ session('danger') }}', 'top', 'right', 'fas fa-user-alt-slash');
+                showNotificationUrl('danger', '{{ session('danger') }}', 'top', 'right', 'fas fa-user-alt-slash',
+                    '{{ session('url') }}');
             @endif
 
             // Cek apakah ada session danger
@@ -413,11 +430,11 @@
                 ]
             });
 
-            $('table#tablesDeactive').DataTable({
+            $('table#tablesContract').DataTable({
                 "procesisng": true,
                 "responsive": false,
                 "ajax": {
-                    "url": "{{ route('employes.deactiveData') }}",
+                    "url": "{{ route('employes.endofContract') }}",
                     "contentType": 'application/json',
                     "type": 'GET',
                     "data": function(d) {
@@ -483,7 +500,7 @@
                 });
             });
 
-            $(document).on('click', 'table#tablesDeactive tr td a.editDatatables', function(e) {
+            $(document).on('click', 'table#tablesContract tr td a.editDatatables', function(e) {
                 let url = $(this).attr('data-bs-role');
 
                 $.ajax({

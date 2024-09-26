@@ -130,7 +130,7 @@ class EmpoyesController extends Controller
 
         Employes::create($data);
 
-        if ($request->empStat !== "Permanent") {
+        if ($request->empStat == "Contract") {
 
             $getEmp = Employes::where('nik', $request->nik)->where('active', true)->latest()->first();
 
@@ -318,14 +318,27 @@ class EmpoyesController extends Controller
                 ];
 
                 $annualID->update($dataAnnual);
+            } else {
+                $dataAnnual = [
+                    'totalAnnual'   => $months,
+                    'employes_id'   => $id,
+                    'nik'           => $request->nik
+                ];
+
+                Annualeave::create($dataAnnual);
             }
         }
 
+        Session::flash('fullname', $data['first_name'] .' ' . $data['last_name']);
+
         if ($request->empStat == "Permanent") {
-            return redirect()->route('employes.index')->with('danger', 'Please insert the amount of annual leave for this employee !!');
+            Session::flash('url',route('employes.annual', $request->nik));
+            Session::flash('danger','Please insert the amount of annual leave for this employee !!');
+            return redirect()->route('employes.index');
         }
 
-        return redirect()->route('employes.index')->with('success', 'Data successfully updated!!');
+        Session::flash('success', 'Data successfully updated!!');
+        return redirect()->route('employes.index');
     }
 
     /**
