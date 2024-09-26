@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplyingLeave\Dashboard\EmployesApplyingDashboardController;
 use App\Http\Controllers\HRD\Annual\AnnualController;
 use App\Http\Controllers\HRD\Datatables\AnnualeaveDatatablesController;
 use App\Http\Controllers\HRD\Datatables\EmployesDatatables;
@@ -41,6 +42,9 @@ Route::prefix('hrd')->group(function() {
     Route::resource('employes', EmpoyesController::class)->middleware(['auth']);
 
 });
+
+// menu umum
+Route::resource('applying-leave-dashboard', EmployesApplyingDashboardController::class)->middleware(['auth']);
 
 require __DIR__.'/auth.php';
 

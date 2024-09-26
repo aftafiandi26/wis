@@ -28,6 +28,10 @@
 @endpush
 
 @push('manageBtn')
+    <button type="button" class="btn btn-sm btn-outline-primary btn-round dropdown-toggle" data-bs-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        Manage
+    </button>
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" id="manageDropdownList">
         <a class="dropdown-item" href="{{ route('employes.create') }}">Add Employee</a>
         <div class="dropdown-divider"></div>
