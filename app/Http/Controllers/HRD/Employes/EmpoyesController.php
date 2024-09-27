@@ -312,8 +312,11 @@ class EmpoyesController extends Controller
             $annualID = Annualeave::where('employes_id', $id)->first();
 
             if ($annualID) {
+                $amountAnnual = $months - $annualID->takenAnnual;
+
                 $dataAnnual = [
                     'totalAnnual'   => $months,
+                    'annual'        => $amountAnnual,
                     'nik'           => $request->nik
                 ];
 
@@ -321,6 +324,7 @@ class EmpoyesController extends Controller
             } else {
                 $dataAnnual = [
                     'totalAnnual'   => $months,
+                    'annual'        => $months,
                     'employes_id'   => $id,
                     'nik'           => $request->nik
                 ];
@@ -329,11 +333,11 @@ class EmpoyesController extends Controller
             }
         }
 
-        Session::flash('fullname', $data['first_name'] .' ' . $data['last_name']);
+        Session::flash('fullname', $data['first_name'] . ' ' . $data['last_name']);
 
         if ($request->empStat == "Permanent") {
-            Session::flash('url',route('employes.annual', $request->nik));
-            Session::flash('danger','Please insert the amount of annual leave for this employee !!');
+            Session::flash('url', route('employes.annual', $request->nik));
+            Session::flash('danger', 'Please insert the amount of annual leave for this employee !!');
             return redirect()->route('employes.index');
         }
 

@@ -41,14 +41,12 @@ Breadcrumbs::for('hrd.employes.annualeave.edit', function (BreadcrumbTrail $trai
     $trail->push('Edit', route('annualeave.edit', $employee));
 });
 
-// // Home > Blog
-// Breadcrumbs::for('blog', function (BreadcrumbTrail $trail) {
-//     $trail->parent('home');
-//     $trail->push('Blog', route('blog'));
-// });
+// Applying Leave
+Breadcrumbs::for('applying-leave.dashboard', function (BreadcrumbTrail $trail) {
+    $trail->push('Applying Leave', route('applying-leave-dashboard.index'));
+});
 
-// // Home > Blog > [Category]
-// Breadcrumbs::for('category', function (BreadcrumbTrail $trail, $category) {
-//     $trail->parent('blog');
-//     $trail->push($category->title, route('category', $category));
-// });
+Breadcrumbs::for('applying-leave.annual', function (BreadcrumbTrail $trail) {
+    $trail->parent('applying-leave.dashboard');
+    $trail->push('Annual', route('applying-leave-annual.create'));
+});

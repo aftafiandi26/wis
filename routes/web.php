@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\ApplyingLeave\Dashboard\EmployesApplyingDashboardController;
+use App\Http\Controllers\ApplyingLeave\AnnualeaveController;
+use App\Http\Controllers\ApplyingLeave\ApplyingDashboardController;
 use App\Http\Controllers\HRD\Annual\AnnualController;
 use App\Http\Controllers\HRD\Datatables\AnnualeaveDatatablesController;
 use App\Http\Controllers\HRD\Datatables\EmployesDatatables;
@@ -38,13 +39,14 @@ Route::prefix('hrd')->group(function() {
     Route::get('employes/actived', [CustomEmployesController::class, 'activeEmployes'])->name('employes.actived')->middleware(['auth']);
     Route::get('employes/annual/{id}', [CustomEmployesController::class, 'annualInput'])->name('employes.annual')->middleware(['auth']);
 
-    Route::resource('employes/annualeave', AnnualController::class)->middleware(['auth']);
+    Route::resource('employes/annualeave', AnnualController::class)->middleware(['auth'])->only(['index', 'show', 'edit']);
     Route::resource('employes', EmpoyesController::class)->middleware(['auth']);
 
 });
 
 // menu umum
-Route::resource('applying-leave-dashboard', EmployesApplyingDashboardController::class)->middleware(['auth']);
+Route::resource('applying-leave-annual', AnnualeaveController::class)->middleware(['auth'])->only(['create', 'store']);
+Route::resource('applying-leave-dashboard', ApplyingDashboardController::class)->middleware(['auth'])->only(['index']);
 
 require __DIR__.'/auth.php';
 

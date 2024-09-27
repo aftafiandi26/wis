@@ -1,18 +1,39 @@
 <?php
 
-namespace App\Http\Controllers\ApplyingLeave\Dashboard;
+namespace App\Http\Controllers\ApplyingLeave;
 
+use App\Http\Controllers\AnnualCountingController;
 use App\Http\Controllers\Controller;
+use App\Models\Annualeave;
+use App\Models\Employes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class EmployesApplyingDashboardController extends Controller
+class ApplyingDashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('template_admin.applying_leave.dashboard.index');
+        $id = Auth::user()->id;
+
+        $employee = Employes::where('user_id', $id)->first();
+
+        $annualControler = new AnnualCountingController();
+
+        $monthComming = $annualControler->monthComming($employee->join_contract);
+
+        $month = 0;
+
+        if ($employee->end_contract) {
+            # code...
+            $month = $annualControler->month($employee->join_contract, $employee->end_contract);
+        }
+
+        $annualeave = Annualeave::where('employes_id', $employee->id)->first();
+
+        return view('template_admin.applying_leave.dashboard.index', compact(['employee', 'month', 'monthComming', 'annualeave']));
     }
 
     /**

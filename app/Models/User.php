@@ -48,4 +48,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function employee()
+    {
+        $query = Employes::find($this->emp_id);
+
+        return $query;
+    }
 }
