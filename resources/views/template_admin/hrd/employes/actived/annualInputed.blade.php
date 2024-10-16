@@ -100,7 +100,7 @@
                         </form>
                     </div>
                     <div class="row">
-                        <form action="#" method="POST" action="#" id="formAnnual" class="needs-validation">
+                        <form action="{{ route('employes.annual.post', $employee->nik) }}" method="POST" action="#" id="formAnnual" class="needs-validation">
                             @csrf
                             <div class="row">
                                 <div class="col-sm-4 col-md-4">
@@ -124,3 +124,13 @@
         </div>
     </div>
 @endsection
+
+@push('script')
+<script>
+    $(document).ready(function() {
+        $('button#formSubmit').on('click', function() {
+                $('form#formAnnual').submit();
+            });
+    });
+</script>
+@endpush

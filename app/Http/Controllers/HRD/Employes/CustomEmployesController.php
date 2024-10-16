@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class CustomEmployesController extends Controller
-{    
+{
 
     public function month($start, $end)
     {
@@ -82,17 +82,19 @@ class CustomEmployesController extends Controller
         $employee = Employes::where('nik', $id)->first();
 
         $data = [
-            "totalAnnual" => $request->annual
+            "totalAnnual" => $request->annual + $annual->totalAnnual,
+            'annual'      => $request->annual + $annual->annual,
         ];
 
-        if ($annual) {            
+        if ($annual) {
             $annual->update($data);
             Session::flash('success', 'Annual updated !!');
         } else {
             Annualeave::create([
-                'nik'           => $id,
+                'nik'           => $employee->nik,
                 'employes_id'   => $employee->id,
-                'totalAnnual'   => $request->annual
+                'totalAnnual'   => $request->annual,
+                'annual'        => $request->annual,
             ]);
             Session::flash('success', 'Annual created !!');
         }

@@ -295,7 +295,7 @@
                     href: $(this).attr('data-bs-role'), // Sesuaikan href sesuai kebutuhan
                     id: this.id,
                     class: this.className,
-                    html: $(this).html() // Menggunakan teks atau HTML di dalam button
+                    html: $(this).html()
                 });
             });
 

@@ -46,7 +46,11 @@ class Employes extends Model
         return $this->hasOne(Annualeave::class, 'employes_id', 'id');
     }
 
-    // public function annual() {
-    //     return Annualeave::find($)
-    // }
+
+   public function role_user(): HasOne
+   {
+       return $this->hasOne(User::class, 'emp_id', 'id');
+   }
+
+
 }

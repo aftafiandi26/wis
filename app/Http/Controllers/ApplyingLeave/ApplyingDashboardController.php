@@ -8,6 +8,7 @@ use App\Models\Annualeave;
 use App\Models\Employes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class ApplyingDashboardController extends Controller
 {
@@ -32,6 +33,10 @@ class ApplyingDashboardController extends Controller
         }
 
         $annualeave = Annualeave::where('employes_id', $employee->id)->first();
+
+        if (empty($annualeave)) {
+            return redirect()->back();
+        }
 
         return view('template_admin.applying_leave.dashboard.index', compact(['employee', 'month', 'monthComming', 'annualeave']));
     }
