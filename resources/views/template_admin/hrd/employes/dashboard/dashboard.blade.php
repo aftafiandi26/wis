@@ -359,7 +359,7 @@
             chart.render();
 
             $('table#tables').DataTable({
-                "procesisng": true,
+                "processing": true,
                 "responsive": false,
                 "ajax": {
                     "url": "{{ route('employes.data') }}",

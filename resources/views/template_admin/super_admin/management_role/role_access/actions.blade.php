@@ -1,0 +1,1 @@
+<a data-bs-role="{{ route('management-role-access.show', $id) }}" class="btn btn-link btn-primary btn-lg showDatatables" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-edit"></i></a>

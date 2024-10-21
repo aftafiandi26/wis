@@ -9,6 +9,8 @@ use App\Http\Controllers\HRD\Datatables\EmployesDatatables;
 use App\Http\Controllers\HRD\Employes\CustomEmployesController;
 use App\Http\Controllers\HRD\Employes\EmpoyesController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Super_Administrator\Management_Role\RoleAccessController;
+use App\Http\Controllers\Super_Administrator\Management_Role\RoleDatatablesController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +45,12 @@ Route::prefix('hrd')->middleware(['auth', 'active'])->group(function () {
 
     Route::resource('employes/annualeave', AnnualController::class)->only(['index', 'show', 'edit']);
     Route::resource('employes', EmpoyesController::class);
+});
+
+Route::prefix('super-admin')->middleware(['auth', 'active'])->group(function () {
+
+    Route::get('management-role-access/data', [RoleDatatablesController::class, 'ROleAccess'])->name('management-role-access.data');
+    Route::resource('management-role-access', RoleAccessController::class)->only(['index', 'show', 'update']);
 });
 
 // menu umum
