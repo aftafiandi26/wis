@@ -46,6 +46,7 @@
                                         <th>Department</th>
                                         <th>Position</th>
                                         <th>Status</th>
+                                        <th>Active</th>
                                         <th>SPV</th>
                                         <th>Coordinator</th>
                                         <th>PM</th>
@@ -106,7 +107,21 @@
                     title: 'Employee Status',
                     message: message,
                     icon: icon,
-                    url: url,
+                }, {
+                    type: type,
+                    placement: {
+                        from: from,
+                        align: align
+                    },
+                    timer: 1000,
+                });
+            }
+
+            function showNotificationUrlRoleAccess(type, message, from, align, icon) {
+                $.notify({
+                    title: 'Role Access',
+                    message: message,
+                    icon: icon,
                 }, {
                     type: type,
                     placement: {
@@ -118,9 +133,18 @@
             }
 
             // Cek apakah ada session success
+            @if (session('dangerRoleAccess'))
+                @if ($errors->any())
+                    let errors = {!! json_encode($errors->all()) !!};
+                    errors.forEach(function(error) {
+                        showNotificationUrlRoleAccess('danger', error, 'top', 'right',
+                            'far fa-times-circle');
+                    });
+                @endif
+            @endif
+
             @if (session('danger'))
-                showNotificationUrl('danger', '{{ session('danger') }}', 'top', 'right', 'fas fa-user-alt-slash',
-                    '{{ session('url') }}');
+                showNotificationUrl('danger', '{{ session('danger') }}', 'top', 'right', 'fas fa-user-alt-slash');
             @endif
 
             // Cek apakah ada session danger
@@ -169,6 +193,9 @@
                     },
                     {
                         "data": "emp_status"
+                    },
+                    {
+                        "data": "actived"
                     },
                     {
                         "data": "spv"

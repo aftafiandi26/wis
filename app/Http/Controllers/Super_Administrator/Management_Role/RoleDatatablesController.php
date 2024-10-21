@@ -126,6 +126,20 @@ class RoleDatatablesController extends Controller
                 }
                 return $return;
             })
+            ->addColumn('actived', function(Employes $employee) {
+                $return = '??';
+                if ($employee->user_id) {
+                    $query = User::find($employee->user_id);
+
+                    if ($query->active == true) {
+                        $return = "Yes";
+                    } else {
+                        $return = "No";
+                    }
+                }
+                return $return;
+
+            })
             ->addColumn('actions', 'template_admin.super_admin.management_role.role_access.actions')
             ->rawColumns(['actions'])
             ->toJson();

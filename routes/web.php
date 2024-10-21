@@ -50,7 +50,7 @@ Route::prefix('hrd')->middleware(['auth', 'active'])->group(function () {
 Route::prefix('super-admin')->middleware(['auth', 'active'])->group(function () {
 
     Route::get('management-role-access/data', [RoleDatatablesController::class, 'ROleAccess'])->name('management-role-access.data');
-    Route::resource('management-role-access', RoleAccessController::class)->only(['index', 'show', 'update']);
+    Route::resource('management-role-access', RoleAccessController::class)->only(['index', 'show', 'update', 'store']);
 });
 
 // menu umum
