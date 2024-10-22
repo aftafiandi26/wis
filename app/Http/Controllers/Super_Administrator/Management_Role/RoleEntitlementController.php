@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Super_Administrator\Management_Role;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\HRD\Employes\StoreRequest;
-use App\Http\Requests\Super_Administrator\Management_Role\CreateRequest;
 use App\Http\Requests\Super_Administrator\Management_Role\StoreRequestt;
 use App\Http\Requests\Super_Administrator\Management_Role\UpdateRequestt;
 use App\Models\Department;
@@ -14,14 +12,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
-class RoleAccessController extends Controller
+class RoleEntitlementController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('template_admin.super_admin.management_role.role_access.dashboard');
+        return view('template_admin.super_admin.management_role.entitlement_access.dashboard');
     }
 
     /**
@@ -29,7 +27,7 @@ class RoleAccessController extends Controller
      */
     public function create()
     {
-        //masukan data object
+        //
     }
 
     /**
@@ -185,14 +183,12 @@ class RoleAccessController extends Controller
         $user = User::where('emp_id', $data['emp_id'])->first();
 
         if ($user) {
-            // dd($data['emp_id'], $user);
-
             Employes::where('id', $data['emp_id'])->update(['user_id' => $user->id]);
         } else {
             Session::flash('danger', $data['name'] . " data cannot updated");
         }
         Session::flash('success', $data['name'] . ' account has been created');
-        return redirect()->route('management-role-access.index');
+        return redirect()->route('management-role-entitlement.index');
     }
 
     /**
@@ -206,12 +202,11 @@ class RoleAccessController extends Controller
 
         if ($employee->role_user) {
             # code...
-            return view('template_admin.super_admin.management_role.role_access.show1', compact(['employee', 'departments']));
+            return view('template_admin.super_admin.management_role.entitlement_access.show1', compact(['employee', 'departments']));
         } else {
             # code...
-            return view('template_admin.super_admin.management_role.role_access.show', compact(['employee', 'departments']));
+            return view('template_admin.super_admin.management_role.entitlement_access.show', compact(['employee', 'departments']));
         }
-
     }
 
     /**
@@ -378,7 +373,7 @@ class RoleAccessController extends Controller
             'department_id' => $user->department_id
         ]);
         Session::flash('success', $data['name'] . ' account has been updated');
-        return redirect()->route('management-role-access.index');
+        return redirect()->route('management-role-entitlement.index');
     }
 
     /**

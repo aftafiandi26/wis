@@ -16,132 +16,265 @@ class RoleDatatablesController extends Controller
 
         return DataTables::of($query)
             ->addIndexColumn()
-            ->addColumn('fullname', function(Employes $employee) {
+            ->addColumn('fullname', function (Employes $employee) {
                 return $employee->fullname();
             })
-            ->addColumn('department', function(Employes $employee) {
+            ->addColumn('department', function (Employes $employee) {
                 return $employee->department();
             })
-            ->addColumn('spv', function(Employes $employee) {
+            ->addColumn('spv', function (Employes $employee) {
                 $return = '??';
                 if ($employee->user_id) {
                     $query = User::find($employee->user_id);
 
                     if ($query->spv == true) {
-                        $return = "Yes";
+                        $return = "<i class='fas fa-user-check text-green'></i>";
                     } else {
-                        $return = "No";
+                        $return = "<i class='fas fa-user-times text-red'></i>";
                     }
                 }
                 return $return;
             })
-            ->addColumn('coor', function(Employes $employee) {
+            ->addColumn('coor', function (Employes $employee) {
                 $return = '??';
                 if ($employee->user_id) {
                     $query = User::find($employee->user_id);
 
                     if ($query->coor == true) {
-                        $return = "Yes";
+                        $return = "<i class='fas fa-user-check text-green'></i>";
                     } else {
-                        $return = "No";
+                        $return = "<i class='fas fa-user-times text-red'></i>";
                     }
                 }
                 return $return;
             })
-            ->addColumn('pm', function(Employes $employee) {
+            ->addColumn('pm', function (Employes $employee) {
                 $return = '??';
                 if ($employee->user_id) {
                     $query = User::find($employee->user_id);
 
                     if ($query->pm == true) {
-                        $return = "Yes";
+                        $return = "<i class='fas fa-user-check text-green'></i>";
                     } else {
-                        $return = "No";
+                        $return = "<i class='fas fa-user-times text-red'></i>";
                     }
                 }
                 return $return;
             })
-            ->addColumn('producer', function(Employes $employee) {
+            ->addColumn('producer', function (Employes $employee) {
                 $return = '??';
                 if ($employee->user_id) {
                     $query = User::find($employee->user_id);
 
                     if ($query->producer == true) {
-                        $return = "Yes";
+                        $return = "<i class='fas fa-user-check text-green'></i>";
                     } else {
-                        $return = "No";
+                        $return = "<i class='fas fa-user-times text-red'></i>";
                     }
                 }
                 return $return;
             })
-            ->addColumn('hod', function(Employes $employee) {
+            ->addColumn('hod', function (Employes $employee) {
                 $return = '??';
                 if ($employee->user_id) {
                     $query = User::find($employee->user_id);
 
                     if ($query->hod == true) {
-                        $return = "Yes";
+                        $return = "<i class='fas fa-user-check text-green'></i>";
                     } else {
-                        $return = "No";
+                        $return = "<i class='fas fa-user-times text-red'></i>";
                     }
                 }
                 return $return;
             })
-            ->addColumn('gm', function(Employes $employee) {
+            ->addColumn('gm', function (Employes $employee) {
                 $return = '??';
                 if ($employee->user_id) {
                     $query = User::find($employee->user_id);
 
                     if ($query->gm == true) {
-                        $return = "Yes";
+                        $return = "<i class='fas fa-user-check text-green'></i>";
                     } else {
-                        $return = "No";
+                        $return = "<i class='fas fa-user-times text-red'></i>";
                     }
                 }
                 return $return;
             })
-            ->addColumn('verify', function(Employes $employee) {
+            ->addColumn('verify', function (Employes $employee) {
                 $return = '??';
                 if ($employee->user_id) {
                     $query = User::find($employee->user_id);
 
                     if ($query->verify == true) {
-                        $return = "Yes";
+                        $return = "<i class='fas fa-user-check text-green'></i>";
                     } else {
-                        $return = "No";
+                        $return = "<i class='fas fa-user-times text-red'></i>";
                     }
                 }
                 return $return;
             })
-            ->addColumn('confirmed', function(Employes $employee) {
+            ->addColumn('confirmed', function (Employes $employee) {
                 $return = '??';
                 if ($employee->user_id) {
                     $query = User::find($employee->user_id);
 
                     if ($query->confirmed == true) {
-                        $return = "Yes";
+                        $return = "<i class='fas fa-user-check text-green'></i>";
                     } else {
-                        $return = "No";
+                        $return = "<i class='fas fa-user-times text-red'></i>";
                     }
                 }
                 return $return;
             })
-            ->addColumn('actived', function(Employes $employee) {
+            ->addColumn('actived', function (Employes $employee) {
                 $return = '??';
                 if ($employee->user_id) {
                     $query = User::find($employee->user_id);
 
                     if ($query->active == true) {
-                        $return = "Yes";
+                        $return = "<i class='fas fa-user-check text-green'></i>";
                     } else {
-                        $return = "No";
+                        $return = "<i class='fas fa-user-times text-red'></i>";
                     }
                 }
                 return $return;
-
             })
             ->addColumn('actions', 'template_admin.super_admin.management_role.role_access.actions')
-            ->rawColumns(['actions'])
+            ->rawColumns(['actions', 'actived', 'confirmed', 'spv', 'coor', 'pm', 'producer', 'hod', 'gm', 'verify'])
+            ->toJson();
+    }
+
+    public function RoleEntitlement()
+    {
+        $query = Employes::where('active', true)->get();
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('fullname', function (Employes $employee) {
+                return $employee->fullname();
+            })
+            ->addColumn('department', function (Employes $employee) {
+                return $employee->department();
+            })
+            ->addColumn('spv', function (Employes $employee) {
+                $return = '??';
+                if ($employee->user_id) {
+                    $query = User::find($employee->user_id);
+
+                    if ($query->spv == true) {
+                        $return = "<i class='fas fa-user-check text-green'></i>";
+                    } else {
+                        $return = "<i class='fas fa-user-times text-red'></i>";
+                    }
+                }
+                return $return;
+            })
+            ->addColumn('coor', function (Employes $employee) {
+                $return = '??';
+                if ($employee->user_id) {
+                    $query = User::find($employee->user_id);
+
+                    if ($query->coor == true) {
+                        $return = "<i class='fas fa-user-check text-green'></i>";
+                    } else {
+                        $return = "<i class='fas fa-user-times text-red'></i>";
+                    }
+                }
+                return $return;
+            })
+            ->addColumn('pm', function (Employes $employee) {
+                $return = '??';
+                if ($employee->user_id) {
+                    $query = User::find($employee->user_id);
+
+                    if ($query->pm == true) {
+                        $return = "<i class='fas fa-user-check text-green'></i>";
+                    } else {
+                        $return = "<i class='fas fa-user-times text-red'></i>";
+                    }
+                }
+                return $return;
+            })
+            ->addColumn('producer', function (Employes $employee) {
+                $return = '??';
+                if ($employee->user_id) {
+                    $query = User::find($employee->user_id);
+
+                    if ($query->producer == true) {
+                        $return = "<i class='fas fa-user-check text-green'></i>";
+                    } else {
+                        $return = "<i class='fas fa-user-times text-red'></i>";
+                    }
+                }
+                return $return;
+            })
+            ->addColumn('hod', function (Employes $employee) {
+                $return = '??';
+                if ($employee->user_id) {
+                    $query = User::find($employee->user_id);
+
+                    if ($query->hod == true) {
+                        $return = "<i class='fas fa-user-check text-green'></i>";
+                    } else {
+                        $return = "<i class='fas fa-user-times text-red'></i>";
+                    }
+                }
+                return $return;
+            })
+            ->addColumn('gm', function (Employes $employee) {
+                $return = '??';
+                if ($employee->user_id) {
+                    $query = User::find($employee->user_id);
+
+                    if ($query->gm == true) {
+                        $return = "<i class='fas fa-user-check text-green'></i>";
+                    } else {
+                        $return = "<i class='fas fa-user-times text-red'></i>";
+                    }
+                }
+                return $return;
+            })
+            ->addColumn('verify', function (Employes $employee) {
+                $return = '??';
+                if ($employee->user_id) {
+                    $query = User::find($employee->user_id);
+
+                    if ($query->verify == true) {
+                        $return = "<i class='fas fa-user-check text-green'></i>";
+                    } else {
+                        $return = "<i class='fas fa-user-times text-red'></i>";
+                    }
+                }
+                return $return;
+            })
+            ->addColumn('confirmed', function (Employes $employee) {
+                $return = '??';
+                if ($employee->user_id) {
+                    $query = User::find($employee->user_id);
+
+                    if ($query->confirmed == true) {
+                        $return = "<i class='fas fa-user-check text-green'></i>";
+                    } else {
+                        $return = "<i class='fas fa-user-times text-red'></i>";
+                    }
+                }
+                return $return;
+            })
+            ->addColumn('actived', function (Employes $employee) {
+                $return = '??';
+                if ($employee->user_id) {
+                    $query = User::find($employee->user_id);
+
+                    if ($query->active == true) {
+                        $return = "<i class='fas fa-user-check text-green'></i>";
+                    } else {
+                        $return = "<i class='fas fa-user-times text-red'></i>";
+                    }
+                }
+                return $return;
+            })
+            ->addColumn('actions', 'template_admin.super_admin.management_role.entitlement_access.actions')
+            ->rawColumns(['actions', 'actived', 'confirmed', 'spv', 'coor', 'pm', 'producer', 'hod', 'gm', 'verify'])
             ->toJson();
     }
 }

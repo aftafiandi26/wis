@@ -1,15 +1,15 @@
 @extends('layouts.template_admin.layout')
 
 @push('title')
-    Super Admin - Management Role Access
+    Super Admin - Management Role Entitlement Leave
 @endpush
 
 @push('headling')
-    Role Access
+    Role Entitlement Leave
 @endpush
 
 @push('subheadling')
-   {{ Breadcrumbs::render('superadmin.management.roleaccess') }}
+    {{ Breadcrumbs::render('superadmin.management.roleentitlement') }}
 @endpush
 
 @push('style')
@@ -24,6 +24,7 @@
         .card-header span {
             font-weight: bold;
         }
+
         .text-red {
             color: red;
             font-size: 18px;
@@ -41,13 +42,13 @@
         <div class="col-sm-12 col-md-12">
             <div class="card card-stats card-round">
                 <div class="card-header">
-                    <span>List Access</span>
+                    <span>List Entitlement Access</span>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-sm-12 col-md-12 table-responsive">
                             <table class="display table table-hover table-condensed table-borderless table-striped"
-                                id="tablesRoleAccess">
+                                id="tablesRoleEntitlement">
                                 <thead>
                                     <tr>
                                         <th>Actions</th>
@@ -59,14 +60,14 @@
                                         <th>Position</th>
                                         <th>Status</th>
                                         <th>Active</th>
-                                        <th>SPV</th>
-                                        <th>Coordinator</th>
-                                        <th>PM</th>
-                                        <th>Prododucer</th>
-                                        <th>HOD</th>
-                                        <th>GM</th>
-                                        <th>Verifi (HR)</th>
-                                        <th>Confirmed (HRD)</th>
+                                        <th>Need SPV</th>
+                                        <th>Need Cor</th>
+                                        <th>Need PM</th>
+                                        <th>Need Prododucer</th>
+                                        <th>Need HOD</th>
+                                        <th>Need GM</th>
+                                        <th>Need Verifi (HR)</th>
+                                        <th>Need Confirmed (HRD)</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -166,11 +167,12 @@
         });
 
         $(document).ready(function() {
-            $('#tablesRoleAccess').DataTable({
+
+            $('#tablesRoleEntitlement').DataTable({
                 "processing": false,
                 "serverSide": false,
                 "ajax": {
-                    "url": "{{ route('management-role-access.data') }}",
+                    "url": "{{ route('management-role-entitlement.data') }}",
                     "contentType": 'application/json',
                     "type": 'GET',
                     "data": function(d) {
@@ -271,7 +273,7 @@
                 ]
             });
 
-            $(document).on('click', 'table#tablesRoleAccess tr td a.showDatatables', function(e) {
+            $(document).on('click', 'table#tablesRoleEntitlement tr td a.showDatatables', function(e) {
                 let url = $(this).attr('data-bs-role');
 
                 $.ajax({

@@ -50,3 +50,13 @@ Breadcrumbs::for('applying-leave.annual', function (BreadcrumbTrail $trail) {
     $trail->parent('applying-leave.dashboard');
     $trail->push('Annual', route('applying-leave-annual.create'));
 });
+
+// Super Admin
+
+Breadcrumbs::for('superadmin.management.roleaccess', function (BreadcrumbTrail $trail) {
+    $trail->push('Role Access', route('management-role-access.index'));
+});
+
+Breadcrumbs::for('superadmin.management.roleentitlement', function (BreadcrumbTrail $trail) {
+    $trail->push('Role Entitlement Leave', route('management-role-entitlement.index'));
+});

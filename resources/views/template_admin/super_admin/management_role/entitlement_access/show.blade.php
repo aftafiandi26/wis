@@ -17,7 +17,7 @@
 </style>
 <div class="modal-body">
     <div class="container-fluid">
-        <form action="{{ route('management-role-access.store') }}" method="post"
+        <form action="{{ route('management-role-entitlement.store') }}" method="post"
             enctype="application/x-www-form-urlencoded" id="formRoleAccessStore">
             @csrf
             <div class="row">
@@ -292,11 +292,8 @@
                     </div>
                 </div>
             </div>
-
         </form>
     </div>
-
-
 </div>
 <div class="modal-footer">
     <button type="submit" class="btn btn-sm btn-success btn-rounded text-black" id="submitFormStore"><i

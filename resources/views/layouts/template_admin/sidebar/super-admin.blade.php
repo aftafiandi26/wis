@@ -12,7 +12,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('management-role-entitlement.index') }}">
                     <span class="sub-item">Role Entitlement Leave</span>
                 </a>
             </li>
