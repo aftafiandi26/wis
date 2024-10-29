@@ -36,7 +36,7 @@ class CustomApplyingLeaveController extends Controller
     {
         $result = null;
 
-        if (Auth::user()->officer == true and Auth::user()->production == false) {
+        if (Auth::user()->officer == true) {
             if (Auth::user()->hod == true) {
                 $result = User::with('role_employes')->where('active', true)->where('gm', true)->get();
 
@@ -45,7 +45,7 @@ class CustomApplyingLeaveController extends Controller
             }
         }
 
-        if (Auth::user()->officer == false and Auth::user()->production == true) {
+        if (Auth::user()->production == true) {
             if (Auth::user()->hod == true) {
                 $result = User::with('role_employes')->where('active', true)->where('gm', true)->get();
 
@@ -61,8 +61,12 @@ class CustomApplyingLeaveController extends Controller
     {
         $result = null;
 
-        if (Auth::user()->production == true and Auth::user()->officer == false) {
+        if (Auth::user()->production == true) {
             $result = User::with('role_employes')->where('production', true)->where('active', true)->where('department_id', Auth::user()->department_id)->where('coor', true)->get();
+        }
+
+        if (Auth::user()->officer == true) {
+            $result = User::with('role_employes')->where('officer', true)->where('active', true)->where('department_id', Auth::user()->department_id)->where('coor', true)->get();
         }
 
         return $result;
@@ -99,5 +103,64 @@ class CustomApplyingLeaveController extends Controller
         }
 
         return $result;
+    }
+
+    public function statusFormLeave($transaction)
+    {
+        $return = "??";
+
+        if (Auth::user()->need_spv == true) {
+            if ($transaction->ap_spv == false and $transaction->ap_coor == false and $transaction->ap_pm == false and $transaction->ap_producer == false and $transaction->ap_hd == false and $transaction->ver_hr == false and $transaction->ver_hrd == false) {
+                $return = "Waiting SPV";
+            }
+        }
+
+        if (Auth::user()->need_coor == true) {
+            if ($transaction->ap_spv == true and $transaction->ap_coor == false and $transaction->ap_pm == false and $transaction->ap_producer == false and $transaction->ap_hd == false and $transaction->ver_hr == false and $transaction->ver_hrd == false) {
+                $return = "Waiting Coordinator";
+            }
+        }
+
+        if (Auth::user()->need_pm == true) {
+            if ($transaction->ap_spv == true and $transaction->ap_coor == true and $transaction->ap_pm == false and $transaction->ap_producer == false and $transaction->ap_hd == false and $transaction->ver_hr == false and $transaction->ver_hrd == false) {
+                $return = "Waiting PM";
+            }
+        }
+
+        if (Auth::user()->need_producer == true) {
+            if ($transaction->ap_spv == true and $transaction->ap_coor == true and $transaction->ap_pm == true and $transaction->ap_producer == false and $transaction->ap_hd == false and $transaction->ver_hr == false and $transaction->ver_hrd == false) {
+                $return = "Waiting Producer";
+            }
+        }
+
+        if (Auth::user()->need_hod == true) {
+            if ($transaction->ap_spv == true and $transaction->ap_coor == true and $transaction->ap_pm == true and $transaction->ap_producer == true and $transaction->ap_hd == false and $transaction->ver_hr == false and $transaction->ver_hrd == false) {
+                $return = "Waiting Head of Department";
+            }
+        }
+
+        if (Auth::user()->need_gm == true) {
+            if ($transaction->ap_spv == true and $transaction->ap_coor == true and $transaction->ap_pm == true and $transaction->ap_producer == true and $transaction->ap_hd == true and $transaction->ap_gm == false and $transaction->ver_hr == false and $transaction->ver_hrd == false) {
+                $return = "Waiting General Manager";
+            }
+        }
+
+        if (Auth::user()->need_verify == true) {
+            if ($transaction->ap_spv == true and $transaction->ap_coor == true and $transaction->ap_pm == true and $transaction->ap_producer == true and $transaction->ap_hd == true and $transaction->ap_gm == true and $transaction->ver_hr == false and $transaction->ver_hrd == false) {
+                $return = "Waiting Verify HR";
+            }
+        }
+
+        if (Auth::user()->need_hr_manager == true) {
+            if ($transaction->ap_spv == true and $transaction->ap_coor == true and $transaction->ap_pm == true and $transaction->ap_producer == true and $transaction->ap_hd == true and $transaction->ap_gm == true and $transaction->ver_hr == true and $transaction->ver_hrd == false) {
+                $return = "Waiting Confirmed HR";
+            }
+        }
+
+        if ($transaction->ap_spv == true and $transaction->ap_coor == true and $transaction->ap_pm == true and $transaction->ap_producer == true and $transaction->ap_hd == true and $transaction->ap_gm == true and $transaction->ver_hr == true and $transaction->ver_hrd == true) {
+            $return = "Success";
+        }
+
+        return $return;
     }
 }

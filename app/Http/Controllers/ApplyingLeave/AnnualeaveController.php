@@ -4,13 +4,16 @@ namespace App\Http\Controllers\ApplyingLeave;
 
 use App\Http\Controllers\AnnualCountingController;
 use App\Http\Controllers\Controller;
+use App\Models\Annualeave;
 use App\Models\Employes;
+use App\Models\LeaveTransaction;
 use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 
 class AnnualeaveController extends Controller
 {
@@ -18,33 +21,29 @@ class AnnualeaveController extends Controller
      * Display a listing of the resource.
      */
     // Menyimpan cookie
-    public function setCookie()
+    public function setCookie($data)
     {
+        $encodedData = json_encode($data);
+
         // Simpan cookie "username" selama 7 hari
-        Cookie::queue('username', 'JohnDoe', 60 * 24 * 7); // 7 hari
-        return response('Cookie telah disimpan');
+        Cookie::queue('cookieAnnual', $encodedData, 60); // 7 hari
     }
 
     // Membaca cookie
-    public function getCookie()
+    public function getCookie($data)
     {
-        $username = Cookie::get('username');
-        return response('Username di cookie adalah: ' . $username);
+        $return = Cookie::get($data);
+        return $return;
     }
 
-    // Menghapus cookie
-    public function deleteCookie()
-    {
-        // Hapus cookie "username"
-        Cookie::queue(Cookie::forget('username'));
-        return response('Cookie telah dihapus');
-    }
 
     public function index()
     {
-        $cookie = $this->setCookie();
+        $getCookie = $this->getCookie('cookieAnnual');
 
-        return $cookie;
+        $data = json_decode($getCookie, true);
+
+        return view('template_admin.applying_leave.annual.form-applying-annual', compact(['data']));
     }
 
     /**
@@ -52,7 +51,7 @@ class AnnualeaveController extends Controller
      */
     public function create()
     {
-        $employee = Employes::with('role_user')->where('user_id', Auth::user()->id)->first();
+        $employee = Employes::with(['role_user', 'role_annual'])->where('user_id', Auth::user()->id)->first();
 
 
         $customApplying = new CustomApplyingLeaveController();
@@ -73,12 +72,14 @@ class AnnualeaveController extends Controller
         $annualControler = new AnnualCountingController();
 
         $monthComming = $annualControler->monthComming($employee->join_contract);
+        $monthComming = $monthComming - $employee->role_annual->takenAnnual;
 
         $month = 0;
 
         if ($employee->end_contract) {
             # code...
             $month = $annualControler->month($employee->join_contract, $employee->end_contract);
+            $month = $month - $employee->role_annual->takenAnnual;
         }
 
 
@@ -92,48 +93,84 @@ class AnnualeaveController extends Controller
     {
         $employee = Employes::with(['role_annual'])->where('user_id', Auth::user()->id)->first();
 
-        // $data = [
-        //     'user_id'               => Auth::user()->id,
-        //     'employee_id'           => $employee->id,
-        //     'leave_category_Id'     => 1,
-        //     'period'                => date('Y'),
-        //     'start_leave'           => $request->startDate,
-        //     'end_leave'             => $request->endDate,
-        //     'back_work'             => $request->backWork,
-        //     'total_day'             => $request->day,
-        //     'entitlement'           => $employee->role_annual->totalAnnual,
-        //     'pending'               => $employee->role_annual->annual,
-        //     'taken'                 => $employee->role_annual->takenAnnual,
-        //     'remains'               => $request->remains,
-        //     'formStat'              => true,
-        //     'spv_id'
-        //     'ap_spv'
-        //     'date_spv'
-        //     'coor_id'
-        //     'ap_coor'
-        //     'date_coor'
-        //     'pm_id'
-        //     'ap_pm'
-        //     'date_pm'
-        //     'producer_id'
-        //     'ap_producer'
-        //     'date_producer'
-        //     'hd_id'
-        //     'ap_hd'
-        //     'date_hd'
-        //     'hrd_id'
-        //     'ap_hrd'
-        //     'date_hrd'
-        //     'gm_id'
-        //     'ap_gm'
-        //     'date_gm'
-        // ];
+        $roleLeave = new RoleLeaveController();
 
-        // $json = json_decode($request->all());
+        $annualRoleLeave = $roleLeave->annual();
 
-        dd($request->all());
+        if (empty($annualRoleLeave)) {
+            Session::flash('danger', 'Please contact an administrator, there is something wrong with your role');
+            return redirect()->route('applying-leave-annual.create');
+        }
 
-        return redirect()->route('applying-leave-annual.index');
+        $data = [
+            'user_id'               => Auth::user()->id,
+            'employee_id'           => $employee->id,
+            'leave_category_Id'     => 1,
+            'period'                => date('Y'),
+            'start_leave'           => $request->startDate,
+            'end_leave'             => $request->endDate,
+            'back_work'             => $request->backWork,
+            'total_day'             => $request->day,
+            'entitlement'           => $employee->role_annual->totalAnnual,
+            'pending'               => $employee->role_annual->annual,
+            'taken'                 => $employee->role_annual->takenAnnual + $request->day,
+            'remains'               => $employee->role_annual->annual - $request->day,
+            'formStat'              => true,
+            'spv_id'                => $request->spv_id,
+            'ap_spv'                => $annualRoleLeave['ap_spv'],
+            'date_spv'              => null,
+            'coor_id'               => $request->coor_id,
+            'ap_coor'               => $annualRoleLeave['ap_coor'],
+            'date_coor'             => null,
+            'pm_id'                 => $request->pm_id,
+            'ap_pm'                 => $annualRoleLeave['ap_pm'],
+            'date_pm'               => null,
+            'producer_id'           => $request->producer_id,
+            'ap_producer'           => $annualRoleLeave['ap_producer'],
+            'date_producer'         => null,
+            'hd_id'                 => $request->headof,
+            'ap_hd'                 => $annualRoleLeave['ap_hd'],
+            'date_hd'               => null,
+            'hr_id'                 => $annualRoleLeave['hr_id'],
+            'ver_hr'                => $annualRoleLeave['ver_hr'],
+            'date_hrd'              => null,
+            'hrd_id'                => $annualRoleLeave['hrd_id'],
+            'ver_hrd'               => $annualRoleLeave['ver_hrd'],
+            'date_hrd'              => null,
+            'gm_id'                 => $request->gm_id,
+            'ap_gm'                 => $annualRoleLeave['ap_gm'],
+            'date_gm'               => null,
+            'reason'                => $request->reason
+        ];
+
+        $getLeave = LeaveTransaction::where('user_id', Auth::user()->id)
+            ->where(function ($query) use ($data) {
+                $query->whereBetween('start_leave', [$data['start_leave'], $data['end_leave']])
+                    ->orWhereBetween('end_leave', [$data['start_leave'], $data['end_leave']])
+                    ->orWhere(function ($subQuery) use ($data) {
+                        $subQuery->where('start_leave', '<=', $data['start_leave'])
+                            ->where('end_leave', '>=', $data['end_leave']);
+                    });
+            })
+            ->get();
+
+
+        if ($getLeave->isNotEmpty()) {
+            // Terdapat pengajuan cuti yang tumpang tindih dengan tanggal yang diajukan
+           Session::flash('danger', 'You have already applied for leave on this date or there is an overlapping application.');
+           Session::flash('info', 'Please check your applying form leave');
+        } else {
+            LeaveTransaction::create($data);
+
+            Annualeave::where('employes_id', $employee->id)->where('nik', $employee->nik)->update([
+                'annual'            => $employee->role_annual->annual - $data['total_day'],
+                'takenAnnual'       => $employee->role_annual->takenAnnual + $data['total_day']
+            ]);
+
+            Session::flash('success', 'Leave form successfully created');
+        }
+
+        return redirect()->route('applying-leave-dashboard.index');
     }
 
     /**
@@ -141,7 +178,9 @@ class AnnualeaveController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $query = LeaveTransaction::with(['role_employee', 'role_user'])->where('id', $id)->firstOrFail();
+
+        return view('template_admin.applying_leave.annual.show', compact(['query']));
     }
 
     /**

@@ -81,12 +81,12 @@ class CustomEmployesController extends Controller
 
         $employee = Employes::where('nik', $id)->first();
 
-        $data = [
-            "totalAnnual" => $request->annual + $annual->totalAnnual,
-            'annual'      => $request->annual + $annual->annual,
-        ];
-
         if ($annual) {
+            $data = [
+                "totalAnnual" => $request->annual + $annual->totalAnnual,
+                'annual'      => $request->annual + $annual->annual,
+            ];
+
             $annual->update($data);
             Session::flash('success', 'Annual updated !!');
         } else {

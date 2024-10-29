@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApplyingLeave\AnnualeaveController;
 use App\Http\Controllers\ApplyingLeave\ApplyingDashboardController;
 use App\Http\Controllers\ApplyingLeave\CustomApplyingLeaveController;
+use App\Http\Controllers\ApplyingLeave\DatatablesApplyingLeaveController;
 use App\Http\Controllers\HRD\Annual\AnnualController;
 use App\Http\Controllers\HRD\Datatables\AnnualeaveDatatablesController;
 use App\Http\Controllers\HRD\Datatables\EmployesDatatables;
@@ -61,8 +62,11 @@ Route::prefix('super-admin')->middleware(['auth', 'active'])->group(function () 
 
 Route::middleware(['auth', 'active'])->group(function () {
     Route::get('applying-leave-annual-regency/{id}', [CustomApplyingLeaveController::class, 'getRegency'])->name('applying-leave-annual-regency');
-    Route::resource('applying-leave-annual', AnnualeaveController::class)->only(['create', 'store', 'index']);
-    Route::resource('applying-leave-dashboard', ApplyingDashboardController::class)->only(['index']);
+    Route::resource('applying-leave-annual', AnnualeaveController::class)->except(['index']);
+
+    Route::get('applying-leave-dashboard/progress', [DatatablesApplyingLeaveController::class, 'formProgress'])->name('applying-leave-dashboar.formprogress.data');
+    Route::get('applying-leave-dashboard/history', [DatatablesApplyingLeaveController::class, 'historyProgress'])->name('applying-leave-dashboar.historyprogress.data');
+    Route::resource('applying-leave-dashboard', ApplyingDashboardController::class)->only(['index', 'show']);
 });
 
 require __DIR__ . '/auth.php';

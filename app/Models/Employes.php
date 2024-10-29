@@ -28,11 +28,6 @@ class Employes extends Model
         return $this->first_name . ' ' . $this->last_name;
     }
 
-    public function role_department(): HasMany
-    {
-        return $this->hasMany(Department::class, 'id', 'department_id');
-    }
-
     public function department()
     {
         $query = Department::find($this->department_id);
@@ -40,6 +35,15 @@ class Employes extends Model
         return $query->name;
     }
 
+    public function address()
+    {
+        return "$this->address, $this->area, $this->city";
+    }
+
+    public function role_department(): HasMany
+    {
+        return $this->hasMany(Department::class, 'id', 'department_id');
+    }
 
     public function role_annual(): HasOne
     {

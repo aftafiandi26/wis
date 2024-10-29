@@ -29,7 +29,7 @@
         @endif
 
         {{--  --}}
-        @if (auth()-<user()->need_hod == true)
+        @if (auth()->user()->need_hod == true)
             <div class="col-sm-4 col-md-2">
                 <div class="form-floating mb-3">
                     <div class="row">

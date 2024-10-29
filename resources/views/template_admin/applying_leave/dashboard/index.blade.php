@@ -72,7 +72,14 @@
                             </tr>
                             <tr>
                                 <td>Annual <sup>(Until EOC)</sup></td>
-                                <td>{{ $annualeave->annual }}</td>
+                                <td>
+                                    @if ($employee->emp_status == 'Contract')
+                                        {{ $month }} <sup>({{ $monthComming }} + {{ $adv }})</sup>
+                                    @endif
+                                    @if ($employee->emp_status == 'Permanent')
+                                        {{ $month }}
+                                    @endif
+                                </td>
                                 <td>
                                     <button class="btn btn-sm btn-danger btn-rounded" data-bs-role=""
                                         id="buttonApply">Apply</button>
@@ -89,16 +96,16 @@
                     <span>Form Progress</span>
                 </div>
                 <div class="card-body">
-                    <table class="table table-hover table-condensed table-borderless">
+                    <table class="table table-hover table-condensed table-borderless" id="formProgress">
                         <thead>
                             <tr>
+                                <th>Actions</th>
                                 <th>Start Leave</th>
                                 <th>End Leave</th>
                                 <th>Back To Work</th>
                                 <th>Category</th>
                                 <th>Day</th>
                                 <th>Status</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                     </table>
@@ -133,20 +140,29 @@
                     <span>Form History</span>
                 </div>
                 <div class="card-body">
-                    <table class="table table-hover table-condensed table-borderless">
+                    <table class="table table-hover table-condensed table-borderless" id="historyProgress">
                         <thead>
                             <tr>
+                                <th>Actions</th>
                                 <th>Start Leave</th>
                                 <th>End Leave</th>
                                 <th>Back To Work</th>
                                 <th>Category</th>
                                 <th>Day</th>
                                 <th>Status</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="progressModal" tabindex="-1" role="dialog" aria-labelledby="progressModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+
             </div>
         </div>
     </div>
@@ -163,7 +179,7 @@
         $(document).ready(function() {
             function showNotification(type, message, from, align, icon) {
                 $.notify({
-                    title: 'Employee Status',
+                    title: "{{ auth()->user()->name }}",
                     message: message,
                     icon: icon,
                 }, {
@@ -178,12 +194,16 @@
 
             // Cek apakah ada session success
             @if (session('danger'))
-                showNotification('danger', '{{ session('danger') }}', 'top', 'right', 'fas fa-user-alt-slash');
+                showNotification('danger', '{{ session('danger') }}', 'top', 'right', 'fas fa-file');
             @endif
 
             // Cek apakah ada session danger
             @if (session('success'))
-                showNotification('success', '{{ session('success') }}', 'top', 'right', 'fas fa-user');
+                showNotification('success', '{{ session('success') }}', 'top', 'right', 'fas fa-file');
+            @endif
+
+            @if (session('info'))
+                showNotification('info', '{{ session('info') }}', 'top', 'right', 'fas fa-exclamation');
             @endif
 
         });
@@ -192,11 +212,11 @@
 
     <script>
         $(document).ready(function() {
-            $('table#tables1').DataTable({
+            $('table#formProgress').DataTable({
                 "procesisng": true,
                 "responsive": false,
                 "ajax": {
-                    "url": "{{ route('employes.annualeave.data') }}",
+                    "url": "{{ route('applying-leave-dashboar.formprogress.data') }}",
                     "contentType": 'application/json',
                     "type": 'GET',
                     "data": function(d) {
@@ -204,49 +224,116 @@
                     }
                 },
                 "columns": [{
-                        "data": "nik",
-                    },
-                    {
-                        "data": "fullname"
-                    },
-                    {
-                        "data": "position"
-                    },
-                    {
-                        "data": "depart_name"
-                    },
-                    {
-                        "data": "annual"
-                    },
-                    {
-                        "data": "exdo"
-                    },
-                    {
-                        "data": "emp_status"
-                    },
-                    {
-                        "data": "join_contract"
-                    },
-                    {
-                        "data": "end_contract"
-                    },
-                    {
                         "data": "actions",
-                        "searchable": false,
-                        "orderable": false
+                        "orderable": false,
+                        "searchable": false
+                    },
+                    {
+                        "data": "start_leave",
+                    },
+                    {
+                        "data": "end_leave"
+                    },
+                    {
+                        "data": "back_work"
+                    },
+                    {
+                        "data": "leave_category_id"
+                    },
+                    {
+                        "data": "total_day"
+                    },
+                    {
+                        "data": "status",
+                        "orderable": false,
+                        "searchable": false
                     }
                 ],
                 "pageLength": 5,
                 "language": {
                     "entries": {
-                        _: 'peoples',
-                        1: 'person'
+                        _: 'forms',
+                        1: 'form'
                     }
                 },
                 "layout": {
                     "topStart": {
                         "pageLength": {
-                            "menu": [5, 10, 25, 50]
+                            "menu": [5, 10, 15, 20]
+                        },
+                        "buttons": [{
+                                extend: 'print', // seharusnya 'print', bukan 'printHtml5'
+                                text: 'Print', // perbaikan dari 'textL'
+                                exportOptions: {
+                                    columns: ':not(:last-child)' // Mengecualikan kolom pertama
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                text: 'Excel', // perbaikan dari 'textL'
+                                exportOptions: {
+                                    columns: ':not(:last-child)' // Mengecualikan kolom pertama
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                text: 'PDF',
+                                exportOptions: {
+                                    columns: ':not(:last-child)' // Mengecualikan kolom pertama
+                                }
+                            }
+                        ]
+                    }
+                },
+                "order": [
+                    [1, 'asc'],
+                ]
+            });
+            $('table#historyProgress').DataTable({
+                "procesisng": true,
+                "responsive": false,
+                "ajax": {
+                    "url": "{{ route('applying-leave-dashboar.historyprogress.data') }}",
+                    "contentType": 'application/json',
+                    "type": 'GET',
+                    "data": function(d) {
+                        return JSON.stringify(d);
+                    }
+                },
+                "columns": [{
+                        "data": "start_leave",
+                    },
+                    {
+                        "data": "end_leave"
+                    },
+                    {
+                        "data": "back_work"
+                    },
+                    {
+                        "data": "leave_category_id"
+                    },
+                    {
+                        "data": "total_day"
+                    },
+                    {
+                        "data": "status"
+                    },
+                    {
+
+                        "data": "actions"
+                    }
+                ],
+                "pageLength": 5,
+                "language": {
+                    "entries": {
+                        _: 'forms',
+                        1: 'form'
+                    }
+                },
+                "layout": {
+                    "topStart": {
+                        "pageLength": {
+                            "menu": [5, 10, 15, 20]
                         },
                         "buttons": [{
                                 extend: 'print', // seharusnya 'print', bukan 'printHtml5'
@@ -277,8 +364,7 @@
                 ]
             });
 
-
-            $(document).on('click', 'table#tables1 tr td a.editDatatables', function(e) {
+            $(document).on('click', 'table#formProgress tr td a.editDatatables', function(e) {
                 let url = $(this).attr('data-bs-role');
 
                 $.ajax({

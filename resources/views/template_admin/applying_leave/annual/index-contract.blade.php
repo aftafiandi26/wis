@@ -311,6 +311,21 @@
                 });
             }
 
+            function showRemiansNotifce(type, message, from, align, icon, title) {
+                $.notify({
+                    title: "Remains",
+                    message: message,
+                    icon: icon,
+                }, {
+                    type: type,
+                    placement: {
+                        from: from,
+                        align: align
+                    },
+                    timer: 1000,
+                });
+            }
+
             function calculateBusinessDays(startDate, endDate) {
                 let start = new Date(startDate);
                 let end = new Date(endDate);
@@ -479,8 +494,15 @@
                     document.getElementById('remains').value = balance - businessDays;
                 }
             });
+
             $("button#formSubmit").on('click', function(e) {
-                $('#formCreate').submit();
+                let remains = $('input#remains').val();
+
+                if (remains >= 0) {
+                    $('#formCreate').submit();
+                } else {
+                    showRemiansNotifce('danger', 'Please check remains of leave inputted', 'top', 'right', 'fas fa-times');
+                }
             })
 
         });
