@@ -117,7 +117,7 @@
                                 <ul>
                                     @if ($query->role_user->first()->need_spv == true)
                                         <li>Supervisor : {{ $query->employee($query->spv_id)->fullname() }}
-                                            <i>{{ "($query->parmStatusApproved($query->ap_spv))" }}
+                                            <i>({{ $query->parmStatusApproved($query->ap_spv) }})
                                                 ({{ $query->date_spv }})
                                             </i>
                                         </li>
@@ -180,12 +180,21 @@
             </div>
         </div>
 
-
-
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-sm btn-rounded btn-info" id="download" data-bs-role="{{ route('applying-leave-dashboard.show', $query->id) }}"><i class="fas fa-download"></i> Download</button>
+    @if ($query->role_user->officer == true or $query->role_user->production == true)
+        @if ($query->ap_hd == false)
+            <button type="button" class="btn btn-sm btn-rounded btn-danger" id="buttonDelete"
+                data-bs-role="{{ route('applying-leave-annual-modal.delete', $query->id) }}"><i
+                    class="fas fa-trash"></i>
+                Delete</button>
+        @endif
+    @endif
+
+    <button type="button" class="btn btn-sm btn-rounded btn-info" id="download"
+        data-bs-role="{{ route('applying-leave-dashboard.show', $query->id) }}"><i class="fas fa-download"></i>
+        Download</button>
     <button type="button" class="btn btn-sm btn-rounded btn-secondary" data-bs-dismiss="modal">Close</button>
 </div>
 

@@ -47,10 +47,10 @@
                                 <td>Annual <sup>(Ongoing Month)</sup></td>
                                 <td>{{ $monthComming }}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-primary btn-rounded"
-                                        data-bs-role="{{ route('applying-leave-annual.create') }}"
-                                        id="buttonApply">Apply</button>
                                     @if ($monthComming > 0)
+                                        <button class="btn btn-sm btn-outline-primary btn-rounded"
+                                            data-bs-role="{{ route('applying-leave-annual.create') }}"
+                                            id="buttonApply">Apply</button>
                                     @endif
                                 </td>
                             </tr>
@@ -161,7 +161,15 @@
     <div class="modal fade" id="progressModal" tabindex="-1" role="dialog" aria-labelledby="progressModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content" id="progressContect">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" id="modal2content">
 
             </div>
         </div>
@@ -371,7 +379,23 @@
                     url: url,
                     data: $(this).serialize(),
                     success: function(e) {
-                        $('.modal-content').html(e);
+                        $('#progressContect').html(e);
+
+                        $('#progressContect').find('button#buttonDelete').on('click',
+                            function() {
+                                let url = $(this).attr('data-bs-role');
+
+                                $('#progressModal').modal('hide');
+                                $('#modal2').modal('show');
+
+                                $.ajax({
+                                    url: url,
+                                    data: $(this).serialize(),
+                                    success: function(e) {
+                                        $('#modal2content').html(e);
+                                    }
+                                });
+                            });
                     }
                 });
             });

@@ -163,4 +163,9 @@ class CustomApplyingLeaveController extends Controller
 
         return $return;
     }
+
+    public function modalProgressShowDelete($id)
+    {
+        return view('template_admin.applying_leave.dashboard.show-delete', compact('id'));
+    }
 }

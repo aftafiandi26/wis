@@ -62,6 +62,7 @@ Route::prefix('super-admin')->middleware(['auth', 'active'])->group(function () 
 
 Route::middleware(['auth', 'active'])->group(function () {
     Route::get('applying-leave-annual-regency/{id}', [CustomApplyingLeaveController::class, 'getRegency'])->name('applying-leave-annual-regency');
+    Route::get('applying-leave-annual-show-delete/{id}', [CustomApplyingLeaveController::class, 'modalProgressShowDelete'])->name('applying-leave-annual-modal.delete');
     Route::resource('applying-leave-annual', AnnualeaveController::class)->except(['index']);
 
     Route::get('applying-leave-dashboard/progress', [DatatablesApplyingLeaveController::class, 'formProgress'])->name('applying-leave-dashboar.formprogress.data');

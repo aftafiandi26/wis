@@ -4,11 +4,16 @@ namespace App\Http\Controllers\ApplyingLeave;
 
 use App\Http\Controllers\AnnualCountingController;
 use App\Http\Controllers\Controller;
-use App\Models\Annualeave;
 use App\Models\Employes;
+use App\Models\LeaveTransaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Mpdf\Mpdf;
+use Spatie\Browsershot\Browsershot;
 
 class ApplyingDashboardController extends Controller
 {
@@ -22,8 +27,8 @@ class ApplyingDashboardController extends Controller
         $employee = Employes::with('role_annual')->where('user_id', $id)->first();
 
         if (empty($employee->role_annual)) {
-           Session::flash('info', 'Your leave application page is not ready, please contact admininstrator.');
-           return redirect()->route('dashboard');
+            Session::flash('info', 'Your leave application page is not ready, please contact admininstrator.');
+            return redirect()->route('dashboard');
         }
 
         $annualControler = new AnnualCountingController();
@@ -76,7 +81,31 @@ class ApplyingDashboardController extends Controller
      */
     public function show(string $id)
     {
-        return view('template_admin.applying_leave.dashboard.show-print');
+        $query = LeaveTransaction::with(['role_employee', 'role_user', 'role_leave_category'])->where('id', $id)->first();
+
+        $titleName = Str::slug($query->first()->role_employee->fullname() . ' ' . $query->first()->role_leave_category->name);
+
+        $iconic = Storage::url('public/logo_wis/kinema.png');
+
+        $html = view('template_admin.applying_leave.dashboard.show-print', compact('query', 'titleName', 'iconic'))->render();
+
+        $mpdf = new Mpdf();
+        // $mpdf->SetProtection(array(), 'UserPassword', 'MyPassword');
+        // $mpdf->SetWatermarkText('DRAFT');
+        // $mpdf->showWatermarkText = true;
+
+        $mpdf->SetHTMLFooter('
+        <table width="100%">
+            <tr>
+                <td width="33%">{DATE j-m-Y}</td>
+                <td width="33%" align="center">{PAGENO}/{nbpg}</td>
+                <td width="33%" style="text-align: right;">Wide Information System</td>
+            </tr>
+        </table>');
+
+        $mpdf->WriteHTML($html);
+
+        $mpdf->Output();
     }
 
     /**

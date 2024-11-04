@@ -102,6 +102,11 @@ class AnnualeaveController extends Controller
             return redirect()->route('applying-leave-annual.create');
         }
 
+        if (empty($annualRoleLeave['hr_id']) or empty($annualRoleLeave['hrd_id'])) {
+            Session::flash('danger', 'Please contact an administrator, there is something wrong with your role');
+            return redirect()->route('applying-leave-annual.create');
+        }
+
         $data = [
             'user_id'               => Auth::user()->id,
             'employee_id'           => $employee->id,
@@ -116,16 +121,16 @@ class AnnualeaveController extends Controller
             'taken'                 => $employee->role_annual->takenAnnual + $request->day,
             'remains'               => $employee->role_annual->annual - $request->day,
             'formStat'              => true,
-            'spv_id'                => $request->spv_id,
+            'spv_id'                => $request->spv,
             'ap_spv'                => $annualRoleLeave['ap_spv'],
             'date_spv'              => null,
-            'coor_id'               => $request->coor_id,
+            'coor_id'               => $request->coor,
             'ap_coor'               => $annualRoleLeave['ap_coor'],
             'date_coor'             => null,
-            'pm_id'                 => $request->pm_id,
+            'pm_id'                 => $request->pm,
             'ap_pm'                 => $annualRoleLeave['ap_pm'],
             'date_pm'               => null,
-            'producer_id'           => $request->producer_id,
+            'producer_id'           => $request->producer,
             'ap_producer'           => $annualRoleLeave['ap_producer'],
             'date_producer'         => null,
             'hd_id'                 => $request->headof,
@@ -157,8 +162,8 @@ class AnnualeaveController extends Controller
 
         if ($getLeave->isNotEmpty()) {
             // Terdapat pengajuan cuti yang tumpang tindih dengan tanggal yang diajukan
-           Session::flash('danger', 'You have already applied for leave on this date or there is an overlapping application.');
-           Session::flash('info', 'Please check your applying form leave');
+            Session::flash('danger', 'You have already applied for leave on this date or there is an overlapping application.');
+            Session::flash('info', 'Please check your applying form leave');
         } else {
             LeaveTransaction::create($data);
 
@@ -204,6 +209,31 @@ class AnnualeaveController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $item = LeaveTransaction::find($id);
+
+        $annualeave = Annualeave::where('employes_id', $item->employee_id)->first();
+
+        if (!$annualeave) {
+            Session::flash('danger', 'Data can not be found.');
+            return redirect()->route('applying-leave-dashboard.index');
+        }
+
+        if (!$item) {
+            Session::flash('danger', 'Data can not be found.');
+            return redirect()->route('applying-leave-dashboard.index');
+        }
+
+        $takenAnnual = $annualeave->takenAnnual - $item->total_day;
+        $annual = $annualeave->annual + $item->total_day;
+
+        $item->update(['formStat' => false]);
+        $annualeave->update([
+            'takenAnnual' => $takenAnnual,
+            'annual'        => $annual
+        ]);
+        $item->delete();
+
+        Session::flash('success', 'Data has been deleted.');
+        return redirect()->route('applying-leave-dashboard.index');
     }
 }
