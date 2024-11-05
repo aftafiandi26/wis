@@ -58,7 +58,7 @@
                                 <td>Exdo</td>
                                 <td>10</td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-primary btn-rounded" data-bs-role="456"
+                                    <button class="btn btn-sm btn-outline-primary btn-rounded" data-bs-role="{{ route('applying-leave-exdo.create') }}"
                                         id="buttonApply">Apply</butt>
                                 </td>
                             </tr>
@@ -81,7 +81,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-danger btn-rounded" data-bs-role=""
+                                    <button class="btn btn-sm btn-danger btn-rounded" data-bs-role="{{ route('applying-leave-annual-eoc.create') }}"
                                         id="buttonApply">Apply</button>
                                 </td>
                             </tr>

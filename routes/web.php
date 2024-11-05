@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\ApplyingLeave\AnnualeaveController;
+use App\Http\Controllers\ApplyingLeave\AnnualEOCLeaveController;
 use App\Http\Controllers\ApplyingLeave\ApplyingDashboardController;
 use App\Http\Controllers\ApplyingLeave\CustomApplyingLeaveController;
 use App\Http\Controllers\ApplyingLeave\DatatablesApplyingLeaveController;
+use App\Http\Controllers\ApplyingLeave\ExdoleaveController;
 use App\Http\Controllers\HRD\Annual\AnnualController;
 use App\Http\Controllers\HRD\Datatables\AnnualeaveDatatablesController;
 use App\Http\Controllers\HRD\Datatables\EmployesDatatables;
@@ -68,6 +70,10 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::get('applying-leave-dashboard/progress', [DatatablesApplyingLeaveController::class, 'formProgress'])->name('applying-leave-dashboar.formprogress.data');
     Route::get('applying-leave-dashboard/history', [DatatablesApplyingLeaveController::class, 'historyProgress'])->name('applying-leave-dashboar.historyprogress.data');
     Route::resource('applying-leave-dashboard', ApplyingDashboardController::class)->only(['index', 'show']);
+
+    Route::resource('applying-leave-annual-eoc', AnnualEOCLeaveController::class)->only((['create']));
+
+    Route::resource('applying-leave-exdo', ExdoleaveController::class)->only((['create', 'store']));
 });
 
 require __DIR__ . '/auth.php';

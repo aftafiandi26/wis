@@ -51,6 +51,16 @@ Breadcrumbs::for('applying-leave.annual', function (BreadcrumbTrail $trail) {
     $trail->push('Annual', route('applying-leave-annual.create'));
 });
 
+Breadcrumbs::for('applying-leave.annual.eoc', function (BreadcrumbTrail $trail) {
+    $trail->parent('applying-leave.dashboard');
+    $trail->push('Annual EOC', route('applying-leave-annual-eoc.create'));
+});
+
+Breadcrumbs::for('applying-leave.exdo', function (BreadcrumbTrail $trail) {
+    $trail->parent('applying-leave.dashboard');
+    $trail->push('Exdo', route('applying-leave-exdo.create'));
+});
+
 // Super Admin
 
 Breadcrumbs::for('superadmin.management.roleaccess', function (BreadcrumbTrail $trail) {
