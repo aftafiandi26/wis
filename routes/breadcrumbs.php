@@ -29,6 +29,10 @@ Breadcrumbs::for('hrd.employes.actived', function (BreadcrumbTrail $trail) {
     $trail->parent('hrd.employes');
     $trail->push('Actived', route('employes.actived'));
 });
+// HRD - Employee Leave
+Breadcrumbs::for('hrd.employee.leave.dashboard', function (BreadcrumbTrail $trail) {
+    $trail->push('Employee Leave', route('employee-leave-dashboard.index'));
+});
 
 ///
 

@@ -17,7 +17,7 @@ class AnnualController extends Controller
      */
     public function index()
     {
-        return view('template_admin.hrd.employes.annual.index');
+        return view('template_admin.hrd.employee-leave.dashboard.index');
     }
 
     /**

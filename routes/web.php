@@ -8,7 +8,9 @@ use App\Http\Controllers\ApplyingLeave\DatatablesApplyingLeaveController;
 use App\Http\Controllers\ApplyingLeave\ExdoleaveController;
 use App\Http\Controllers\HRD\Annual\AnnualController;
 use App\Http\Controllers\HRD\Datatables\AnnualeaveDatatablesController;
+use App\Http\Controllers\HRD\Datatables\EmployeeLeaveDatatablesController;
 use App\Http\Controllers\HRD\Datatables\EmployesDatatables;
+use App\Http\Controllers\HRD\EmployeeLeave\EmployeeLeaveDashboardController;
 use App\Http\Controllers\HRD\Employes\CustomEmployesController;
 use App\Http\Controllers\HRD\Employes\EmpoyesController;
 use App\Http\Controllers\ProfileController;
@@ -47,8 +49,12 @@ Route::prefix('hrd')->middleware(['auth', 'active'])->group(function () {
     Route::get('employes/annual/{id}', [CustomEmployesController::class, 'annualInput'])->name('employes.annual');
     Route::post('employes/annual/post/{id}', [CustomEmployesController::class, 'postAnnualInput'])->name('employes.annual.post');
 
-    Route::resource('employes/annualeave', AnnualController::class)->only(['index', 'show', 'edit']);
+    // Route::resource('employes/annualeave', AnnualController::class)->only(['index', 'show', 'edit']);
+
     Route::resource('employes', EmpoyesController::class);
+
+    Route::get('emplyoee-leave/annual/data', [EmployeeLeaveDatatablesController::class, 'dataAnnualofEmployes'])->name('employee-leave.annual.data');
+    Route::resource('employee-leave-dashboard', EmployeeLeaveDashboardController::class)->only('index', 'show');
 });
 
 Route::prefix('super-admin')->middleware(['auth', 'active'])->group(function () {

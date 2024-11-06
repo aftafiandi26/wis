@@ -31,21 +31,26 @@
   </li>
   {{--  --}}
   <li class="nav-item">
-    <a data-bs-toggle="collapse" href="#sidebar_hr_annualeave" class="collapsed" aria-expanded="false">
-      <i class="fas fa-user-times"></i>
-      <p>Leave on Employes</p>
+    <a data-bs-toggle="collapse" href="#sidebar_hr_employee_leave" class="collapsed" aria-expanded="false">
+      <i class="fas fa-user-clock"></i>
+      <p>Employee Leave</p>
       <span class="caret"></span>
     </a>
-    <div class="collapse" id="sidebar_hr_annualeave">
+    <div class="collapse" id="sidebar_hr_employee_leave">
       <ul class="nav nav-collapse">
         <li>
-          <a href="{{ route('annualeave.index') }}">
+          <a href="{{ route('employee-leave-dashboard.index') }}">
             <span class="sub-item">Dashboard</span>
           </a>
         </li>
         <li>
           <a href="#">
             <span class="sub-item">Annual of Leave</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="sub-item">Exdo of Leave</span>
           </a>
         </li>
         <li>
