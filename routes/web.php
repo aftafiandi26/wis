@@ -5,6 +5,7 @@ use App\Http\Controllers\ApplyingLeave\AnnualEOCLeaveController;
 use App\Http\Controllers\ApplyingLeave\ApplyingDashboardController;
 use App\Http\Controllers\ApplyingLeave\CustomApplyingLeaveController;
 use App\Http\Controllers\ApplyingLeave\DatatablesApplyingLeaveController;
+use App\Http\Controllers\ApplyingLeave\EtcLeaveController;
 use App\Http\Controllers\ApplyingLeave\ExdoleaveController;
 use App\Http\Controllers\HRD\Annual\AnnualController;
 use App\Http\Controllers\HRD\Datatables\AnnualeaveDatatablesController;
@@ -78,8 +79,8 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::resource('applying-leave-dashboard', ApplyingDashboardController::class)->only(['index', 'show']);
 
     Route::resource('applying-leave-annual-eoc', AnnualEOCLeaveController::class)->only((['create']));
-
-    Route::resource('applying-leave-exdo', ExdoleaveController::class)->only((['create', 'store']));
+    Route::resource('applying-leave-exdo', ExdoleaveController::class)->only((['create']));
+    Route::resource('applying-leave-etc', EtcLeaveController::class)->only((['create']));
 });
 
 require __DIR__ . '/auth.php';

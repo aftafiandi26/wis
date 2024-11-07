@@ -1,15 +1,15 @@
 @extends('layouts.template_admin.layout')
 
 @push('title')
-    Applying Leave - Exdo
+    Applying Leave - Etc
 @endpush
 
 @push('headling')
-   Exdo
+    Etc
 @endpush
 
 @push('subheadling')
-    {{ Breadcrumbs::render('applying-leave.exdo') }}
+    {{ Breadcrumbs::render('applying-leave.etc') }}
 @endpush
 
 @push('style')
@@ -49,7 +49,8 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('applying-leave-annual.store') }}" method="post" id="formCreate" class="needs-validation">
+                    <form action="{{ route('applying-leave-annual.store') }}" method="post" id="formCreate"
+                        class="needs-validation">
                         @csrf
                         <div class="row">
                             <div class="col-sm-4 col-md-2">
@@ -68,7 +69,7 @@
                             <div class="col-sm-4 col-md-2">
                                 <div class="form-floating mb-3">
                                     <input type="date" class="form-control @error('start') is-invalid @enderror"
-                                        id="startDate" name="startDate">
+                                        id="startDate" name="startDate" @readonly(true)>
                                     <label for="start">Start Date <i class="fas fa-exclamation-circle"></i></label>
                                     @error('start')
                                         <div class="invalid-feedback">
@@ -149,10 +150,20 @@
                             <div class="col-sm-4 col-md-4"></div>
                             <div class="col-sm-4 col-md-2">
                                 <div class="form-floating mb-3">
-                                    <input type="hidden" name="category" value="{{ $leaveCategory->id }}">
-                                    <input type="text" class="form-control @error('category') is-invalid @enderror"
-                                        value="{{ $leaveCategory->name }}" readonly>
-                                    <label for="category">Leave Category <i class="fas fa-exclamation-circle"></i></label>
+                                    <div class="row">
+                                        <label for="category">Leave Category
+                                            <i class="fas fa-exclamation-circle"></i></label>
+                                    </div>
+                                    <select name="category" id="leaveCategories" data-width="100%" required
+                                        class="form-select @error('category') is-invalid @enderror">
+                                        <option value=""></option>
+                                        @foreach ($leaveCategories as $leaveCategory)
+                                            <option value="{{ $leaveCategory->id }}"
+                                                data-bs-value="{{ $leaveCategory->days }}">{{ $leaveCategory->name }}
+                                            </option>
+                                        @endforeach
+                                        <option value="11" data-bs-value="5">Others</option>
+                                    </select>
                                     @error('category')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -163,7 +174,7 @@
                             <div class="col-sm-2 col-md-1">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('balance') is-invalid @enderror"
-                                        name="balance" value="{{ $exdo }}" readonly id="balance">
+                                        name="balance" value="0" readonly id="balance">
                                     <label for="balance">Balance <i class="fas fa-exclamation-circle"></i></label>
                                     @error('balance')
                                         <div class="invalid-feedback">
@@ -175,7 +186,7 @@
                             <div class="col-sm-2 col-md-1">
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control @error('remains') is-invalid @enderror"
-                                        name="remains" value="{{ $exdo }}" readonly id="remains">
+                                        name="remains" value="0" readonly id="remains">
                                     <label for="remains">Remains <i class="fas fa-exclamation-circle"></i></label>
                                     @error('remains')
                                         <div class="invalid-feedback">
@@ -358,6 +369,11 @@
                 showNotification('success', '{{ session('success') }}', 'top', 'right', 'fas fa-user');
             @endif
 
+            $("select#leaveCategories").select2({
+                placeholder: 'Open category',
+                width: '100%'
+            });
+
             $("select#province").select2({
                 placeholder: 'Open province',
                 width: '100%'
@@ -502,9 +518,27 @@
                 if (remains >= 0) {
                     $('#formCreate').submit();
                 } else {
-                    showRemiansNotifce('danger', 'Please check remains of leave inputted', 'top', 'right', 'fas fa-times');
+                    showRemiansNotifce('danger', 'Please check remains of leave inputted', 'top', 'right',
+                        'fas fa-times');
                 }
             })
+
+            $('#leaveCategories').on('change', function() {
+                // Mendapatkan opsi yang dipilih
+                let selectedOption = $(this).find(':selected');
+                let selectValue = selectedOption.val(); // Mengambil nilai value
+                let dataValue = selectedOption.data('bs-value');
+
+                let day = $('input#day').val();
+                if (day > 0) {
+                    let coutDay = dataValue - day;
+                    document.getElementById('remains').value = coutDay;
+                }
+
+                document.getElementById('balance').value = dataValue;
+                $('input#startDate').attr('readonly', false);
+
+            });
 
         });
     </script>

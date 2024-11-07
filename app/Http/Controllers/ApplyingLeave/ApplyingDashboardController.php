@@ -31,6 +31,8 @@ class ApplyingDashboardController extends Controller
             return redirect()->route('dashboard');
         }
 
+        $exdo = $employee->role_annual->exdo;
+
         $annualControler = new AnnualCountingController();
 
         $monthComming = $annualControler->monthComming($employee->join_contract);
@@ -57,7 +59,7 @@ class ApplyingDashboardController extends Controller
             return redirect()->back();
         }
 
-        return view('template_admin.applying_leave.dashboard.index', compact(['employee', 'month', 'monthComming', 'adv']));
+        return view('template_admin.applying_leave.dashboard.index', compact(['employee', 'month', 'monthComming', 'adv', 'exdo']));
     }
 
     /**

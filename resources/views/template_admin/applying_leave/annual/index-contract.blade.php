@@ -49,7 +49,8 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('applying-leave-annual.store') }}" method="post" id="formCreate" class="needs-validation">
+                    <form action="{{ route('applying-leave-annual.store') }}" method="post" id="formCreate"
+                        class="needs-validation">
                         @csrf
                         <div class="row">
                             <div class="col-sm-4 col-md-2">
@@ -149,8 +150,9 @@
                             <div class="col-sm-4 col-md-4"></div>
                             <div class="col-sm-4 col-md-2">
                                 <div class="form-floating mb-3">
+                                    <input type="hidden" name="category" value="{{ $leaveCategory->id }}">
                                     <input type="text" class="form-control @error('category') is-invalid @enderror"
-                                        name="category" value="Annual" readonly>
+                                        value="{{ $leaveCategory->name }}" readonly>
                                     <label for="category">Leave Category <i class="fas fa-exclamation-circle"></i></label>
                                     @error('category')
                                         <div class="invalid-feedback">
@@ -501,7 +503,8 @@
                 if (remains >= 0) {
                     $('#formCreate').submit();
                 } else {
-                    showRemiansNotifce('danger', 'Please check remains of leave inputted', 'top', 'right', 'fas fa-times');
+                    showRemiansNotifce('danger', 'Please check remains of leave inputted', 'top', 'right',
+                        'fas fa-times');
                 }
             })
 

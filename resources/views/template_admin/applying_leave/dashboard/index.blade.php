@@ -56,7 +56,7 @@
                             </tr>
                             <tr>
                                 <td>Exdo</td>
-                                <td>10</td>
+                                <td>{{ $exdo }}</td>
                                 <td>
                                     <button class="btn btn-sm btn-outline-primary btn-rounded" data-bs-role="{{ route('applying-leave-exdo.create') }}"
                                         id="buttonApply">Apply</butt>
@@ -66,7 +66,7 @@
                                 <td>Etc</td>
                                 <td>-</td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-primary btn-rounded" data-bs-role=""
+                                    <button class="btn btn-sm btn-outline-primary btn-rounded" data-bs-role="{{ route('applying-leave-etc.create') }}"
                                         id="buttonApply">Apply</button>
                                 </td>
                             </tr>
@@ -93,31 +93,6 @@
         <div class="col-sm-6 col-md-7">
             <div class="card card-stats card-round">
                 <div class="card-header">
-                    <span>Form Progress</span>
-                </div>
-                <div class="card-body">
-                    <table class="table table-hover table-condensed table-borderless" id="formProgress">
-                        <thead>
-                            <tr>
-                                <th>Actions</th>
-                                <th>Start Leave</th>
-                                <th>End Leave</th>
-                                <th>Back To Work</th>
-                                <th>Category</th>
-                                <th>Day</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-6 col-md-5">
-            <div class="card card-stats card-round">
-                <div class="card-header">
                     <span>Exdo</span>
                 </div>
                 <div class="card-body">
@@ -134,25 +109,54 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-md-7">
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6 col-md-6">
+            <div class="card card-stats card-round">
+                <div class="card-header">
+                    <span>Form Progress</span>
+                </div>
+                <div class="card-body">
+                    <div class="col-12 table-responsive">
+                        <table class="table table-hover table-condensed table-borderless" id="formProgress">
+                            <thead>
+                                <tr>
+                                    <th>Actions</th>
+                                    <th>Start Leave</th>
+                                    <th>End Leave</th>
+                                    <th>Back To Work</th>
+                                    <th>Category</th>
+                                    <th>Day</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6">
             <div class="card card-stats card-round">
                 <div class="card-header">
                     <span>Form History</span>
                 </div>
-                <div class="card-body">
-                    <table class="table table-hover table-condensed table-borderless" id="historyProgress">
-                        <thead>
-                            <tr>
-                                <th>Actions</th>
-                                <th>Start Leave</th>
-                                <th>End Leave</th>
-                                <th>Back To Work</th>
-                                <th>Category</th>
-                                <th>Day</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                    </table>
+                <div class="card-body table-responsive">
+                    <div class="col-12 table-responsive">
+                        <table class="table table-hover table-condensed table-borderless" id="historyProgress">
+                            <thead>
+                                <tr>
+                                    <th>Actions</th>
+                                    <th>Start Leave</th>
+                                    <th>End Leave</th>
+                                    <th>Back To Work</th>
+                                    <th>Category</th>
+                                    <th>Day</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

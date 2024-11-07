@@ -39,7 +39,8 @@ class LeaveTransaction extends Model
 
     public function getLeaveCategory()
     {
-        return LeaveCategory::find($this->leave_category_id)->value('name');
+        $return = LeaveCategory::find($this->leave_category_id);
+        return $return->name;
     }
 
     public function employee($id)

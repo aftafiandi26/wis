@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\ApplyingLeave;
 
-use App\Http\Controllers\AnnualCountingController;
 use App\Http\Controllers\Controller;
 use App\Models\Employes;
 use App\Models\LeaveCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ExdoleaveController extends Controller
+class EtcLeaveController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,7 +25,7 @@ class ExdoleaveController extends Controller
     {
         $employee = Employes::with(['role_user', 'role_annual'])->where('user_id', Auth::user()->id)->first();
 
-        $leaveCategory = LeaveCategory::find(2);
+        $leaveCategories = LeaveCategory::whereNotIn('id', [1,2, 11])->orderBy('name', 'asc')->get();
 
         $customApplying = new CustomApplyingLeaveController();
 
@@ -43,7 +42,7 @@ class ExdoleaveController extends Controller
 
         $exdo = $employee->role_annual->exdo - $employee->role_annual->takenExdo;
 
-        return view('template_admin.applying_leave.exdo.create', compact(['employee', 'getProvinces', 'user_hod', 'exdo', 'user_coor', 'user_spv', 'user_pm', 'user_producer', 'leaveCategory']));
+        return view('template_admin.applying_leave.etc.create', compact(['employee', 'getProvinces', 'user_hod', 'exdo', 'user_coor', 'user_spv', 'user_pm', 'user_producer', 'leaveCategories']));
     }
 
     /**

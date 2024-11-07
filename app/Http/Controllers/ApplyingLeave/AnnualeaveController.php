@@ -6,6 +6,7 @@ use App\Http\Controllers\AnnualCountingController;
 use App\Http\Controllers\Controller;
 use App\Models\Annualeave;
 use App\Models\Employes;
+use App\Models\LeaveCategory;
 use App\Models\LeaveTransaction;
 use App\Models\User;
 use GuzzleHttp\Client;
@@ -53,6 +54,7 @@ class AnnualeaveController extends Controller
     {
         $employee = Employes::with(['role_user', 'role_annual'])->where('user_id', Auth::user()->id)->first();
 
+        $leaveCategory = LeaveCategory::find(1);
 
         $customApplying = new CustomApplyingLeaveController();
 
@@ -83,7 +85,7 @@ class AnnualeaveController extends Controller
         }
 
 
-        return view('template_admin.applying_leave.annual.index-contract', compact(['employee', 'getProvinces', 'user_hod', 'monthComming', 'user_coor', 'user_spv', 'user_pm', 'user_producer']));
+        return view('template_admin.applying_leave.annual.index-contract', compact(['employee', 'getProvinces', 'user_hod', 'monthComming', 'user_coor', 'user_spv', 'user_pm', 'user_producer', 'leaveCategory']));
     }
 
     /**
@@ -107,19 +109,46 @@ class AnnualeaveController extends Controller
             return redirect()->route('applying-leave-annual.create');
         }
 
+        if ($request->category == 1) {
+            $array = [
+                'entitlement'           => $employee->role_annual->totalAnnual,
+                'pending'               => $employee->role_annual->annual,
+                'taken'                 => $employee->role_annual->takenAnnual + $request->day,
+                'remains'               => $employee->role_annual->annual - $request->day,
+            ];
+        }
+
+        if ($request->category == 2) {
+            $array = [
+                'entitlement'           => $employee->role_annual->totalExdo,
+                'pending'               => $employee->role_annual->exdo,
+                'taken'                 => $employee->role_annual->takentakenExdoAnnual + $request->day,
+                'remains'               => $employee->role_annual->exdo - $request->day,
+            ];
+        }
+
+        if ($request->category >= 3) {
+            $array = [
+                'entitlement'           => 0,
+                'pending'               => 0,
+                'taken'                 => 0,
+                'remains'               => 0,
+            ];
+        }
+
         $data = [
             'user_id'               => Auth::user()->id,
             'employee_id'           => $employee->id,
-            'leave_category_Id'     => 1,
+            'leave_category_Id'     => $request->category,
             'period'                => date('Y'),
             'start_leave'           => $request->startDate,
             'end_leave'             => $request->endDate,
             'back_work'             => $request->backWork,
             'total_day'             => $request->day,
-            'entitlement'           => $employee->role_annual->totalAnnual,
-            'pending'               => $employee->role_annual->annual,
-            'taken'                 => $employee->role_annual->takenAnnual + $request->day,
-            'remains'               => $employee->role_annual->annual - $request->day,
+            'entitlement'           => $array['entitlement'],
+            'pending'               => $array['pending'],
+            'taken'                 => $array['taken'],
+            'remains'               => $array['remains'],
             'formStat'              => true,
             'spv_id'                => $request->spv,
             'ap_spv'                => $annualRoleLeave['ap_spv'],
@@ -167,10 +196,19 @@ class AnnualeaveController extends Controller
         } else {
             LeaveTransaction::create($data);
 
-            Annualeave::where('employes_id', $employee->id)->where('nik', $employee->nik)->update([
-                'annual'            => $employee->role_annual->annual - $data['total_day'],
-                'takenAnnual'       => $employee->role_annual->takenAnnual + $data['total_day']
-            ]);
+            if ($data['leave_category_Id'] == 1) {
+                Annualeave::where('employes_id', $employee->id)->where('nik', $employee->nik)->update([
+                    'annual'            => $employee->role_annual->annual - $data['total_day'],
+                    'takenAnnual'       => $employee->role_annual->takenAnnual + $data['total_day']
+                ]);
+            }
+
+            if ($data['leave_category_Id'] == 2) {
+                Annualeave::where('employes_id', $employee->id)->where('nik', $employee->nik)->update([
+                    'exdo'            => $employee->role_annual->exdo - $data['total_day'],
+                    'takenExdo'       => $employee->role_annual->takenExdo + $data['total_day']
+                ]);
+            }
 
             Session::flash('success', 'Leave form successfully created');
         }
@@ -211,6 +249,11 @@ class AnnualeaveController extends Controller
     {
         $item = LeaveTransaction::find($id);
 
+        if (!$item) {
+            Session::flash('danger', 'Data can not be found.');
+            return redirect()->route('applying-leave-dashboard.index');
+        }
+
         $annualeave = Annualeave::where('employes_id', $item->employee_id)->first();
 
         if (!$annualeave) {
@@ -218,20 +261,33 @@ class AnnualeaveController extends Controller
             return redirect()->route('applying-leave-dashboard.index');
         }
 
-        if (!$item) {
-            Session::flash('danger', 'Data can not be found.');
-            return redirect()->route('applying-leave-dashboard.index');
+        $item->update(['formStat' => false]);
+
+        if ($item->leave_category_id == 1) {
+            $takenAnnual = $annualeave->takenAnnual - $item->total_day;
+            $annual = $annualeave->annual + $item->total_day;
+
+            $annualeave->update([
+                'takenAnnual' => $takenAnnual,
+                'annual'        => $annual
+            ]);
+            $item->delete();
         }
 
-        $takenAnnual = $annualeave->takenAnnual - $item->total_day;
-        $annual = $annualeave->annual + $item->total_day;
+        if ($item->leave_category_id == 2) {
+            $takenExdo = $annualeave->takenExdo - $item->total_day;
+            $exdo = $annualeave->exdo + $item->total_day;
 
-        $item->update(['formStat' => false]);
-        $annualeave->update([
-            'takenAnnual' => $takenAnnual,
-            'annual'        => $annual
-        ]);
-        $item->delete();
+            $annualeave->update([
+                'takenExdo' => $takenExdo,
+                'exdo'      => $exdo
+            ]);
+            $item->delete();
+        }
+
+        if ($item->leave_category_id >= 3) {
+            $item->delete();
+        }
 
         Session::flash('success', 'Data has been deleted.');
         return redirect()->route('applying-leave-dashboard.index');

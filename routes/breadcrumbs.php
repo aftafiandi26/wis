@@ -10,6 +10,34 @@ use Diglactic\Breadcrumbs\Breadcrumbs;
 //  with `$trail`. This is nice for IDE type checking and completion.
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
+
+// Applying Leave
+Breadcrumbs::for('applying-leave.dashboard', function (BreadcrumbTrail $trail) {
+    $trail->push('Applying Leave', route('applying-leave-dashboard.index'));
+});
+
+Breadcrumbs::for('applying-leave.annual', function (BreadcrumbTrail $trail) {
+    $trail->parent('applying-leave.dashboard');
+    $trail->push('Annual', route('applying-leave-annual.create'));
+});
+
+Breadcrumbs::for('applying-leave.annual.eoc', function (BreadcrumbTrail $trail) {
+    $trail->parent('applying-leave.dashboard');
+    $trail->push('Annual EOC', route('applying-leave-annual-eoc.create'));
+});
+
+Breadcrumbs::for('applying-leave.exdo', function (BreadcrumbTrail $trail) {
+    $trail->parent('applying-leave.dashboard');
+    $trail->push('Exdo', route('applying-leave-exdo.create'));
+});
+
+Breadcrumbs::for('applying-leave.etc', function (BreadcrumbTrail $trail) {
+    $trail->parent('applying-leave.dashboard');
+    $trail->push('Etc', route('applying-leave-etc.create'));
+});
+
+// end Applying Leave
+
 // HRD - Employes
 Breadcrumbs::for('hrd.employes', function (BreadcrumbTrail $trail) {
     $trail->push('Employes', route('employes.index'));
@@ -34,8 +62,6 @@ Breadcrumbs::for('hrd.employee.leave.dashboard', function (BreadcrumbTrail $trai
     $trail->push('Employee Leave', route('employee-leave-dashboard.index'));
 });
 
-///
-
 Breadcrumbs::for('hrd.employes.annualeave', function (BreadcrumbTrail $trail) {
     $trail->push('Employes Leave', route('annualeave.index'));
 });
@@ -45,25 +71,7 @@ Breadcrumbs::for('hrd.employes.annualeave.edit', function (BreadcrumbTrail $trai
     $trail->push('Edit', route('annualeave.edit', $employee));
 });
 
-// Applying Leave
-Breadcrumbs::for('applying-leave.dashboard', function (BreadcrumbTrail $trail) {
-    $trail->push('Applying Leave', route('applying-leave-dashboard.index'));
-});
-
-Breadcrumbs::for('applying-leave.annual', function (BreadcrumbTrail $trail) {
-    $trail->parent('applying-leave.dashboard');
-    $trail->push('Annual', route('applying-leave-annual.create'));
-});
-
-Breadcrumbs::for('applying-leave.annual.eoc', function (BreadcrumbTrail $trail) {
-    $trail->parent('applying-leave.dashboard');
-    $trail->push('Annual EOC', route('applying-leave-annual-eoc.create'));
-});
-
-Breadcrumbs::for('applying-leave.exdo', function (BreadcrumbTrail $trail) {
-    $trail->parent('applying-leave.dashboard');
-    $trail->push('Exdo', route('applying-leave-exdo.create'));
-});
+// HRD
 
 // Super Admin
 
