@@ -58,15 +58,19 @@
                                 <td>Exdo</td>
                                 <td>{{ $exdo }}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-primary btn-rounded" data-bs-role="{{ route('applying-leave-exdo.create') }}"
-                                        id="buttonApply">Apply</butt>
+                                    @if ($exdo > 0)
+                                        <button class="btn btn-sm btn-outline-primary btn-rounded"
+                                            data-bs-role="{{ route('applying-leave-exdo.create') }}" id="buttonApply">Apply
+                                            </butt>
+                                    @endif
                                 </td>
                             </tr>
                             <tr>
                                 <td>Etc</td>
                                 <td>-</td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-primary btn-rounded" data-bs-role="{{ route('applying-leave-etc.create') }}"
+                                    <button class="btn btn-sm btn-outline-primary btn-rounded"
+                                        data-bs-role="{{ route('applying-leave-etc.create') }}"
                                         id="buttonApply">Apply</button>
                                 </td>
                             </tr>
@@ -81,8 +85,11 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-danger btn-rounded" data-bs-role="{{ route('applying-leave-annual-eoc.create') }}"
-                                        id="buttonApply">Apply</button>
+                                    @if ($month > 0)
+                                        <button class="btn btn-sm btn-danger btn-rounded"
+                                            data-bs-role="{{ route('applying-leave-annual-eoc.create') }}"
+                                            id="buttonApply">Apply</button>
+                                    @endif
                                 </td>
                             </tr>
                         </tbody>

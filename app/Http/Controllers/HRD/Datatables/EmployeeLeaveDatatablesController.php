@@ -27,16 +27,14 @@ class EmployeeLeaveDatatablesController extends Controller
                 $monthComming = $controller->monthComming($emp->join_contract);
                 $annual = Annualeave::where('employes_id', $emp->id)->first();
 
-                $result = 0;
-                $supClass = "supClass1";
-
                 if ($annual) {
-                    $result = $annual->totalAnnual - $annual->takenAnnual - $monthComming;
-                    $result = "+$result";
-                    $supClass = "supClass2";
+                    $remainingAnnual = $annual->totalAnnual - $annual->takenAnnual - $monthComming;
+                    $supClass = $remainingAnnual >= 0 ? "supClass2" : "supClass1";
+
+                    return "<b title='Available'>$monthComming</b> <sup title='Remains' class='$supClass'>(+$remainingAnnual)</sup>";
                 }
 
-                return "<b title='Availalbe'>$monthComming</b> <sup title='Remains' id='$supClass'>($result)</sup>";
+                return 0;
             })
             ->addColumn('exdo', function (Employes $emp) {
                 $annual = Annualeave::where('employes_id', $emp->id)->first();

@@ -14,6 +14,7 @@ use App\Http\Controllers\HRD\Datatables\EmployesDatatables;
 use App\Http\Controllers\HRD\EmployeeLeave\EmployeeLeaveDashboardController;
 use App\Http\Controllers\HRD\Employes\CustomEmployesController;
 use App\Http\Controllers\HRD\Employes\EmpoyesController;
+use App\Http\Controllers\HRD\LeaveManagement\LeaveAnnualManagementController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Super_Administrator\Management_Role\RoleAccessController;
 use App\Http\Controllers\Super_Administrator\Management_Role\RoleDatatablesController;
@@ -53,9 +54,10 @@ Route::prefix('hrd')->middleware(['auth', 'active'])->group(function () {
     // Route::resource('employes/annualeave', AnnualController::class)->only(['index', 'show', 'edit']);
 
     Route::resource('employes', EmpoyesController::class);
-
     Route::get('emplyoee-leave/annual/data', [EmployeeLeaveDatatablesController::class, 'dataAnnualofEmployes'])->name('employee-leave.annual.data');
     Route::resource('employee-leave-dashboard', EmployeeLeaveDashboardController::class)->only('index', 'show');
+
+    Route::resource('leave-management-annual', LeaveAnnualManagementController::class)->only('index');
 });
 
 Route::prefix('super-admin')->middleware(['auth', 'active'])->group(function () {

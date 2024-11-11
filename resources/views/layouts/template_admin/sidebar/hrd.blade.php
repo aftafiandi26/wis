@@ -33,7 +33,7 @@
   <li class="nav-item">
     <a data-bs-toggle="collapse" href="#sidebar_hr_employee_leave" class="collapsed" aria-expanded="false">
       <i class="fas fa-user-clock"></i>
-      <p>Employee Leave</p>
+      <p>Leave Management</p>
       <span class="caret"></span>
     </a>
     <div class="collapse" id="sidebar_hr_employee_leave">
@@ -44,23 +44,28 @@
           </a>
         </li>
         <li>
-          <a href="#">
-            <span class="sub-item">Annual of Leave</span>
+          <a href="{{ route('leave-management-annual.index') }}">
+            <span class="sub-item">Annual</span>
           </a>
         </li>
         <li>
           <a href="#">
-            <span class="sub-item">Exdo of Leave</span>
+            <span class="sub-item">Exdo</span>
           </a>
         </li>
         <li>
           <a href="#">
-            <span class="sub-item">Form Progressing</span>
+            <span class="sub-item">Etc</span>
           </a>
         </li>
         <li>
           <a href="#">
-            <span class="sub-item">Transactions</span>
+            <span class="sub-item">Form Leave Progress</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="sub-item">Leave Transactions</span>
           </a>
         </li>
       </ul>
