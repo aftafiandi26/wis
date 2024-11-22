@@ -31,7 +31,8 @@ class EmployeeLeaveDatatablesController extends Controller
                     $remainingAnnual = $annual->totalAnnual - $annual->takenAnnual - $monthComming;
                     $supClass = $remainingAnnual >= 0 ? "supClass2" : "supClass1";
 
-                    return "<b title='Available'>$monthComming</b> <sup title='Remains' class='$supClass'>(+$remainingAnnual)</sup>";
+                    // return "<b title='Available'>$monthComming</b> <sup title='Remains' class='$supClass'>(+$remainingAnnual)</sup>";
+                    return $annual->annual;
                 }
 
                 return 0;
@@ -46,7 +47,12 @@ class EmployeeLeaveDatatablesController extends Controller
 
                 return $result;
             })
-            ->addColumn('actions', 'template_admin.hrd.employee-leave.dashboard.actions-list-annual')
+            ->addColumn('actions', function(Employes $emp) {
+                $id = $emp->id;
+                $annual = Annualeave::where('employes_id', $id)->first();
+
+                return view('template_admin.hrd.leave-management.annual.actions', compact(['id', 'annual']));
+            })
             ->rawColumns(['annual', 'actions'])
             ->toJson();
     }

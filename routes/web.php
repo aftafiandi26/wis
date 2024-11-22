@@ -57,7 +57,7 @@ Route::prefix('hrd')->middleware(['auth', 'active'])->group(function () {
     Route::get('emplyoee-leave/annual/data', [EmployeeLeaveDatatablesController::class, 'dataAnnualofEmployes'])->name('employee-leave.annual.data');
     Route::resource('employee-leave-dashboard', EmployeeLeaveDashboardController::class)->only('index', 'show');
 
-    Route::resource('leave-management-annual', LeaveAnnualManagementController::class)->only('index');
+    Route::resource('leave-management-annual', LeaveAnnualManagementController::class)->only('index', 'show');
 });
 
 Route::prefix('super-admin')->middleware(['auth', 'active'])->group(function () {

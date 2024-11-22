@@ -3,7 +3,13 @@
 namespace App\Http\Controllers\HRD\LeaveManagement;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HRD\Employes\CustomEmployesController;
+use App\Models\Department;
+use App\Models\Employes;
+use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class LeaveAnnualManagementController extends Controller
 {
@@ -36,7 +42,9 @@ class LeaveAnnualManagementController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $employee = Employes::with(['role_annual'])->find($id);
+
+        return view('template_admin.hrd.leave-management.annual.show', compact(['employee']));
     }
 
     /**

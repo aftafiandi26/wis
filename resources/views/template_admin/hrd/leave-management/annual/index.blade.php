@@ -25,7 +25,17 @@
         }
     </style>
 @endpush
-
+@push('manageBtn')
+    <button type="button" class="btn btn-sm btn-outline-primary btn-round dropdown-toggle" data-bs-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        Manage
+    </button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" id="manageDropdownList">
+        <a class="dropdown-item" href="{{ route('employee-leave-dashboard.index') }}">Dashboard</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Exdo</a>
+    </ul>
+@endpush
 @section('body')
     <div class="row">
         <div class="col-sm-12 col-md-12">
@@ -51,6 +61,15 @@
                         </thead>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+
             </div>
         </div>
     </div>
@@ -199,7 +218,7 @@
             });
 
 
-            $(document).on('click', 'table#tables tr td a.editDatatables', function(e) {
+            $(document).on('click', 'table#tables tr td a.showDataTables', function(e) {
                 let url = $(this).attr('data-bs-role');
 
                 $.ajax({
