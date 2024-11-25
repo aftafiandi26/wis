@@ -1,4 +1,3 @@
-<meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="modal-header">
     <h5 class="modal-title fw-bold" id="exampleModalLabel">Annual Employee</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
@@ -30,17 +29,16 @@
                             </tr>
                         </tbody>
                         <tfoot>
-                            <form method="POST" id="formPost">
+                            <form method="post" id="formPost">
                                 <tr>
                                     <td>Join Contract</td>
                                     <th>
-                                        <input type="date" id="joinContract"
-                                            value="{{ $employee->join_contract }}" class="form-control"
-                                            @if ($employee->emp_status !== 'Permanent') @readonly(true) @endif>
+                                        <input type="date" name="joinContract" id="joinContract"
+                                            value="{{ $employee->join_contract }}" class="form-control">
                                     </th>
                                     <td>End Contract</td>
                                     <th>
-                                        <input type="date" id="endContract" class="form-control"
+                                        <input type="date" name="endContract" id="endContract" class="form-control"
                                             value="{{ $employee->end_contract }}"
                                             @if ($employee->emp_status == 'Permanent') @readonly(true) @endif>
                                     </th>
@@ -48,7 +46,7 @@
                             </form>
                             <tr>
                                 <td>Remains Annual <sup>(before)</sup></td>
-                                <th>: {{ $employee->role_annual->annual ?? '' }}</th>
+                                <th>: 0</th>
                                 <td>Add Annual <sup>(after)</sup> </td>
                                 <th>
                                     <input type="number" name="" id="addAnnual" value="0" min="0"
@@ -57,7 +55,7 @@
                             </tr>
                             <tr>
                                 <td>Annual</td>
-                                <th>: <span id="annual">{{ $employee->role_annual->annual }}</span></th>
+                                <th>: <span id="annual">0</span></th>
                             </tr>
                         </tfoot>
                     </table>
@@ -70,10 +68,9 @@
     </div>
 </div>
 <div class="modal-footer">
-    <form action="{{ route('leave-management-annual.update', $employee->id) }}" method="post">
+    <form action="{{ route('leave-management-annual.store') }}" method="post">
         @csrf
-        @method('PUT')
-
+        <input type="text" name="id" class="form-control" hidden value="{{ $employee->id }}" @readonly(true)>
         <input type="date" name="joinContractPUT" id="joinContractPUT" value="{{ $employee->join_contract }}" hidden
             class="form-control">
         <input type="date" name="endContractPUT" id="endContractPUT" class="form-control" hidden
@@ -133,7 +130,7 @@
         }
 
         const startDate = "{{ $employee->end_contract }}";
-        const annual = "{{ $employee->role_annual->annual }}";
+        const annual = 0;
         const empStat = "{{ $employee->emp_status }}";
 
         if (empStat == "Permanent") {
@@ -155,7 +152,6 @@
 
                 let resultAnnual = parseInt(annual) + parseInt(calMonth);
 
-                document.getElementById('annual').innerText = resultAnnual;
                 document.getElementById('annual').innerText = resultAnnual;
             });
         }

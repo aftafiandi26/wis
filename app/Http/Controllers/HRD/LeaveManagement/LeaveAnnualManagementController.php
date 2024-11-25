@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HRD\LeaveManagement;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\HRD\Employes\CustomEmployesController;
+use App\Models\Annualeave;
 use App\Models\Department;
 use App\Models\Employes;
 use App\Models\Project;
@@ -26,7 +27,7 @@ class LeaveAnnualManagementController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -34,7 +35,28 @@ class LeaveAnnualManagementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $employee = Employes::find($request->id);
+
+        $dataAnnual = [
+            'employes_id'   => $employee->id,
+            'nik'           => $employee->nik,
+            'annual'        => $request->annual,
+            'totalAnnual'   => $request->annual,
+        ];
+
+        $dataEmployee = [
+            'join_contract'     => $request->joinContractPUT,
+            'end_contract'      => $request->endContractPUT
+        ];
+
+        Annualeave::create($dataAnnual);
+
+        $employee->update($dataEmployee);
+
+        Session::flash('success', $employee->fullname() . ' annual created!!');
+        Session::flash('info', $employee->fullname() . ' contract updated!!');
+
+        return redirect()->route('leave-management-annual.index');
     }
 
     /**
@@ -52,7 +74,9 @@ class LeaveAnnualManagementController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $employee = Employes::with(['role_annual'])->find($id);
+
+        return view('template_admin.hrd.leave-management.annual.create', compact(['employee']));
     }
 
     /**
@@ -60,7 +84,29 @@ class LeaveAnnualManagementController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $annualeave = Annualeave::where('employes_id', $id)->first();
+        $totalAnnual = $annualeave->totalAnnual + $request->annual;
+        $annual = $annualeave->annual + $request->annual;
+
+        $employee = Employes::find($id);
+
+        $dataAnnual = [
+            'annual'        => $annual,
+            'totalAnnual'   => $totalAnnual
+        ];
+
+        $dataEmployee = [
+            'join_contract'     => $request->joinContractPUT,
+            'end_contract'      => $request->endContractPUT
+        ];
+
+        $annualeave->update($dataAnnual);
+        $employee->update($dataEmployee);
+
+        Session::flash('success', $employee->fullname() . ' annual updated!!');
+        Session::flash('info', $employee->fullname() . ' contract updated!!');
+
+        return redirect()->route('leave-management-annual.index');
     }
 
     /**

@@ -114,12 +114,12 @@
 
             // Cek apakah ada session success
             @if (session('danger'))
-                showNotification('danger', '{{ session('danger') }}', 'top', 'right', 'fas fa-file', 'DANGER');
+                showNotification('danger', '{{ session('danger') }}', 'top', 'right', 'fas fa-times', 'DANGER');
             @endif
 
             // Cek apakah ada session danger
             @if (session('success'))
-                showNotification('success', '{{ session('success') }}', 'top', 'right', 'fas fa-file', 'SUCCESS');
+                showNotification('success', '{{ session('success') }}', 'top', 'right', 'fas fa-check', 'SUCCESS');
             @endif
 
             @if (session('info'))
@@ -219,6 +219,18 @@
 
 
             $(document).on('click', 'table#tables tr td a.showDataTables', function(e) {
+                let url = $(this).attr('data-bs-role');
+
+                $.ajax({
+                    url: url,
+                    data: $(this).serialize(),
+                    success: function(e) {
+                        $('.modal-content').html(e);
+                    }
+                });
+            });
+
+            $(document).on('click', 'table#tables tr td a.createData', function(e) {
                 let url = $(this).attr('data-bs-role');
 
                 $.ajax({
